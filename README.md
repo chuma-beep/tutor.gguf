@@ -10,7 +10,7 @@
 
 Tutor.gguf is a terminal-native math tutoring assistant that runs entirely on commodity hardware with no internet connection. Ask it a question in Discrete Mathematics, Calculus, or Linear Algebra and it walks you through the solution step by step.
 
-It is built for students at distance-learning institutions like NOUN Awka — where stable internet is unreliable, cloud AI subscriptions are unaffordable, and a working 8 GB laptop is the only tool available.
+It is built for students at distance-learning institutions like NOUN Awka,where stable internet is unreliable, cloud AI subscriptions are unaffordable, and a working 8 GB laptop is the only tool available.
 
 ---
 
