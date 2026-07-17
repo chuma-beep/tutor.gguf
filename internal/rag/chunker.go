@@ -38,12 +38,10 @@ func LoadHendrycksFile(filePath string) (Chunk, error) {
 		return Chunk{}, fmt.Errorf("failed to open Hendrycks file: %w", err)
 	}
 	defer file.Close()
-
 	var item HendrycksItem
 	if err := json.NewDecoder(file).Decode(&item); err != nil {
 		return Chunk{}, fmt.Errorf("failed to decode Hendrycks JSON: %w", err)
 	}
-
 	return Chunk{
 		Text:      fmt.Sprintf("Problem: %s\nSolution: %s", item.Problem, item.Solution),
 		Subdomain: mapTypeToSubdomain(item.Type),
@@ -59,32 +57,26 @@ func LoadGSM8KFile(filePath string) ([]Chunk, error) {
 		return nil, fmt.Errorf("failed to open GSM8K file: %w", err)
 	}
 	defer file.Close()
-
 	var chunks []Chunk
 	scanner := bufio.NewScanner(file)
-
 	for scanner.Scan() {
 		line := scanner.Bytes()
 		if len(line) == 0 {
 			continue
 		}
-
 		var item GSM8KItem
 		if err := json.Unmarshal(line, &item); err != nil {
 			return nil, fmt.Errorf("failed to decode GSM8K line: %w", err)
 		}
-
 		chunks = append(chunks, Chunk{
 			Text:      fmt.Sprintf("Problem: %s\nSolution: %s", item.Question, item.Answer),
 			Subdomain: "calculus", // GSM8K consists of word problems
 			Source:    "gsm8k",
 		})
 	}
-
 	if err := scanner.Err(); err != nil {
 		return nil, fmt.Errorf("error reading GSM8K file: %w", err)
 	}
-
 	return chunks, nil
 }
 
@@ -92,33 +84,27 @@ func LoadGSM8KFile(filePath string) ([]Chunk, error) {
 // Each file is expected to be a self-contained problem+solution (.md or .txt).
 func LoadRosenDir(dirPath string) ([]Chunk, error) {
 	var chunks []Chunk
-
 	entries, err := os.ReadDir(dirPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read Rosen directory: %w", err)
 	}
-
 	for _, entry := range entries {
 		if entry.IsDir() {
 			continue
 		}
-
 		ext := filepath.Ext(entry.Name())
 		if ext != ".md" && ext != ".txt" {
 			continue
 		}
-
 		path := filepath.Join(dirPath, entry.Name())
 		content, err := os.ReadFile(path)
 		if err != nil {
 			return nil, fmt.Errorf("failed to read Rosen file %s: %w", entry.Name(), err)
 		}
-
 		text := strings.TrimSpace(string(content))
 		if text == "" {
 			continue
 		}
-
 		chunks = append(chunks, Chunk{
 			Text:      text,
 			Subdomain: "discrete_math",
@@ -126,7 +112,6 @@ func LoadRosenDir(dirPath string) ([]Chunk, error) {
 			Level:     "undergraduate",
 		})
 	}
-
 	return chunks, nil
 }
 
