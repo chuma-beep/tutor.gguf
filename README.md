@@ -1,119 +1,33 @@
-# Tutor.gguf
+# Promptfoo prompt evaluation
 
-> On-device math tutor for African CS students — runs fully offline on an 8 GB laptop.
+## Quick start
 
-**ADTC 2026 · Math & Scientific Reasoning · chuma-beep**
+1. Set your API key (if using a cloud provider):
 
----
-
-## What it does
-
-Tutor.gguf is a terminal-native math tutoring assistant that runs entirely on commodity hardware with no internet connection. Ask it a question in Discrete Mathematics, Calculus, or Linear Algebra and it walks you through the solution step by step.
-
-It is built for students at distance-learning institutions like NOUN Awka,where stable internet is unreliable, cloud AI subscriptions are unaffordable, and a working 8 GB laptop is the only tool available.
-
----
-
-## Domains covered
-
-| Domain | Scope |
-|---|---|
-| Discrete Mathematics | Proofs, combinatorics, graph theory, logic, recurrences |
-| Calculus I & II | Limits, derivatives, integrals, series |
-| Linear Algebra | Matrices, systems of equations, eigenvalues, vector spaces |
-
----
-
-## Stack
-
-| Component | Technology |
-|---|---|
-| Inference engine | llama.cpp (mandatory per ADTC rules) |
-| Model | Qwen2.5-Math-1.5B-Instruct — Q4_K_M quantization |
-| Orchestration | Go |
-| RAG pipeline | chromem-go + nomic-embed-text |
-| Corpus | GSM8K, Hendrycks MATH, OpenStax Calculus, OpenStax Linear Algebra, Rosen's Discrete Math |
-| UI | Terminal-native TUI (Bubble Tea) |
-| Math rendering | Custom LaTeX → ASCII renderer |
-
----
-
-## Requirements
-
-- Linux (Ubuntu 22.04 LTS on reference hardware)
-- 8 GB RAM minimum
-- No GPU required — CPU-only inference
-- No internet connection required after setup
-
----
-
-## Setup
-
-**1. Download the model**
 ```bash
-bash download_model.sh
+export OPENAI_API_KEY=sk-...
+# Or for other providers:
+# export ANTHROPIC_API_KEY=sk-ant-...
+# export GOOGLE_API_KEY=...
 ```
 
-**2. Build the binary**
+2. Edit `promptfooconfig.yaml` to customize prompts, providers, and test cases.
+
+3. Run the evaluation:
+
 ```bash
-go build -o tutor ./cmd/tutor
+promptfoo eval
 ```
 
-**3. Start llama-server**
+4. View results in your browser:
+
 ```bash
-llama-server -m model/qwen2.5-math-1.5b-instruct-q4_k_m.gguf --port 8080
+promptfoo view
 ```
 
-**4. Run Tutor.gguf**
-```bash
-./tutor
-```
+## Learn more
 
----
-
-## Benchmarks
-
-> Measured via adtc-profiler in Docker audit mode (`--memory=7.5g --cpus=4`)
-
-| Metric | Value |
-|---|---|
-| Tokens per second | TBD (Phase 1) |
-| Peak RAM | TBD (Phase 1) |
-| Thermal | TBD (Phase 1) |
-
----
-
-## Project structure
-
-```
-tutor.gguf/
-├── cmd/tutor/          ← entry point
-├── internal/
-│   ├── llm/            ← llama-server HTTP client
-│   ├── rag/            ← chromem-go retrieval pipeline
-│   ├── prompt/         ← PromptBuilder
-│   ├── parser/         ← ResponseParser
-│   └── renderer/       ← LaTeX → ASCII renderer
-├── corpus/             ← raw corpus files (not committed)
-├── model/              ← model weights (not committed)
-├── metadata.json       ← ADTC submission metadata
-├── download_model.sh   ← model download script
-└── REPORT.md           ← technical writeup
-```
-
----
-
-## ADTC submission
-
-- **Domain:** `math_scientific_reasoning`
-- **Runtime:** `llama.cpp`
-- **Quantization:** `GGUF Q4_K_M`
-- **Parameters:** 1.5B
-- **Packaging:** `binary_bundle`
-
----
-
-## Author
-
-Wisdom Anwaegbu — [@chuma-beep](https://github.com/chuma-beep)  
-300-level CS · NOUN Awka · Africa Deep Tech Challenge 2026
+- Configuration guide: https://promptfoo.dev/docs/configuration/guide
+- All providers: https://promptfoo.dev/docs/providers
+- Assertions & metrics: https://promptfoo.dev/docs/configuration/expected-outputs
+- Examples: https://github.com/promptfoo/promptfoo/tree/main/examples

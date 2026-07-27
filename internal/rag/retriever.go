@@ -142,7 +142,7 @@ func NewSubdomainClassifier() *SubdomainClassifier {
 	return &SubdomainClassifier{
 		keywords: map[string][]string{
 			"linear_algebra": {"matrix", "vector", "eigenvalue", "eigenvector", "determinant", "basis", "span", "rank"},
-			"calculus":       {"derivative", "integral", "limit", "gradient", "partial derivative", "chain rule", "algebra", "precalculus"},
+			"calculus":       {"derivative", "integral", "limit", "gradient", "partial derivative", "chain rule", "precalculus"},
 			"discrete_math":  {"graph", "proof", "induction", "combinatorics", "set theory", "logic", "boolean", "probability", "counting", "number theory"},
 		},
 		minHits: 1,
