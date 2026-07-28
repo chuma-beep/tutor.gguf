@@ -17,7 +17,7 @@ providers:
 prompts:
   - "{{problem}}"
 
-tests: file://test_cases_promptfoo.json
+tests: test_cases_promptfoo.json
 
 defaultTest:
   assert:
