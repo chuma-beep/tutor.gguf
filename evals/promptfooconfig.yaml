@@ -11,8 +11,8 @@ providers:
       body:
         prompt: 'Solve step by step and put your final answer in \\boxed{}: {{problem}}'          
         max_tokens: 512
-        temperature: 0.1
-      transformResponse: 'content'
+        temperature: 0.1 
+        transformResponse: 'JSON.parse(json.data).content'
 
 prompts:
   - "{{problem}}"
