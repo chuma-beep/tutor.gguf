@@ -23,7 +23,7 @@ serve-embed:
 
 # Index the corpus into chromem-go
 index:
-	go run ./cmd/index \
+	go run ./cmd/tutor/ \
 		-embedder-url $(EMBEDDER_URL) \
 		-hendrycks-dir $(HENDRYCKS_DIR) \
 		-gsm8k-file $(GSM8K_FILE) \
