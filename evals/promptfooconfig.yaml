@@ -1,0 +1,25 @@
+description: "Tutor.gguf accuracy eval — Qwen2.5-Math-1.5B baseline"
+
+providers:
+  - id: http
+    label: qwen2.5-math-baseline
+    config:
+      url: http://localhost:8080/completion
+      method: POST
+      headers:
+        Content-Type: application/json
+      body:
+        prompt: "Solve step by step and put your final answer in \\boxed{}: {{problem}}"
+        max_tokens: 512
+        temperature: 0.1
+      transformResponse: 'json.content'
+
+prompts:
+  - "{{problem}}"
+
+tests: file://test_cases_promptfoo.json
+
+defaultTest:
+  assert:
+    - type: contains
+      value: "{{expected}}"

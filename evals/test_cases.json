@@ -1,0 +1,182 @@
+[
+  {
+    "problem": "Find the least positive integer $k$ for which the equation $\\left\\lfloor\\frac{2002}{n}\\right\\rfloor=k$ has no integer solutions for $n$. (The notation $\\lfloor x\\rfloor$ means the greatest integer less than or equal to $x$.)",
+    "expected": "49",
+    "type": "Intermediate Algebra",
+    "level": "Level 4"
+  },
+  {
+    "problem": "$n$ coins are simultaneously flipped.  The probability that at most one of them shows tails is $\\frac{3}{16}$.  Find $n$.",
+    "expected": "5",
+    "type": "Counting & Probability",
+    "level": "Level 4"
+  },
+  {
+    "problem": "For which positive integer values of $k$ does $kx^2+20x+k=0$ have rational solutions? Express your answers separated by commas and in increasing order.",
+    "expected": "6, 8\\text{, and }10",
+    "type": "Algebra",
+    "level": "Level 5"
+  },
+  {
+    "problem": "Find the number of solutions to\n\\[\\sec \\theta + \\csc \\theta = \\sqrt{15}\\]where $0 \\le \\theta \\le 2 \\pi.$",
+    "expected": "4",
+    "type": "Precalculus",
+    "level": "Level 3"
+  },
+  {
+    "problem": "Find all the integer roots of\n\\[x^3 - 3x^2 - 13x + 15 = 0.\\]Enter all the integer roots, separated by commas.",
+    "expected": "-3,1,5",
+    "type": "Intermediate Algebra",
+    "level": "Level 1"
+  },
+  {
+    "problem": "Solve for $x:\\ \\log_2 x+\\log_4 x= 6.$",
+    "expected": "16",
+    "type": "Intermediate Algebra",
+    "level": "Level 1"
+  },
+  {
+    "problem": "There are two values of $a$ for which the equation $4x^2 + ax + 8x + 9 = 0$ has only one solution for $x$. What is the sum of these values of $a$?",
+    "expected": "-16",
+    "type": "Intermediate Algebra",
+    "level": "Level 1"
+  },
+  {
+    "problem": "Bob rolls a fair six-sided die each morning. If Bob rolls a composite number, he eats sweetened cereal. If he rolls a prime number, he eats unsweetened cereal. If he rolls a 1, then he rolls again. In a non-leap year, what is the expected number of times Bob will roll his die?",
+    "expected": "438",
+    "type": "Counting & Probability",
+    "level": "Level 5"
+  },
+  {
+    "problem": "Let $\\omega = e^{2 \\pi i/1729}.$  Compute\n\\[\\sum_{k = 1}^{1728} \\frac{1}{1 + \\omega^k + \\omega^{2k} + \\omega^{3k}}.\\]",
+    "expected": "432",
+    "type": "Precalculus",
+    "level": "Level 5"
+  },
+  {
+    "problem": "What is the sum of the two solutions to the equation $54-15x-x^2=0$?",
+    "expected": "-15",
+    "type": "Algebra",
+    "level": "Level 3"
+  },
+  {
+    "problem": "A housefly sits on the outer edge of a rotating circular ceiling fan with a diameter of 6 feet. The fan rotates constantly at a rate of 20 revolutions per minute. How many minutes had the housefly been on the fan during the time it took to travel $19{,}404\\pi$ feet? Express your answer to the nearest whole number.",
+    "expected": "162\\text{ minutes}",
+    "type": "Prealgebra",
+    "level": "Level 5"
+  },
+  {
+    "problem": "The complex number $z = re^{i \\theta}$ satisfies\n\\[\\left| 2z + \\frac{1}{z} \\right| = 1.\\]Find the minimum value of $\\sin^2 \\theta.$",
+    "expected": "\\frac{7}{8}",
+    "type": "Precalculus",
+    "level": "Level 5"
+  },
+  {
+    "problem": "During the school year, the 10 members of the chess club play a total of 900 games of chess during their practice matches. Each member plays against every other member $N$ times. What is the value of $N$?",
+    "expected": "20",
+    "type": "Counting & Probability",
+    "level": "Level 4"
+  },
+  {
+    "problem": "The 2007 AMC 10 will be scored by awarding $6$ points for each correct response, $0$ points for each incorrect response, and $1.5$ points for each problem left unanswered. After looking over the $25$ problems, Sarah has decided to attempt the first $22$ and leave only the last $3$ unanswered.\n\nHow many of the first $22$ problems must she solve correctly in order to score at least $100$ points?",
+    "expected": "16",
+    "type": "Algebra",
+    "level": "Level 2"
+  },
+  {
+    "problem": "Find the remainder when $3y^4-4y^3+5y^2-13y+4$ is divided by $3y - 2.$",
+    "expected": "-\\frac{82}{27}",
+    "type": "Intermediate Algebra",
+    "level": "Level 4"
+  },
+  {
+    "problem": "In triangle $ABC$, $AB = 13$, $BC = 15$, and $CA = 14$. Point $D$ is on $\\overline{BC}$ with $CD = 6$. Point $E$ is on $\\overline{BC}$ such that $\\angle BAE = \\angle CAD$. Find $BE.$",
+    "expected": "\\frac{2535}{463}",
+    "type": "Precalculus",
+    "level": "Level 5"
+  },
+  {
+    "problem": "In the equation $|x-7| -3 = -2$, what is the product of all possible values of $x$?",
+    "expected": "48",
+    "type": "Algebra",
+    "level": "Level 3"
+  },
+  {
+    "problem": "Find $x$ such that $\\log_{12}3x=2$.",
+    "expected": "48",
+    "type": "Algebra",
+    "level": "Level 2"
+  },
+  {
+    "problem": "The sum of two numbers is 25 and their product is 126. What is the absolute value of the difference of the two numbers?",
+    "expected": "11",
+    "type": "Algebra",
+    "level": "Level 2"
+  },
+  {
+    "problem": "Define the function $f(x)=\\frac{b}{2x-3}$. If $f(2)=f^{-1}(b+1)$, find the product of all possible values of $b$.",
+    "expected": "-\\frac{3}{2}",
+    "type": "Intermediate Algebra",
+    "level": "Level 4"
+  },
+  {
+    "problem": "There exist positive integers $a,$ $b,$ and $c$ such that\n\\[3 \\sqrt{\\sqrt[3]{5} - \\sqrt[3]{4}} = \\sqrt[3]{a} + \\sqrt[3]{b} - \\sqrt[3]{c}.\\]Find $a + b + c.$",
+    "expected": "47",
+    "type": "Intermediate Algebra",
+    "level": "Level 5"
+  },
+  {
+    "problem": "If $f(x)=x^3$, what is the value of $f^{-1}(8)\\div (f(8))^{-1}$?",
+    "expected": "1024",
+    "type": "Algebra",
+    "level": "Level 4"
+  },
+  {
+    "problem": "Let $z = a + bi,$ where $a$ and $b$ are positive real numbers.  If\n\\[z^3 + |z|^2 + z = 0,\\]then enter the ordered pair $(a,b).$",
+    "expected": "\\left( \\frac{1}{2}, \\frac{\\sqrt{7}}{2} \\right)",
+    "type": "Intermediate Algebra",
+    "level": "Level 5"
+  },
+  {
+    "problem": "A portion of the graph of $f(x)=ax^2+bx+c$ is shown below. The distance between grid lines on the graph is $1$ unit.\n\nWhat is the value of $a+b+2c$?\n\n[asy]\nsize(150);\nreal ticklen=3;\nreal tickspace=2;\n\nreal ticklength=0.1cm;\nreal axisarrowsize=0.14cm;\npen axispen=black+1.3bp;\nreal vectorarrowsize=0.2cm;\nreal tickdown=-0.5;\nreal tickdownlength=-0.15inch;\nreal tickdownbase=0.3;\nreal wholetickdown=tickdown;\nvoid rr_cartesian_axes(real xleft, real xright, real ybottom, real ytop, real xstep=1, real ystep=1, bool useticks=false, bool complexplane=false, bool usegrid=true) {\n\nimport graph;\n\nreal i;\n\nif(complexplane) {\n\nlabel(\"$\\textnormal{Re}$\",(xright,0),SE);\n\nlabel(\"$\\textnormal{Im}$\",(0,ytop),NW);\n\n} else {\n\nlabel(\"$x$\",(xright+0.4,-0.5));\n\nlabel(\"$y$\",(-0.5,ytop+0.2));\n\n}\n\nylimits(ybottom,ytop);\n\nxlimits( xleft, xright);\n\nreal[] TicksArrx,TicksArry;\n\nfor(i=xleft+xstep; i<xright; i+=xstep) {\n\nif(abs(i) >0.1) {\n\nTicksArrx.push(i);\n\n}\n\n}\n\nfor(i=ybottom+ystep; i<ytop; i+=ystep) {\n\nif(abs(i) >0.1) {\n\nTicksArry.push(i);\n\n}\n\n}\n\nif(usegrid) {\n\nxaxis(BottomTop(extend=false), Ticks(\"%\", TicksArrx ,pTick=gray(0.22),extend=true),p=invisible);//,above=true);\n\nyaxis(LeftRight(extend=false),Ticks(\"%\", TicksArry ,pTick=gray(0.22),extend=true), p=invisible);//,Arrows);\n\n}\n\nif(useticks) {\n\nxequals(0, ymin=ybottom, ymax=ytop, p=axispen, Ticks(\"%\",TicksArry , pTick=black+0.8bp,Size=ticklength), above=true, Arrows(size=axisarrowsize));\n\nyequals(0, xmin=xleft, xmax=xright, p=axispen, Ticks(\"%\",TicksArrx , pTick=black+0.8bp,Size=ticklength), above=true, Arrows(size=axisarrowsize));\n\n} else {\n\nxequals(0, ymin=ybottom, ymax=ytop, p=axispen, above=true, Arrows(size=axisarrowsize));\n\nyequals(0, xmin=xleft, xmax=xright, p=axispen, above=true, Arrows(size=axisarrowsize));\n\n}\n};\nrr_cartesian_axes(-4,3,-2,9);\nreal f(real x) {return 8-(x+1)^2;}\ndraw(graph(f,-3.9,2.16,operator ..), red);\n[/asy]",
+    "expected": "11",
+    "type": "Algebra",
+    "level": "Level 5"
+  },
+  {
+    "problem": "In rectangle $ABCD$, we have $AB=8$, $BC=9$, $H$ is on $\\overline{BC}$ with $BH=6$, $E$ is on $AD$ with $DE=4$, line $EC$ intersects line $AH$ at $G$, and $F$ is on line $AD$ with $\\overline{GF}\\perp \\overline{AF}$. Find the length $\\overline{GF}$.\n\n[asy]\npair A,B,C,D,I,F,G,H;\nF=(0,0);\nD=(6,0);\nI=(10,0);\nA=(15,0);\nB=(15,8);\nH=(9,8);\nC=(6,8);\nG=(0,20);\ndraw(A--B--C--D--cycle,linewidth(0.7));\ndraw(A--F--G--cycle,linewidth(0.7));\ndraw(G--I,linewidth(0.7));\nlabel(\"4\",(8,0),S);\nlabel(\"8\",(15,4),E);\nlabel(\"6\",(12,8),N);\nlabel(\"$A$\",A,SE);\nlabel(\"$B$\",B,NE);\nlabel(\"$C$\",C,W);\nlabel(\"$D$\",D,S);\nlabel(\"$E$\",I,S);\nlabel(\"$F$\",F,W);\nlabel(\"$G$\",G,W);\nlabel(\"$H$\",H,NE);\n[/asy]",
+    "expected": "20",
+    "type": "Geometry",
+    "level": "Level 4"
+  },
+  {
+    "problem": "In the figure, triangles $ABC$ and $BCD$ are equilateral triangles. What is the value of $AD \\div BC$ when expressed in simplest radical form?\n\n[asy]\ndraw((0,0)--(5,8.7)--(10,0)--cycle);\ndraw((10,0)--(15,8.7)--(5,8.7));\nlabel(\"$A$\",(0,0),SW);\nlabel(\"$B$\",(5,8.7),N);\nlabel(\"$C$\",(10,0),SE);\nlabel(\"$D$\",(15,8.7),NE);\n[/asy]",
+    "expected": "\\sqrt{3}",
+    "type": "Geometry",
+    "level": "Level 3"
+  },
+  {
+    "problem": "The set $\\{5, 8, 10, 18, 19, 28, 30, x\\}$ has eight members. The mean of the set's members is 4.5 less than $x$. What is the value of $x$ ?",
+    "expected": "22",
+    "type": "Prealgebra",
+    "level": "Level 5"
+  },
+  {
+    "problem": "If $n=1d41_8$, where $d$ represents a base-8 digit (and $1d41_8$ represents a four-digit number whose second digit is $d$), then what is the sum of all possible values of $n$ in base 10?",
+    "expected": "6152",
+    "type": "Number Theory",
+    "level": "Level 5"
+  },
+  {
+    "problem": "In a certain isosceles right triangle, the altitude to the hypotenuse has length $4\\sqrt{2}$.  What is the area of the triangle?",
+    "expected": "32",
+    "type": "Prealgebra",
+    "level": "Level 5"
+  },
+  {
+    "problem": "How many ways are there to put five beads on a necklace if there are eight distinct beads to choose from, and rotations and reflections of the necklace are considered the same?",
+    "expected": "672",
+    "type": "Counting & Probability",
+    "level": "Level 4"
+  }
+]

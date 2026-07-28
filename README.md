@@ -1,5 +1,3 @@
-# Promptfoo prompt evaluation
-
 ## Quick start
 
 1. Set your API key (if using a cloud provider):
