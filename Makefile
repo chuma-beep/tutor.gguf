@@ -9,7 +9,7 @@ EMBEDDER_URL  := http://localhost:$(EMBED_PORT)
 HENDRYCKS_DIR := data/raw/hendrycks_math
 GSM8K_FILE    := data/raw/gsm8k/train.jsonl
 ROSEN_DIR     := data/raw/rosen
-EVAL_DIR      := eval
+EVAL_DIR      := evals
 
 .PHONY: serve-gen serve-embed index run eval eval-view eval-sample profile
 
