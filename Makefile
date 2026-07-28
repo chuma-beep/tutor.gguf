@@ -10,6 +10,7 @@ HENDRYCKS_DIR := data/raw/hendrycks_math
 GSM8K_FILE    := data/raw/gsm8k/train.jsonl
 ROSEN_DIR     := data/raw/rosen
 EVAL_DIR      := evals
+Q             ?= "find the derivative of x^2"
 
 .PHONY: serve-gen serve-embed index run eval eval-view eval-sample profile
 
@@ -23,7 +24,7 @@ serve-embed:
 
 # Index the corpus into chromem-go
 index:
-	go run ./cmd/tutor/ \
+	go run ./cmd/tutor \
 		-embedder-url $(EMBEDDER_URL) \
 		-hendrycks-dir $(HENDRYCKS_DIR) \
 		-gsm8k-file $(GSM8K_FILE) \
