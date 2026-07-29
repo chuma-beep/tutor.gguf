@@ -1,18 +1,18 @@
-description: "Tutor.gguf accuracy eval — Qwen2.5-Math-1.5B baseline"
+description: "Tutor.gguf accuracy eval — Qwen2.5-Math-1.5B + RAG"
 
 providers:
   - id: http
-    label: qwen2.5-math-baseline
+    label: tutor-rag
     config:
-      url: http://localhost:8080/completion
+      url: http://localhost:8082/v1/complete
       method: POST
       headers:
         Content-Type: application/json
       body:
-        prompt: 'Solve step by step and put your final answer in \\boxed{}: {{problem}}'          
+        problem: "{{problem}}"
         max_tokens: 512
-        temperature: 0.1 
-        transformResponse: 'JSON.parse(json.data).content'
+        temperature: 0.1
+      transformResponse: 'json.content' 
 
 prompts:
   - "{{problem}}"

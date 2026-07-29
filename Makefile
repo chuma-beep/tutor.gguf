@@ -10,9 +10,10 @@ HENDRYCKS_DIR := data/raw/hendrycks_math
 GSM8K_FILE    := data/raw/gsm8k/train.jsonl
 ROSEN_DIR     := data/raw/rosen
 EVAL_DIR      := evals
+SERVE_PORT    := 8082
 Q             ?= "find the derivative of x^2"
 
-.PHONY: serve-gen serve-embed index run eval eval-view eval-sample profile
+.PHONY: serve-gen serve-embed serve-tutor index run eval eval-view eval-sample profile
 
 # Start the generation model (Qwen2.5-Math)
 serve-gen:
@@ -21,6 +22,13 @@ serve-gen:
 # Start the embedding model (nomic-embed-text)
 serve-embed:
 	$(LLAMA_BIN) -m $(EMBED_MODEL) --embeddings --port $(EMBED_PORT)
+
+# Start the RAG tutor server (wraps retrieval + generation)
+serve-tutor:
+	go run ./cmd/serve \
+		-embedder-url $(EMBEDDER_URL) \
+		-gen-url http://localhost:$(GEN_PORT) \
+		-port $(SERVE_PORT)
 
 # Index the corpus into chromem-go
 index:
