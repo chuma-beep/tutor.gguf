@@ -141,9 +141,39 @@ type SubdomainClassifier struct {
 func NewSubdomainClassifier() *SubdomainClassifier {
 	return &SubdomainClassifier{
 		keywords: map[string][]string{
-			"linear_algebra": {"matrix", "vector", "eigenvalue", "eigenvector", "determinant", "basis", "span", "rank"},
-			"calculus":       {"derivative", "integral", "limit", "gradient", "partial derivative", "chain rule", "precalculus"},
-			"discrete_math":  {"graph", "proof", "induction", "combinatorics", "set theory", "logic", "boolean", "probability", "counting", "number theory"},
+			"algebra": {
+				"equation", "polynomial", "quadratic", "factor",
+				"root", "variable", "expression",
+			},
+
+			"arithmetic": {
+				"sum", "difference", "product", "quotient",
+				"percent", "ratio", "fraction", "decimal",
+			},
+
+			"precalculus": {
+				"function", "domain", "range",
+				"trigonometric", "sine", "cosine", "tangent",
+				"logarithm", "exponential",
+			},
+
+			"geometry": {
+				"triangle", "circle", "angle", "radius",
+				"diameter", "perimeter", "area", "volume",
+				"polygon", "coordinate",
+			},
+
+			"probability": {
+				"probability", "random", "expected value",
+				"coin", "dice", "cards", "combinations",
+				"permutations",
+			},
+
+			"number_theory": {
+				"prime", "divisor", "multiple", "gcd",
+				"lcm", "mod", "modulo", "congruence",
+				"integer",
+			},
 		},
 		minHits: 1,
 	}

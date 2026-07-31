@@ -1,0 +1,2551 @@
+{
+  "evalId": "eval-Fbu-2026-07-31T10:34:10",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-07-31T10:34:10.002Z",
+    "prompts": [
+      {
+        "id": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "raw": "{{problem}}",
+        "label": "{{problem}}",
+        "provider": "tutor-rag",
+        "metrics": {
+          "score": 0,
+          "testPassCount": 0,
+          "testFailCount": 0,
+          "testErrorCount": 30,
+          "assertPassCount": 0,
+          "assertFailCount": 0,
+          "totalLatencyMs": 0,
+          "tokenUsage": {
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "total": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "namedScoreWeights": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "24304fe2-d773-4052-8006-c48419300f31",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Find the least positive integer $k$ for which the equation $\\left\\lfloor\\frac{2002}{n}\\right\\rfloor=k$ has no integer solutions for $n$. (The notation $\\lfloor x\\rfloor$ means the greatest integer less than or equal to $x$.)",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "Find the least positive integer $k$ for which the equation $\\left\\lfloor\\frac{2002}{n}\\right\\rfloor=k$ has no integer solutions for $n$. (The notation $\\lfloor x\\rfloor$ means the greatest integer less than or equal to $x$.)",
+            "expected": "49"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "49"
+            }
+          ],
+          "description": "Row #1",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "Find the least positive integer $k$ for which the equation $\\left\\lfloor\\frac{2002}{n}\\right\\rfloor=k$ has no integer solutions for $n$. (The notation $\\lfloor x\\rfloor$ means the greatest integer less than or equal to $x$.)",
+          "expected": "49"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "ddc6793a-621d-4ca2-a260-94d8695c62f5",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "$n$ coins are simultaneously flipped.  The probability that at most one of them shows tails is $\\frac{3}{16}$.  Find $n$.",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "$n$ coins are simultaneously flipped.  The probability that at most one of them shows tails is $\\frac{3}{16}$.  Find $n$.",
+            "expected": "5"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "5"
+            }
+          ],
+          "description": "Row #2",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "$n$ coins are simultaneously flipped.  The probability that at most one of them shows tails is $\\frac{3}{16}$.  Find $n$.",
+          "expected": "5"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "328e6ae4-3e7d-4529-aee7-3ebe81793499",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "For which positive integer values of $k$ does $kx^2+20x+k=0$ have rational solutions? Express your answers separated by commas and in increasing order.",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "For which positive integer values of $k$ does $kx^2+20x+k=0$ have rational solutions? Express your answers separated by commas and in increasing order.",
+            "expected": "6, 8\\text{, and }10"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "6, 8\\text{, and }10"
+            }
+          ],
+          "description": "Row #3",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "For which positive integer values of $k$ does $kx^2+20x+k=0$ have rational solutions? Express your answers separated by commas and in increasing order.",
+          "expected": "6, 8\\text{, and }10"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "3c44b382-3d34-43a9-8492-b75a0534eeab",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Find the number of solutions to\n\\[\\sec \\theta + \\csc \\theta = \\sqrt{15}\\]where $0 \\le \\theta \\le 2 \\pi.$",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "Find the number of solutions to\n\\[\\sec \\theta + \\csc \\theta = \\sqrt{15}\\]where $0 \\le \\theta \\le 2 \\pi.$",
+            "expected": "4"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "4"
+            }
+          ],
+          "description": "Row #4",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 3,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "Find the number of solutions to\n\\[\\sec \\theta + \\csc \\theta = \\sqrt{15}\\]where $0 \\le \\theta \\le 2 \\pi.$",
+          "expected": "4"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "e42b478d-fac6-4fea-a5f7-c30f4e6340ee",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Find all the integer roots of\n\\[x^3 - 3x^2 - 13x + 15 = 0.\\]Enter all the integer roots, separated by commas.",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "Find all the integer roots of\n\\[x^3 - 3x^2 - 13x + 15 = 0.\\]Enter all the integer roots, separated by commas.",
+            "expected": "-3,1,5"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "-3,1,5"
+            }
+          ],
+          "description": "Row #5",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 4,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "Find all the integer roots of\n\\[x^3 - 3x^2 - 13x + 15 = 0.\\]Enter all the integer roots, separated by commas.",
+          "expected": "-3,1,5"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "c8284ed0-4908-40e4-81d5-76d7e5fdec11",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Solve for $x:\\ \\log_2 x+\\log_4 x= 6.$",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "Solve for $x:\\ \\log_2 x+\\log_4 x= 6.$",
+            "expected": "16"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "16"
+            }
+          ],
+          "description": "Row #6",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 5,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "Solve for $x:\\ \\log_2 x+\\log_4 x= 6.$",
+          "expected": "16"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "c03a17cf-bc7b-43e0-97b6-a4ef692f1d34",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "There are two values of $a$ for which the equation $4x^2 + ax + 8x + 9 = 0$ has only one solution for $x$. What is the sum of these values of $a$?",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "There are two values of $a$ for which the equation $4x^2 + ax + 8x + 9 = 0$ has only one solution for $x$. What is the sum of these values of $a$?",
+            "expected": "-16"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "-16"
+            }
+          ],
+          "description": "Row #7",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 6,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "There are two values of $a$ for which the equation $4x^2 + ax + 8x + 9 = 0$ has only one solution for $x$. What is the sum of these values of $a$?",
+          "expected": "-16"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "c43f7f00-264a-406d-873f-b1279b4edad3",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Bob rolls a fair six-sided die each morning. If Bob rolls a composite number, he eats sweetened cereal. If he rolls a prime number, he eats unsweetened cereal. If he rolls a 1, then he rolls again. In a non-leap year, what is the expected number of times Bob will roll his die?",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "Bob rolls a fair six-sided die each morning. If Bob rolls a composite number, he eats sweetened cereal. If he rolls a prime number, he eats unsweetened cereal. If he rolls a 1, then he rolls again. In a non-leap year, what is the expected number of times Bob will roll his die?",
+            "expected": "438"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "438"
+            }
+          ],
+          "description": "Row #8",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 7,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "Bob rolls a fair six-sided die each morning. If Bob rolls a composite number, he eats sweetened cereal. If he rolls a prime number, he eats unsweetened cereal. If he rolls a 1, then he rolls again. In a non-leap year, what is the expected number of times Bob will roll his die?",
+          "expected": "438"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "fdef9c91-526c-47e7-becb-1c1e6f7101dc",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Let $\\omega = e^{2 \\pi i/1729}.$  Compute\n\\[\\sum_{k = 1}^{1728} \\frac{1}{1 + \\omega^k + \\omega^{2k} + \\omega^{3k}}.\\]",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "Let $\\omega = e^{2 \\pi i/1729}.$  Compute\n\\[\\sum_{k = 1}^{1728} \\frac{1}{1 + \\omega^k + \\omega^{2k} + \\omega^{3k}}.\\]",
+            "expected": "432"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "432"
+            }
+          ],
+          "description": "Row #9",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 8,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "Let $\\omega = e^{2 \\pi i/1729}.$  Compute\n\\[\\sum_{k = 1}^{1728} \\frac{1}{1 + \\omega^k + \\omega^{2k} + \\omega^{3k}}.\\]",
+          "expected": "432"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "7049f31a-8927-40cf-a88e-23a12e9ab707",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "What is the sum of the two solutions to the equation $54-15x-x^2=0$?",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "What is the sum of the two solutions to the equation $54-15x-x^2=0$?",
+            "expected": "-15"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "-15"
+            }
+          ],
+          "description": "Row #10",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 9,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "What is the sum of the two solutions to the equation $54-15x-x^2=0$?",
+          "expected": "-15"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "494af381-8973-4b0d-acbb-f994b438930b",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "A housefly sits on the outer edge of a rotating circular ceiling fan with a diameter of 6 feet. The fan rotates constantly at a rate of 20 revolutions per minute. How many minutes had the housefly been on the fan during the time it took to travel $19{,}404\\pi$ feet? Express your answer to the nearest whole number.",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "A housefly sits on the outer edge of a rotating circular ceiling fan with a diameter of 6 feet. The fan rotates constantly at a rate of 20 revolutions per minute. How many minutes had the housefly been on the fan during the time it took to travel $19{,}404\\pi$ feet? Express your answer to the nearest whole number.",
+            "expected": "162\\text{ minutes}"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "162\\text{ minutes}"
+            }
+          ],
+          "description": "Row #11",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 10,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "A housefly sits on the outer edge of a rotating circular ceiling fan with a diameter of 6 feet. The fan rotates constantly at a rate of 20 revolutions per minute. How many minutes had the housefly been on the fan during the time it took to travel $19{,}404\\pi$ feet? Express your answer to the nearest whole number.",
+          "expected": "162\\text{ minutes}"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "aa9ba5b6-6ed4-4759-b2b4-0b5bbb3ee7e2",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "The complex number $z = re^{i \\theta}$ satisfies\n\\[\\left| 2z + \\frac{1}{z} \\right| = 1.\\]Find the minimum value of $\\sin^2 \\theta.$",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "The complex number $z = re^{i \\theta}$ satisfies\n\\[\\left| 2z + \\frac{1}{z} \\right| = 1.\\]Find the minimum value of $\\sin^2 \\theta.$",
+            "expected": "\\frac{7}{8}"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "\\frac{7}{8}"
+            }
+          ],
+          "description": "Row #12",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 11,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "The complex number $z = re^{i \\theta}$ satisfies\n\\[\\left| 2z + \\frac{1}{z} \\right| = 1.\\]Find the minimum value of $\\sin^2 \\theta.$",
+          "expected": "\\frac{7}{8}"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "c440924d-9718-4f3c-a3b0-31be2fcfc6f1",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "During the school year, the 10 members of the chess club play a total of 900 games of chess during their practice matches. Each member plays against every other member $N$ times. What is the value of $N$?",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "During the school year, the 10 members of the chess club play a total of 900 games of chess during their practice matches. Each member plays against every other member $N$ times. What is the value of $N$?",
+            "expected": "20"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "20"
+            }
+          ],
+          "description": "Row #13",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 12,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "During the school year, the 10 members of the chess club play a total of 900 games of chess during their practice matches. Each member plays against every other member $N$ times. What is the value of $N$?",
+          "expected": "20"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "0f80e9be-68ce-4428-840b-f0b3451e6757",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "The 2007 AMC 10 will be scored by awarding $6$ points for each correct response, $0$ points for each incorrect response, and $1.5$ points for each problem left unanswered. After looking over the $25$ problems, Sarah has decided to attempt the first $22$ and leave only the last $3$ unanswered.\n\nHow many of the first $22$ problems must she solve correctly in order to score at least $100$ points?",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "The 2007 AMC 10 will be scored by awarding $6$ points for each correct response, $0$ points for each incorrect response, and $1.5$ points for each problem left unanswered. After looking over the $25$ problems, Sarah has decided to attempt the first $22$ and leave only the last $3$ unanswered.\n\nHow many of the first $22$ problems must she solve correctly in order to score at least $100$ points?",
+            "expected": "16"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "16"
+            }
+          ],
+          "description": "Row #14",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 13,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "The 2007 AMC 10 will be scored by awarding $6$ points for each correct response, $0$ points for each incorrect response, and $1.5$ points for each problem left unanswered. After looking over the $25$ problems, Sarah has decided to attempt the first $22$ and leave only the last $3$ unanswered.\n\nHow many of the first $22$ problems must she solve correctly in order to score at least $100$ points?",
+          "expected": "16"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "77ad0a01-254b-4271-a307-dae611ec93b2",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Find the remainder when $3y^4-4y^3+5y^2-13y+4$ is divided by $3y - 2.$",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "Find the remainder when $3y^4-4y^3+5y^2-13y+4$ is divided by $3y - 2.$",
+            "expected": "-\\frac{82}{27}"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "-\\frac{82}{27}"
+            }
+          ],
+          "description": "Row #15",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 14,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "Find the remainder when $3y^4-4y^3+5y^2-13y+4$ is divided by $3y - 2.$",
+          "expected": "-\\frac{82}{27}"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "8736928e-abea-4b7b-86d1-bd49af8a95a1",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "In triangle $ABC$, $AB = 13$, $BC = 15$, and $CA = 14$. Point $D$ is on $\\overline{BC}$ with $CD = 6$. Point $E$ is on $\\overline{BC}$ such that $\\angle BAE = \\angle CAD$. Find $BE.$",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "In triangle $ABC$, $AB = 13$, $BC = 15$, and $CA = 14$. Point $D$ is on $\\overline{BC}$ with $CD = 6$. Point $E$ is on $\\overline{BC}$ such that $\\angle BAE = \\angle CAD$. Find $BE.$",
+            "expected": "\\frac{2535}{463}"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "\\frac{2535}{463}"
+            }
+          ],
+          "description": "Row #16",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 15,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "In triangle $ABC$, $AB = 13$, $BC = 15$, and $CA = 14$. Point $D$ is on $\\overline{BC}$ with $CD = 6$. Point $E$ is on $\\overline{BC}$ such that $\\angle BAE = \\angle CAD$. Find $BE.$",
+          "expected": "\\frac{2535}{463}"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "261a2c3f-9e86-4ae0-8f4a-8594c118651f",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "In the equation $|x-7| -3 = -2$, what is the product of all possible values of $x$?",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "In the equation $|x-7| -3 = -2$, what is the product of all possible values of $x$?",
+            "expected": "48"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "48"
+            }
+          ],
+          "description": "Row #17",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 16,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "In the equation $|x-7| -3 = -2$, what is the product of all possible values of $x$?",
+          "expected": "48"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "460a52a6-6e32-404a-9d32-8f1420896dd4",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Find $x$ such that $\\log_{12}3x=2$.",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "Find $x$ such that $\\log_{12}3x=2$.",
+            "expected": "48"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "48"
+            }
+          ],
+          "description": "Row #18",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 17,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "Find $x$ such that $\\log_{12}3x=2$.",
+          "expected": "48"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "fceeb7b7-280a-43bf-b1e7-f26334e45822",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "The sum of two numbers is 25 and their product is 126. What is the absolute value of the difference of the two numbers?",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "The sum of two numbers is 25 and their product is 126. What is the absolute value of the difference of the two numbers?",
+            "expected": "11"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "11"
+            }
+          ],
+          "description": "Row #19",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 18,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "The sum of two numbers is 25 and their product is 126. What is the absolute value of the difference of the two numbers?",
+          "expected": "11"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "98ba5e37-c2b4-42eb-a113-c5470841072d",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Define the function $f(x)=\\frac{b}{2x-3}$. If $f(2)=f^{-1}(b+1)$, find the product of all possible values of $b$.",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "Define the function $f(x)=\\frac{b}{2x-3}$. If $f(2)=f^{-1}(b+1)$, find the product of all possible values of $b$.",
+            "expected": "-\\frac{3}{2}"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "-\\frac{3}{2}"
+            }
+          ],
+          "description": "Row #20",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 19,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "Define the function $f(x)=\\frac{b}{2x-3}$. If $f(2)=f^{-1}(b+1)$, find the product of all possible values of $b$.",
+          "expected": "-\\frac{3}{2}"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "0bb4f5c7-9934-4c27-a95e-d9f95a9811e2",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "There exist positive integers $a,$ $b,$ and $c$ such that\n\\[3 \\sqrt{\\sqrt[3]{5} - \\sqrt[3]{4}} = \\sqrt[3]{a} + \\sqrt[3]{b} - \\sqrt[3]{c}.\\]Find $a + b + c.$",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "There exist positive integers $a,$ $b,$ and $c$ such that\n\\[3 \\sqrt{\\sqrt[3]{5} - \\sqrt[3]{4}} = \\sqrt[3]{a} + \\sqrt[3]{b} - \\sqrt[3]{c}.\\]Find $a + b + c.$",
+            "expected": "47"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "47"
+            }
+          ],
+          "description": "Row #21",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 20,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "There exist positive integers $a,$ $b,$ and $c$ such that\n\\[3 \\sqrt{\\sqrt[3]{5} - \\sqrt[3]{4}} = \\sqrt[3]{a} + \\sqrt[3]{b} - \\sqrt[3]{c}.\\]Find $a + b + c.$",
+          "expected": "47"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "bf6b6637-2cad-4428-bb97-efda569b53d4",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "If $f(x)=x^3$, what is the value of $f^{-1}(8)\\div (f(8))^{-1}$?",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "If $f(x)=x^3$, what is the value of $f^{-1}(8)\\div (f(8))^{-1}$?",
+            "expected": "1024"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "1024"
+            }
+          ],
+          "description": "Row #22",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 21,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "If $f(x)=x^3$, what is the value of $f^{-1}(8)\\div (f(8))^{-1}$?",
+          "expected": "1024"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "5c0a8210-d5e5-4fc5-a2e3-492a4ca2913f",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Let $z = a + bi,$ where $a$ and $b$ are positive real numbers.  If\n\\[z^3 + |z|^2 + z = 0,\\]then enter the ordered pair $(a,b).$",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "Let $z = a + bi,$ where $a$ and $b$ are positive real numbers.  If\n\\[z^3 + |z|^2 + z = 0,\\]then enter the ordered pair $(a,b).$",
+            "expected": "\\left( \\frac{1}{2}, \\frac{\\sqrt{7}}{2} \\right)"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "\\left( \\frac{1}{2}, \\frac{\\sqrt{7}}{2} \\right)"
+            }
+          ],
+          "description": "Row #23",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 22,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "Let $z = a + bi,$ where $a$ and $b$ are positive real numbers.  If\n\\[z^3 + |z|^2 + z = 0,\\]then enter the ordered pair $(a,b).$",
+          "expected": "\\left( \\frac{1}{2}, \\frac{\\sqrt{7}}{2} \\right)"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "172235ef-35e2-4bad-95c0-b6f832cd376a",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "A portion of the graph of $f(x)=ax^2+bx+c$ is shown below. The distance between grid lines on the graph is $1$ unit.\n\nWhat is the value of $a+b+2c$?\n\n[asy]\nsize(150);\nreal ticklen=3;\nreal tickspace=2;\n\nreal ticklength=0.1cm;\nreal axisarrowsize=0.14cm;\npen axispen=black+1.3bp;\nreal vectorarrowsize=0.2cm;\nreal tickdown=-0.5;\nreal tickdownlength=-0.15inch;\nreal tickdownbase=0.3;\nreal wholetickdown=tickdown;\nvoid rr_cartesian_axes(real xleft, real xright, real ybottom, real ytop, real xstep=1, real ystep=1, bool useticks=false, bool complexplane=false, bool usegrid=true) {\n\nimport graph;\n\nreal i;\n\nif(complexplane) {\n\nlabel(\"$\\textnormal{Re}$\",(xright,0),SE);\n\nlabel(\"$\\textnormal{Im}$\",(0,ytop),NW);\n\n} else {\n\nlabel(\"$x$\",(xright+0.4,-0.5));\n\nlabel(\"$y$\",(-0.5,ytop+0.2));\n\n}\n\nylimits(ybottom,ytop);\n\nxlimits( xleft, xright);\n\nreal[] TicksArrx,TicksArry;\n\nfor(i=xleft+xstep; i<xright; i+=xstep) {\n\nif(abs(i) >0.1) {\n\nTicksArrx.push(i);\n\n}\n\n}\n\nfor(i=ybottom+ystep; i<ytop; i+=ystep) {\n\nif(abs(i) >0.1) {\n\nTicksArry.push(i);\n\n}\n\n}\n\nif(usegrid) {\n\nxaxis(BottomTop(extend=false), Ticks(\"%\", TicksArrx ,pTick=gray(0.22),extend=true),p=invisible);//,above=true);\n\nyaxis(LeftRight(extend=false),Ticks(\"%\", TicksArry ,pTick=gray(0.22),extend=true), p=invisible);//,Arrows);\n\n}\n\nif(useticks) {\n\nxequals(0, ymin=ybottom, ymax=ytop, p=axispen, Ticks(\"%\",TicksArry , pTick=black+0.8bp,Size=ticklength), above=true, Arrows(size=axisarrowsize));\n\nyequals(0, xmin=xleft, xmax=xright, p=axispen, Ticks(\"%\",TicksArrx , pTick=black+0.8bp,Size=ticklength), above=true, Arrows(size=axisarrowsize));\n\n} else {\n\nxequals(0, ymin=ybottom, ymax=ytop, p=axispen, above=true, Arrows(size=axisarrowsize));\n\nyequals(0, xmin=xleft, xmax=xright, p=axispen, above=true, Arrows(size=axisarrowsize));\n\n}\n};\nrr_cartesian_axes(-4,3,-2,9);\nreal f(real x) {return 8-(x+1)^2;}\ndraw(graph(f,-3.9,2.16,operator ..), red);\n[/asy]",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "A portion of the graph of $f(x)=ax^2+bx+c$ is shown below. The distance between grid lines on the graph is $1$ unit.\n\nWhat is the value of $a+b+2c$?\n\n[asy]\nsize(150);\nreal ticklen=3;\nreal tickspace=2;\n\nreal ticklength=0.1cm;\nreal axisarrowsize=0.14cm;\npen axispen=black+1.3bp;\nreal vectorarrowsize=0.2cm;\nreal tickdown=-0.5;\nreal tickdownlength=-0.15inch;\nreal tickdownbase=0.3;\nreal wholetickdown=tickdown;\nvoid rr_cartesian_axes(real xleft, real xright, real ybottom, real ytop, real xstep=1, real ystep=1, bool useticks=false, bool complexplane=false, bool usegrid=true) {\n\nimport graph;\n\nreal i;\n\nif(complexplane) {\n\nlabel(\"$\\textnormal{Re}$\",(xright,0),SE);\n\nlabel(\"$\\textnormal{Im}$\",(0,ytop),NW);\n\n} else {\n\nlabel(\"$x$\",(xright+0.4,-0.5));\n\nlabel(\"$y$\",(-0.5,ytop+0.2));\n\n}\n\nylimits(ybottom,ytop);\n\nxlimits( xleft, xright);\n\nreal[] TicksArrx,TicksArry;\n\nfor(i=xleft+xstep; i<xright; i+=xstep) {\n\nif(abs(i) >0.1) {\n\nTicksArrx.push(i);\n\n}\n\n}\n\nfor(i=ybottom+ystep; i<ytop; i+=ystep) {\n\nif(abs(i) >0.1) {\n\nTicksArry.push(i);\n\n}\n\n}\n\nif(usegrid) {\n\nxaxis(BottomTop(extend=false), Ticks(\"%\", TicksArrx ,pTick=gray(0.22),extend=true),p=invisible);//,above=true);\n\nyaxis(LeftRight(extend=false),Ticks(\"%\", TicksArry ,pTick=gray(0.22),extend=true), p=invisible);//,Arrows);\n\n}\n\nif(useticks) {\n\nxequals(0, ymin=ybottom, ymax=ytop, p=axispen, Ticks(\"%\",TicksArry , pTick=black+0.8bp,Size=ticklength), above=true, Arrows(size=axisarrowsize));\n\nyequals(0, xmin=xleft, xmax=xright, p=axispen, Ticks(\"%\",TicksArrx , pTick=black+0.8bp,Size=ticklength), above=true, Arrows(size=axisarrowsize));\n\n} else {\n\nxequals(0, ymin=ybottom, ymax=ytop, p=axispen, above=true, Arrows(size=axisarrowsize));\n\nyequals(0, xmin=xleft, xmax=xright, p=axispen, above=true, Arrows(size=axisarrowsize));\n\n}\n};\nrr_cartesian_axes(-4,3,-2,9);\nreal f(real x) {return 8-(x+1)^2;}\ndraw(graph(f,-3.9,2.16,operator ..), red);\n[/asy]",
+            "expected": "11"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "11"
+            }
+          ],
+          "description": "Row #24",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 23,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "A portion of the graph of $f(x)=ax^2+bx+c$ is shown below. The distance between grid lines on the graph is $1$ unit.\n\nWhat is the value of $a+b+2c$?\n\n[asy]\nsize(150);\nreal ticklen=3;\nreal tickspace=2;\n\nreal ticklength=0.1cm;\nreal axisarrowsize=0.14cm;\npen axispen=black+1.3bp;\nreal vectorarrowsize=0.2cm;\nreal tickdown=-0.5;\nreal tickdownlength=-0.15inch;\nreal tickdownbase=0.3;\nreal wholetickdown=tickdown;\nvoid rr_cartesian_axes(real xleft, real xright, real ybottom, real ytop, real xstep=1, real ystep=1, bool useticks=false, bool complexplane=false, bool usegrid=true) {\n\nimport graph;\n\nreal i;\n\nif(complexplane) {\n\nlabel(\"$\\textnormal{Re}$\",(xright,0),SE);\n\nlabel(\"$\\textnormal{Im}$\",(0,ytop),NW);\n\n} else {\n\nlabel(\"$x$\",(xright+0.4,-0.5));\n\nlabel(\"$y$\",(-0.5,ytop+0.2));\n\n}\n\nylimits(ybottom,ytop);\n\nxlimits( xleft, xright);\n\nreal[] TicksArrx,TicksArry;\n\nfor(i=xleft+xstep; i<xright; i+=xstep) {\n\nif(abs(i) >0.1) {\n\nTicksArrx.push(i);\n\n}\n\n}\n\nfor(i=ybottom+ystep; i<ytop; i+=ystep) {\n\nif(abs(i) >0.1) {\n\nTicksArry.push(i);\n\n}\n\n}\n\nif(usegrid) {\n\nxaxis(BottomTop(extend=false), Ticks(\"%\", TicksArrx ,pTick=gray(0.22),extend=true),p=invisible);//,above=true);\n\nyaxis(LeftRight(extend=false),Ticks(\"%\", TicksArry ,pTick=gray(0.22),extend=true), p=invisible);//,Arrows);\n\n}\n\nif(useticks) {\n\nxequals(0, ymin=ybottom, ymax=ytop, p=axispen, Ticks(\"%\",TicksArry , pTick=black+0.8bp,Size=ticklength), above=true, Arrows(size=axisarrowsize));\n\nyequals(0, xmin=xleft, xmax=xright, p=axispen, Ticks(\"%\",TicksArrx , pTick=black+0.8bp,Size=ticklength), above=true, Arrows(size=axisarrowsize));\n\n} else {\n\nxequals(0, ymin=ybottom, ymax=ytop, p=axispen, above=true, Arrows(size=axisarrowsize));\n\nyequals(0, xmin=xleft, xmax=xright, p=axispen, above=true, Arrows(size=axisarrowsize));\n\n}\n};\nrr_cartesian_axes(-4,3,-2,9);\nreal f(real x) {return 8-(x+1)^2;}\ndraw(graph(f,-3.9,2.16,operator ..), red);\n[/asy]",
+          "expected": "11"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "504aed3e-eec1-46f9-acd0-2aac64898bb0",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "In rectangle $ABCD$, we have $AB=8$, $BC=9$, $H$ is on $\\overline{BC}$ with $BH=6$, $E$ is on $AD$ with $DE=4$, line $EC$ intersects line $AH$ at $G$, and $F$ is on line $AD$ with $\\overline{GF}\\perp \\overline{AF}$. Find the length $\\overline{GF}$.\n\n[asy]\npair A,B,C,D,I,F,G,H;\nF=(0,0);\nD=(6,0);\nI=(10,0);\nA=(15,0);\nB=(15,8);\nH=(9,8);\nC=(6,8);\nG=(0,20);\ndraw(A--B--C--D--cycle,linewidth(0.7));\ndraw(A--F--G--cycle,linewidth(0.7));\ndraw(G--I,linewidth(0.7));\nlabel(\"4\",(8,0),S);\nlabel(\"8\",(15,4),E);\nlabel(\"6\",(12,8),N);\nlabel(\"$A$\",A,SE);\nlabel(\"$B$\",B,NE);\nlabel(\"$C$\",C,W);\nlabel(\"$D$\",D,S);\nlabel(\"$E$\",I,S);\nlabel(\"$F$\",F,W);\nlabel(\"$G$\",G,W);\nlabel(\"$H$\",H,NE);\n[/asy]",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "In rectangle $ABCD$, we have $AB=8$, $BC=9$, $H$ is on $\\overline{BC}$ with $BH=6$, $E$ is on $AD$ with $DE=4$, line $EC$ intersects line $AH$ at $G$, and $F$ is on line $AD$ with $\\overline{GF}\\perp \\overline{AF}$. Find the length $\\overline{GF}$.\n\n[asy]\npair A,B,C,D,I,F,G,H;\nF=(0,0);\nD=(6,0);\nI=(10,0);\nA=(15,0);\nB=(15,8);\nH=(9,8);\nC=(6,8);\nG=(0,20);\ndraw(A--B--C--D--cycle,linewidth(0.7));\ndraw(A--F--G--cycle,linewidth(0.7));\ndraw(G--I,linewidth(0.7));\nlabel(\"4\",(8,0),S);\nlabel(\"8\",(15,4),E);\nlabel(\"6\",(12,8),N);\nlabel(\"$A$\",A,SE);\nlabel(\"$B$\",B,NE);\nlabel(\"$C$\",C,W);\nlabel(\"$D$\",D,S);\nlabel(\"$E$\",I,S);\nlabel(\"$F$\",F,W);\nlabel(\"$G$\",G,W);\nlabel(\"$H$\",H,NE);\n[/asy]",
+            "expected": "20"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "20"
+            }
+          ],
+          "description": "Row #25",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 24,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "In rectangle $ABCD$, we have $AB=8$, $BC=9$, $H$ is on $\\overline{BC}$ with $BH=6$, $E$ is on $AD$ with $DE=4$, line $EC$ intersects line $AH$ at $G$, and $F$ is on line $AD$ with $\\overline{GF}\\perp \\overline{AF}$. Find the length $\\overline{GF}$.\n\n[asy]\npair A,B,C,D,I,F,G,H;\nF=(0,0);\nD=(6,0);\nI=(10,0);\nA=(15,0);\nB=(15,8);\nH=(9,8);\nC=(6,8);\nG=(0,20);\ndraw(A--B--C--D--cycle,linewidth(0.7));\ndraw(A--F--G--cycle,linewidth(0.7));\ndraw(G--I,linewidth(0.7));\nlabel(\"4\",(8,0),S);\nlabel(\"8\",(15,4),E);\nlabel(\"6\",(12,8),N);\nlabel(\"$A$\",A,SE);\nlabel(\"$B$\",B,NE);\nlabel(\"$C$\",C,W);\nlabel(\"$D$\",D,S);\nlabel(\"$E$\",I,S);\nlabel(\"$F$\",F,W);\nlabel(\"$G$\",G,W);\nlabel(\"$H$\",H,NE);\n[/asy]",
+          "expected": "20"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "c49d6ece-f32f-4abd-a874-421e251cd324",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "In the figure, triangles $ABC$ and $BCD$ are equilateral triangles. What is the value of $AD \\div BC$ when expressed in simplest radical form?\n\n[asy]\ndraw((0,0)--(5,8.7)--(10,0)--cycle);\ndraw((10,0)--(15,8.7)--(5,8.7));\nlabel(\"$A$\",(0,0),SW);\nlabel(\"$B$\",(5,8.7),N);\nlabel(\"$C$\",(10,0),SE);\nlabel(\"$D$\",(15,8.7),NE);\n[/asy]",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "In the figure, triangles $ABC$ and $BCD$ are equilateral triangles. What is the value of $AD \\div BC$ when expressed in simplest radical form?\n\n[asy]\ndraw((0,0)--(5,8.7)--(10,0)--cycle);\ndraw((10,0)--(15,8.7)--(5,8.7));\nlabel(\"$A$\",(0,0),SW);\nlabel(\"$B$\",(5,8.7),N);\nlabel(\"$C$\",(10,0),SE);\nlabel(\"$D$\",(15,8.7),NE);\n[/asy]",
+            "expected": "\\sqrt{3}"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "\\sqrt{3}"
+            }
+          ],
+          "description": "Row #26",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 25,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "In the figure, triangles $ABC$ and $BCD$ are equilateral triangles. What is the value of $AD \\div BC$ when expressed in simplest radical form?\n\n[asy]\ndraw((0,0)--(5,8.7)--(10,0)--cycle);\ndraw((10,0)--(15,8.7)--(5,8.7));\nlabel(\"$A$\",(0,0),SW);\nlabel(\"$B$\",(5,8.7),N);\nlabel(\"$C$\",(10,0),SE);\nlabel(\"$D$\",(15,8.7),NE);\n[/asy]",
+          "expected": "\\sqrt{3}"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "c3f5da3b-7965-487c-83cf-ce335d85a0e6",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "The set $\\{5, 8, 10, 18, 19, 28, 30, x\\}$ has eight members. The mean of the set's members is 4.5 less than $x$. What is the value of $x$ ?",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "The set $\\{5, 8, 10, 18, 19, 28, 30, x\\}$ has eight members. The mean of the set's members is 4.5 less than $x$. What is the value of $x$ ?",
+            "expected": "22"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "22"
+            }
+          ],
+          "description": "Row #27",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 26,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "The set $\\{5, 8, 10, 18, 19, 28, 30, x\\}$ has eight members. The mean of the set's members is 4.5 less than $x$. What is the value of $x$ ?",
+          "expected": "22"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "eb972dbf-797d-4135-9208-126b188e3910",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "If $n=1d41_8$, where $d$ represents a base-8 digit (and $1d41_8$ represents a four-digit number whose second digit is $d$), then what is the sum of all possible values of $n$ in base 10?",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "If $n=1d41_8$, where $d$ represents a base-8 digit (and $1d41_8$ represents a four-digit number whose second digit is $d$), then what is the sum of all possible values of $n$ in base 10?",
+            "expected": "6152"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "6152"
+            }
+          ],
+          "description": "Row #28",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 27,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "If $n=1d41_8$, where $d$ represents a base-8 digit (and $1d41_8$ represents a four-digit number whose second digit is $d$), then what is the sum of all possible values of $n$ in base 10?",
+          "expected": "6152"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "e0795dd7-ed31-4cbe-9001-d7020bd4a69e",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "In a certain isosceles right triangle, the altitude to the hypotenuse has length $4\\sqrt{2}$.  What is the area of the triangle?",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "In a certain isosceles right triangle, the altitude to the hypotenuse has length $4\\sqrt{2}$.  What is the area of the triangle?",
+            "expected": "32"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "32"
+            }
+          ],
+          "description": "Row #29",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 28,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "In a certain isosceles right triangle, the altitude to the hypotenuse has length $4\\sqrt{2}$.  What is the area of the triangle?",
+          "expected": "32"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      },
+      {
+        "cost": 0,
+        "error": "Error: Request failed after 4 retries: TypeError: fetch failed (Cause: AggregateError)\n    at fetchWithRetries (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/fetch-CFFEjZh4.js:1284:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchAndReadBody (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:378:16)\n    at async prepareFetchResponse (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:407:17)\n    at async file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:508:29\n    at async fetchWithCache (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/cache-BPX4yVmv.js:516:34)\n    at async HttpProvider.callApiInternal (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/providers-C2SUxBJc.js:10600:79)\n    at async spanCallback (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/util-V2aLSWMv.js:170:18)\n    at async ProviderRateLimitState.executeWithRetry (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:628:20)\n    at async RateLimitRegistry.execute (file:///home/wisdom/.local/share/mise/installs/node/25.9.0/lib/node_modules/promptfoo/dist/src/shared-0eVoa5-z.js:857:19)",
+        "gradingResult": null,
+        "id": "6bf7bd34-2f50-4cfe-b3d0-654588560e2e",
+        "latencyMs": 0,
+        "namedScores": {},
+        "prompt": {
+          "raw": "How many ways are there to put five beads on a necklace if there are eight distinct beads to choose from, and rotations and reflections of the necklace are considered the same?",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8082/v1/complete",
+          "label": "tutor-rag"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "How many ways are there to put five beads on a necklace if there are eight distinct beads to choose from, and rotations and reflections of the necklace are considered the same?",
+            "expected": "672"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "672"
+            }
+          ],
+          "description": "Row #30",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 29,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "How many ways are there to put five beads on a necklace if there are eight distinct beads to choose from, and rotations and reflections of the necklace are considered the same?",
+          "expected": "672"
+        },
+        "metadata": {
+          "errorContext": {
+            "providerId": "http://localhost:8082/v1/complete",
+            "providerLabel": "tutor-rag"
+          }
+        },
+        "failureReason": 2
+      }
+    ],
+    "stats": {
+      "successes": 0,
+      "failures": 0,
+      "errors": 30,
+      "tokenUsage": {
+        "prompt": 0,
+        "completion": 0,
+        "cached": 0,
+        "total": 0,
+        "numRequests": 0,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          }
+        }
+      },
+      "durationMs": 667057,
+      "evaluationDurationMs": 667057
+    }
+  },
+  "config": {
+    "description": "Tutor.gguf accuracy eval — Qwen2.5-Math-1.5B + RAG",
+    "prompts": [
+      "{{problem}}"
+    ],
+    "providers": [
+      {
+        "id": "http",
+        "label": "tutor-rag",
+        "config": {
+          "url": "http://localhost:8082/v1/complete",
+          "method": "POST",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "problem": "{{problem}}",
+            "max_tokens": 512,
+            "temperature": 0.1
+          },
+          "transformResponse": "json.content"
+        }
+      }
+    ],
+    "tests": "test_cases_promptfoo.json",
+    "defaultTest": {
+      "assert": [
+        {
+          "type": "contains",
+          "value": "{{expected}}"
+        }
+      ]
+    },
+    "outputPath": [
+      "results_20260731_113352.json"
+    ],
+    "extensions": []
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.19",
+    "nodeVersion": "v26.5.0",
+    "platform": "linux",
+    "arch": "x64",
+    "exportedAt": "2026-07-31T10:45:17.136Z",
+    "evaluationCreatedAt": "2026-07-31T10:34:10.002Z"
+  },
+  "vars": [
+    "problem",
+    "expected"
+  ],
+  "runtimeOptions": {
+    "eventSource": "cli",
+    "showProgressBar": true,
+    "repeat": 1,
+    "maxConcurrency": 4,
+    "cache": true
+  }
+}

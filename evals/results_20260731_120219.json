@@ -1,0 +1,319 @@
+{
+  "evalId": "eval-niZ-2026-07-31T11:02:26",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-07-31T11:02:26.050Z",
+    "prompts": [
+      {
+        "id": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "raw": "{{problem}}",
+        "label": "{{problem}}",
+        "provider": "tutor-rag",
+        "metrics": {
+          "score": 0,
+          "testPassCount": 0,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 0,
+          "assertFailCount": 0,
+          "totalLatencyMs": 0,
+          "tokenUsage": {
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "total": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "namedScoreWeights": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "error": "Expected output to contain \"49\"",
+        "gradingResult": {
+          "pass": false,
+          "score": 0,
+          "reason": "Expected output to contain \"49\"",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Expected output to contain \"49\"",
+              "assertion": {
+                "type": "contains",
+                "value": "{{expected}}"
+              },
+              "metadata": {
+                "renderedAssertionValue": "49"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Expected output to contain \"49\"",
+              "assertion": {
+                "type": "contains",
+                "value": "49"
+              }
+            }
+          ]
+        },
+        "id": "4f2f1703-d956-480e-8d39-89f658ad48f4",
+        "latencyMs": 6,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Find the least positive integer $k$ for which the equation $\\left\\lfloor\\frac{2002}{n}\\right\\rfloor=k$ has no integer solutions for $n$. (The notation $\\lfloor x\\rfloor$ means the greatest integer less than or equal to $x$.)",
+          "label": "{{problem}}",
+          "config": {}
+        },
+        "promptId": "f50f78c09258c0ee8f3b7dc7e4b35f61bf65a72d837a5123dc5dd02d2e3f9e86",
+        "promptIdx": 0,
+        "provider": {
+          "id": "http://localhost:8081/v1/complete",
+          "label": "tutor-rag"
+        },
+        "response": {
+          "raw": "{\"error\":{\"message\":\"File Not Found\",\"type\":\"not_found_error\",\"code\":404}}",
+          "latencyMs": 6,
+          "cached": false,
+          "metadata": {
+            "http": {
+              "status": 404,
+              "statusText": "Not Found",
+              "headers": {
+                "access-control-allow-origin": "",
+                "connection": "close",
+                "content-length": "74",
+                "content-type": "application/json; charset=utf-8",
+                "server": "llama.cpp"
+              }
+            }
+          },
+          "output": {},
+          "tokenUsage": {
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "total": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          }
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "problem": "Find the least positive integer $k$ for which the equation $\\left\\lfloor\\frac{2002}{n}\\right\\rfloor=k$ has no integer solutions for $n$. (The notation $\\lfloor x\\rfloor$ means the greatest integer less than or equal to $x$.)",
+            "expected": "49"
+          },
+          "assert": [
+            {
+              "type": "contains",
+              "value": "{{expected}}"
+            },
+            {
+              "type": "contains",
+              "value": "49"
+            }
+          ],
+          "description": "Row #1",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "problem": "Find the least positive integer $k$ for which the equation $\\left\\lfloor\\frac{2002}{n}\\right\\rfloor=k$ has no integer solutions for $n$. (The notation $\\lfloor x\\rfloor$ means the greatest integer less than or equal to $x$.)",
+          "expected": "49"
+        },
+        "metadata": {
+          "http": {
+            "status": 404,
+            "statusText": "Not Found",
+            "headers": {
+              "access-control-allow-origin": "",
+              "connection": "close",
+              "content-length": "74",
+              "content-type": "application/json; charset=utf-8",
+              "server": "llama.cpp"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      }
+    ],
+    "stats": {
+      "successes": 0,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 0,
+        "completion": 0,
+        "cached": 0,
+        "total": 0,
+        "numRequests": 0,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          }
+        }
+      }
+    }
+  },
+  "config": {
+    "description": "Tutor.gguf accuracy eval — Qwen2.5-Math-1.5B + RAG",
+    "prompts": [
+      "{{problem}}"
+    ],
+    "providers": [
+      {
+        "id": "http",
+        "label": "tutor-rag",
+        "config": {
+          "url": "http://localhost:8081/v1/complete",
+          "method": "POST",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "problem": "{{problem}}",
+            "max_tokens": 512,
+            "temperature": 0.1
+          },
+          "transformResponse": "json.content"
+        }
+      }
+    ],
+    "tests": "test_cases_promptfoo.json",
+    "defaultTest": {
+      "assert": [
+        {
+          "type": "contains",
+          "value": "{{expected}}"
+        }
+      ]
+    },
+    "outputPath": [
+      "results_20260731_120219.json"
+    ],
+    "extensions": []
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.19",
+    "nodeVersion": "v26.5.0",
+    "platform": "linux",
+    "arch": "x64",
+    "exportedAt": "2026-07-31T11:02:26.216Z",
+    "evaluationCreatedAt": "2026-07-31T11:02:26.050Z"
+  },
+  "vars": [
+    "problem",
+    "expected"
+  ],
+  "runtimeOptions": {
+    "eventSource": "cli",
+    "showProgressBar": true,
+    "repeat": 1,
+    "maxConcurrency": 4,
+    "cache": true
+  }
+}

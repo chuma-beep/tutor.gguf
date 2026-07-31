@@ -118,12 +118,27 @@ func LoadRosenDir(dirPath string) ([]Chunk, error) {
 // mapTypeToSubdomain standardizes raw dataset types to your internal categories.
 func mapTypeToSubdomain(rawType string) string {
 	switch rawType {
-	case "Counting & Probability", "Number Theory", "Prealgebra":
-		return "discrete_math"
-	case "Algebra", "Intermediate Algebra", "Precalculus":
-		return "calculus"
+	case "Algebra":
+		return "algebra"
+
+	case "Intermediate Algebra":
+		return "algebra"
+
+	case "Prealgebra":
+		return "arithmetic"
+
+	case "Precalculus":
+		return "precalculus"
+
 	case "Geometry":
-		return "linear_algebra"
+		return "geometry"
+
+	case "Counting & Probability":
+		return "probability"
+
+	case "Number Theory":
+		return "number_theory"
+
 	default:
 		return "general_math"
 	}
