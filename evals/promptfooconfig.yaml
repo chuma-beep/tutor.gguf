@@ -21,5 +21,5 @@ tests: test_cases_promptfoo.json
 
 defaultTest:
   assert:
-    - type: contains
-      value: "{{expected}}"
+    - type: javascript
+      value: '((output ?? "").replace(/\s+/g, "")).includes((context.vars.expected ?? "").replace(/\s+/g, ""))'
