@@ -21,7 +21,7 @@ serve-gen:
 
 # Start the embedding model (nomic-embed-text)
 serve-embed:
-	$(LLAMA_BIN) -m $(EMBED_MODEL) --embeddings --port $(EMBED_PORT)
+	$(LLAMA_BIN) -m $(EMBED_MODEL) --embeddings --batch-size 2048 --ubatch-size 2048 --port $(EMBED_PORT)
 
 # Start the RAG tutor server (wraps retrieval + generation)
 serve-tutor:

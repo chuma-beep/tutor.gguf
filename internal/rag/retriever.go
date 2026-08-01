@@ -207,6 +207,9 @@ func (c *SubdomainClassifier) Identify(query string) (string, bool) {
 // formatting without touching retrieval logic.
 func BuildPrompt(query string, chunks []ScoredChunk) string {
 	var sb strings.Builder
+	sb.WriteString("<|im_start|>system\n")
+	sb.WriteString("Please reason step by step, and put your final answer within \\boxed{}.<|im_end|>\n")
+	sb.WriteString("<|im_start|>user\n")
 
 	if len(chunks) > 0 {
 		sb.WriteString("Relevant reference material:\n\n")
@@ -218,7 +221,9 @@ func BuildPrompt(query string, chunks []ScoredChunk) string {
 
 	sb.WriteString("Student question: ")
 	sb.WriteString(query)
-	sb.WriteString("\n\nAnswer step by step, referencing the material above where relevant.")
+	// sb.WriteString("\n\nAnswer step by step, referencing the material above where relevant.")
+	sb.WriteString("\n\nAnswer step by step, referencing the material above where relevant.<|im_end|>\n")
+	sb.WriteString("<|im_start|>assistant\n")
 
 	return sb.String()
 }

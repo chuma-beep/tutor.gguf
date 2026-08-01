@@ -19,7 +19,14 @@ type CompletionRequest struct {
 }
 
 type CompletionResponse struct {
-	Content string `json:"content"`
+	Content string           `json:"content"`
+	Error   *CompletionError `json:"error,omitempty"`
+}
+
+type CompletionError struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Type    string `json:"type"`
 }
 
 func NewClient(baseURL string) *Client {
@@ -52,6 +59,14 @@ func (c *Client) Complete(prompt string) (string, error) {
 	var result CompletionResponse
 	if err := json.Unmarshal(data, &result); err != nil {
 		return "", fmt.Errorf("unmarshal response: %w", err)
+	}
+
+	if resp.StatusCode != http.StatusOK || result.Error != nil {
+		msg := "unknown"
+		if result.Error != nil && result.Error.Message != "" {
+			msg = result.Error.Message
+		}
+		return "", fmt.Errorf("generation server error (status %d): %s", resp.StatusCode, msg)
 	}
 
 	return result.Content, nil

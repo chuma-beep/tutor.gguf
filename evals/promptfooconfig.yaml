@@ -19,6 +19,9 @@ prompts:
 
 tests: test_cases_promptfoo.json
 
+evaluateOptions:
+  maxConcurrency: 1
+
 defaultTest:
   assert:
     - type: javascript
