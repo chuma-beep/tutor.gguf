@@ -13,7 +13,7 @@ EVAL_DIR      := evals
 SERVE_PORT    := 8082
 Q             ?= "find the derivative of x^2"
 
-.PHONY: serve-gen serve-embed serve-tutor index run eval eval-view eval-sample profile
+.PHONY: serve-gen serve-embed serve-tutor index run eval eval-fresh eval-view eval-sample profile
 
 # Start the generation model (Qwen2.5-Math)
 serve-gen:
@@ -50,6 +50,10 @@ eval-sample:
 # Run promptfoo eval against the running generation server
 eval:
 	cd $(EVAL_DIR) && promptfoo eval --output results_$(shell date +%Y%m%d_%H%M%S).json
+
+# Run promptfoo eval without disk cache
+eval-fresh:
+	cd $(EVAL_DIR) && promptfoo eval --no-cache --output results_$(shell date +%Y%m%d_%H%M%S).json
 
 # Open the promptfoo results dashboard
 eval-view:

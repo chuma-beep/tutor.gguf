@@ -56,13 +56,13 @@ func main() {
 			return
 		}
 
-		chunks, err := retriever.Retrieve(ctx, req.Problem)
+		chunks, subdomain, err := retriever.Retrieve(ctx, req.Problem)
 		if err != nil {
-			http.Error(w, `{"error":"retrieval failed"}`, 500)
-			return
+			log.Printf("ERROR retrieval failed: %v", err)
+			chunks, subdomain = nil, "other"
 		}
 
-		fullPrompt := rag.BuildPrompt(req.Problem, chunks)
+		fullPrompt := rag.BuildPrompt(req.Problem, chunks, subdomain)
 		content, err := genClient.Complete(fullPrompt)
 		if err != nil {
 			http.Error(w, `{"error":"generation failed"}`, 500)

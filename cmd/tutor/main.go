@@ -97,7 +97,7 @@ func main() {
 	classifier := rag.NewSubdomainClassifier()
 	retriever := rag.NewRetriever(collection, classifier, embedder)
 
-	results, err := retriever.Retrieve(ctx, *query)
+	results, subdomain, err := retriever.Retrieve(ctx, *query)
 	if err != nil {
 		log.Fatalf("retrieve: %v", err)
 	}
@@ -107,7 +107,7 @@ func main() {
 		fmt.Printf("[%d] subdomain=%s similarity=%.4f source=%s\n%s\n\n", i+1, r.Subdomain, r.Similarity, r.Source, truncate(r.Text, 200))
 	}
 
-	prompt := rag.BuildPrompt(*query, results)
+	prompt := rag.BuildPrompt(*query, results, subdomain)
 	fmt.Println("--- final prompt sent to Qwen2.5-Math ---")
 	fmt.Println(prompt)
 }

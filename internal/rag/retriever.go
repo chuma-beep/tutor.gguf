@@ -42,22 +42,24 @@ func NewRetriever(collection *chromem.Collection, classifier *SubdomainClassifie
 // can be confidently identified, results are filtered to that subdomain
 // first; if filtering leaves too few results, it falls back to the
 // unfiltered pool so we never starve the prompt of context.
-func (r *Retriever) Retrieve(ctx context.Context, query string) ([]ScoredChunk, error) {
+
+// Embed with the query prefix ourselves — the collection was created
+// with EmbedDocument as its EmbeddingFunc (for ingestion), so calling
+// collection.Query(ctx, query, ...) would silently re-embed this text
+// with the wrong nomic prefix. QueryEmbedding bypasses that and takes
+// our correctly-prefixed vector directly
+
+func (r *Retriever) Retrieve(ctx context.Context, query string) ([]ScoredChunk, string, error) {
 	subdomain, confident := r.classifier.Identify(query)
 
-	// Embed with the query prefix ourselves — the collection was created
-	// with EmbedDocument as its EmbeddingFunc (for ingestion), so calling
-	// collection.Query(ctx, query, ...) would silently re-embed this text
-	// with the wrong nomic prefix. QueryEmbedding bypasses that and takes
-	// our correctly-prefixed vector directly.
 	queryVec, err := r.embedder.EmbedQuery(ctx, query)
 	if err != nil {
-		return nil, fmt.Errorf("embed query: %w", err)
+		return nil, "", fmt.Errorf("embed query: %w", err)
 	}
 
-	results, err := r.collection.QueryEmbedding(ctx, queryVec, r.topK*4, nil, nil) // over-fetch for filtering headroom
+	results, err := r.collection.QueryEmbedding(ctx, queryVec, r.topK*4, nil, nil)
 	if err != nil {
-		return nil, fmt.Errorf("chromem query failed: %w", err)
+		return nil, "", fmt.Errorf("chromem query failed: %w", err)
 	}
 
 	chunks := toScoredChunks(results)
@@ -65,14 +67,12 @@ func (r *Retriever) Retrieve(ctx context.Context, query string) ([]ScoredChunk, 
 	if confident {
 		filtered := filterBySubdomain(chunks, subdomain)
 		if len(filtered) >= r.topK {
-			return topN(filtered, r.topK), nil
+			return topN(filtered, r.topK), subdomain, nil
 		}
-		// Not enough subdomain-specific matches — merge filtered results
-		// first (they're more relevant), then pad with the rest.
-		return topN(append(filtered, chunks...), r.topK), nil
+		return topN(append(filtered, chunks...), r.topK), subdomain, nil
 	}
 
-	return topN(chunks, r.topK), nil
+	return topN(chunks, r.topK), subdomain, nil
 }
 
 func toScoredChunks(results []chromem.Result) []ScoredChunk {
@@ -132,7 +132,9 @@ func topN(chunks []ScoredChunk, n int) []ScoredChunk {
 //
 // Keys here must exactly match the Subdomain values your chunker
 // assigns (see chunker.go: mapTypeToSubdomain and the loader functions) —
-// currently "calculus", "discrete_math", "linear_algebra", "general_math".
+// "algebra", "arithmetic", "precalculus", "geometry", "probability",
+// "number_theory", "general_math", plus the hardcoded "calculus" (GSM8K)
+// and "discrete_math" (Rosen) tags.
 type SubdomainClassifier struct {
 	keywords map[string][]string // subdomain -> trigger terms
 	minHits  int                 // hits required before we trust the call
@@ -202,14 +204,52 @@ func (c *SubdomainClassifier) Identify(query string) (string, bool) {
 	return best, bestHits >= c.minHits
 }
 
+// subdomainToPromptCategory maps the classifier's fine-grained subdomains
+// down to the coarse keys that subdomainInstructions has dedicated text
+// for. Retrieval filtering keeps using the fine-grained values; only
+// prompt-instruction selection goes through this bridge. Geometry maps to
+// itself because it gets its own instruction text.
+var subdomainToPromptCategory = map[string]string{
+	"algebra":       "calculus",
+	"precalculus":   "calculus",
+	"arithmetic":    "calculus",
+	"geometry":      "geometry",
+	"probability":   "discrete_math",
+	"number_theory": "discrete_math",
+}
+
+// PromptCategory converts a classifier subdomain into the coarse category
+// used for prompt-instruction selection, or "other" when unmapped.
+func PromptCategory(subdomain string) string {
+	if cat, ok := subdomainToPromptCategory[subdomain]; ok {
+		return cat
+	}
+	return "other"
+}
+
 // BuildPrompt assembles retrieved chunks into the context block fed to
 // Qwen2.5-Math. Kept separate from Retrieve so you can swap prompt
 // formatting without touching retrieval logic.
-func BuildPrompt(query string, chunks []ScoredChunk) string {
+
+var subdomainInstructions = map[string]string{
+	"discrete_math":  "Please reason step by step, stating each inference rule or proof technique used, and put your final answer within \\boxed{}.",
+	"calculus":       "Please reason step by step, stating the rule applied at each differentiation, integration, or algebraic step, and put your final answer within \\boxed{}.",
+	"linear_algebra": "Please reason step by step, showing matrix operations row by row, and put your final answer within \\boxed{}.",
+	"geometry":       "Please reason step by step, citing the relevant geometric theorem or property (Pythagorean theorem, triangle inequality, circle properties, etc.), and put your final answer within \\boxed{}.",
+}
+
+func BuildPrompt(query string, chunks []ScoredChunk, subdomain string) string {
 	var sb strings.Builder
 	sb.WriteString("<|im_start|>system\n")
-	sb.WriteString("Please reason step by step, and put your final answer within \\boxed{}.<|im_end|>\n")
-	sb.WriteString("<|im_start|>user\n")
+
+	instr, ok := subdomainInstructions[PromptCategory(subdomain)]
+	if !ok {
+		instr = "Please reason step by step, and put your final answer within \\boxed{}."
+	}
+	sb.WriteString(instr)
+	sb.WriteString("<|im_end|>\n")
+
+	sb.WriteString("<|im_start|>user\n") // ← add this back
 
 	if len(chunks) > 0 {
 		sb.WriteString("Relevant reference material:\n\n")
@@ -221,7 +261,6 @@ func BuildPrompt(query string, chunks []ScoredChunk) string {
 
 	sb.WriteString("Student question: ")
 	sb.WriteString(query)
-	// sb.WriteString("\n\nAnswer step by step, referencing the material above where relevant.")
 	sb.WriteString("\n\nAnswer step by step, referencing the material above where relevant.<|im_end|>\n")
 	sb.WriteString("<|im_start|>assistant\n")
 
