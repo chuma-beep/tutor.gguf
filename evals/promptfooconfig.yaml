@@ -10,9 +10,9 @@ providers:
         Content-Type: application/json
       body:
         problem: "{{problem}}"
-        max_tokens: 512
+        max_tokens: 1536
         temperature: 0.1
-      transformResponse: 'json.content' 
+      transformResponse: 'json.content'
 
 prompts:
   - "{{problem}}"
@@ -21,8 +21,3 @@ tests: test_cases_promptfoo.json
 
 evaluateOptions:
   maxConcurrency: 1
-
-defaultTest:
-  assert:
-    - type: javascript
-      value: '((output ?? "").replace(/\s+/g, "")).includes((context.vars.expected ?? "").replace(/\s+/g, ""))'

@@ -6,8 +6,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "49"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -18,8 +54,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "5"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -30,8 +102,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "6, 8\\text{, and }10"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -42,8 +150,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "4"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -54,8 +198,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "-3,1,5"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -66,8 +246,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "16"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -78,8 +294,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "-16"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -90,8 +342,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "438"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -102,8 +390,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "432"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -114,8 +438,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "-15"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -126,8 +486,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "162\\text{ minutes}"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -138,8 +534,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "\\frac{7}{8}"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -150,8 +582,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "20"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -162,8 +630,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "16"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -174,8 +678,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "-\\frac{82}{27}"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -186,8 +726,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "\\frac{2535}{463}"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -198,8 +774,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "48"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -210,8 +822,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "48"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -222,8 +870,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "11"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -234,8 +918,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "-\\frac{3}{2}"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -246,8 +966,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "47"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -258,8 +1014,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "1024"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -270,8 +1062,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "\\left( \\frac{1}{2}, \\frac{\\sqrt{7}}{2} \\right)"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -282,8 +1110,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "11"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -294,8 +1158,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "20"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -306,8 +1206,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "\\sqrt{3}"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -318,8 +1254,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "22"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -330,8 +1302,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "6152"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -342,8 +1350,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "32"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   },
@@ -354,8 +1398,44 @@
     },
     "assert": [
       {
-        "type": "contains",
-        "value": "672"
+        "type": "javascript",
+        "value": "file://./answer_assert.js"
+      },
+      {
+        "type": "llm-rubric",
+        "provider": {
+          "id": "openai:chat:qwen2.5-3b-instruct",
+          "config": {
+            "apiBaseUrl": "http://localhost:8083/v1",
+            "apiKey": "none",
+            "response_format": {
+              "type": "json_schema",
+              "json_schema": {
+                "name": "grade",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reason": {
+                      "type": "string"
+                    },
+                    "pass": {
+                      "type": "boolean"
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "reason",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "value": "Judge whether the final answer in the model output is correct for the problem, given that the expected answer is \"{{expected}}\". Mathematically equivalent expressions (different ordering of terms, different but equivalent forms, fractions vs decimals, \"and\" vs commas in list answers) must count as correct. Ignore reasoning quality and formatting \u2014 only the final answer matters. Respond with exactly PASS or FAIL."
       }
     ]
   }

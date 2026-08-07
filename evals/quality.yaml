@@ -1,0 +1,284 @@
+# Qualitative eval set — mirrors the judge panel's qualitative half of Sacc.
+# Run with: promptfoo eval -c quality.yaml
+description: "Tutor.gguf qualitative eval — tutoring quality + African use case"
+
+providers:
+  - id: http
+    label: tutor-rag
+    config:
+      url: http://localhost:8082/v1/complete
+      method: POST
+      headers:
+        Content-Type: application/json
+      body:
+        problem: "{{problem}}"
+        max_tokens: 768
+        temperature: 0.2
+      transformResponse: 'json.content'
+
+prompts:
+  - "{{problem}}"
+
+evaluateOptions:
+  maxConcurrency: 1
+
+tests:
+  - description: "step-by-step clarity (derivative)"
+    vars:
+      problem: "Explain how to find the derivative of f(x) = x^3 + 2x using the power rule. Walk through each step."
+    assert:
+      - type: llm-rubric
+        provider:
+          id: openai:chat:qwen2.5-3b-instruct
+          config:
+            apiBaseUrl: http://localhost:8083/v1
+            apiKey: "none"
+            response_format:
+              type: json_schema
+              json_schema:
+                name: grade
+                schema:
+                  type: object
+                  properties:
+                    reason:
+                      type: string
+                    pass:
+                      type: boolean
+                    score:
+                      type: number
+                  required: [pass, reason, score]
+        value: "Judge the output as a tutoring response to a first-year university student. It must (1) show the derivative of x^3 is 3x^2 and of 2x is 2, (2) state the final derivative 3x^2 + 2, and (3) explain each step so a beginner can follow. Respond with exactly PASS or FAIL."
+
+  - description: "correct final answer emphasized"
+    vars:
+      problem: "Solve for x: 3(x - 4) = 2x + 5. Give the final answer clearly."
+    assert:
+      - type: llm-rubric
+        provider:
+          id: openai:chat:qwen2.5-3b-instruct
+          config:
+            apiBaseUrl: http://localhost:8083/v1
+            apiKey: "none"
+            response_format:
+              type: json_schema
+              json_schema:
+                name: grade
+                schema:
+                  type: object
+                  properties:
+                    reason:
+                      type: string
+                    pass:
+                      type: boolean
+                    score:
+                      type: number
+                  required: [pass, reason, score]
+        value: "The output must arrive at x = 17 as the final answer and present it clearly at the end. Respond with exactly PASS or FAIL."
+
+  - description: "proof assistance (induction)"
+    vars:
+      problem: "Help me prove by induction that 1 + 2 + ... + n = n(n+1)/2 for all positive integers n."
+    assert:
+      - type: llm-rubric
+        provider:
+          id: openai:chat:qwen2.5-3b-instruct
+          config:
+            apiBaseUrl: http://localhost:8083/v1
+            apiKey: "none"
+            response_format:
+              type: json_schema
+              json_schema:
+                name: grade
+                schema:
+                  type: object
+                  properties:
+                    reason:
+                      type: string
+                    pass:
+                      type: boolean
+                    score:
+                      type: number
+                  required: [pass, reason, score]
+        value: "The output must include a base case (n=1), a correct inductive hypothesis, and a correct inductive step showing the sum formula for n+1 follows. Respond with exactly PASS or FAIL."
+
+  - description: "integral explanation"
+    vars:
+      problem: "Explain step by step how to integrate 2x * e^(x^2) using substitution."
+    assert:
+      - type: llm-rubric
+        provider:
+          id: openai:chat:qwen2.5-3b-instruct
+          config:
+            apiBaseUrl: http://localhost:8083/v1
+            apiKey: "none"
+            response_format:
+              type: json_schema
+              json_schema:
+                name: grade
+                schema:
+                  type: object
+                  properties:
+                    reason:
+                      type: string
+                    pass:
+                      type: boolean
+                    score:
+                      type: number
+                  required: [pass, reason, score]
+        value: "The output must identify u = x^2, du = 2x dx, rewrite the integral, and state the antiderivative e^(x^2) + C with the constant of integration. Respond with exactly PASS or FAIL."
+
+  - description: "african use case — JAMB arithmetic progression"
+    vars:
+      problem: "A JAMB candidate needs help: the sum of the first n terms of an arithmetic progression is 3n^2 + n. Find the common difference of the progression."
+    assert:
+      - type: llm-rubric
+        provider:
+          id: openai:chat:qwen2.5-3b-instruct
+          config:
+            apiBaseUrl: http://localhost:8083/v1
+            apiKey: "none"
+            response_format:
+              type: json_schema
+              json_schema:
+                name: grade
+                schema:
+                  type: object
+                  properties:
+                    reason:
+                      type: string
+                    pass:
+                      type: boolean
+                    score:
+                      type: number
+                  required: [pass, reason, score]
+        value: "The output must guide a Nigerian exam candidate step by step (using the difference between consecutive sums, e.g. T_n = S_n - S_(n-1)) and arrive at the common difference of 6. Respond with exactly PASS or FAIL."
+
+  - description: "african use case — trader percent problem"
+    vars:
+      problem: "A trader in an open-air market buys 200 bags of beans at 12,500 naira each and sells them at 13,750 naira each. What is his total profit, and what is his profit percentage?"
+    assert:
+      - type: llm-rubric
+        provider:
+          id: openai:chat:qwen2.5-3b-instruct
+          config:
+            apiBaseUrl: http://localhost:8083/v1
+            apiKey: "none"
+            response_format:
+              type: json_schema
+              json_schema:
+                name: grade
+                schema:
+                  type: object
+                  properties:
+                    reason:
+                      type: string
+                    pass:
+                      type: boolean
+                    score:
+                      type: number
+                  required: [pass, reason, score]
+        value: "The output must compute total profit 250,000 naira and profit percentage 10%, explaining both calculations step by step in plain language suitable for a trader with no formal math background. Respond with exactly PASS or FAIL."
+
+  - description: "no-calculator arithmetic strategy"
+    vars:
+      problem: "Explain a mental-math strategy for computing 15% of 240 without a calculator."
+    assert:
+      - type: llm-rubric
+        provider:
+          id: openai:chat:qwen2.5-3b-instruct
+          config:
+            apiBaseUrl: http://localhost:8083/v1
+            apiKey: "none"
+            response_format:
+              type: json_schema
+              json_schema:
+                name: grade
+                schema:
+                  type: object
+                  properties:
+                    reason:
+                      type: string
+                    pass:
+                      type: boolean
+                    score:
+                      type: number
+                  required: [pass, reason, score]
+        value: "The output must give a clear mental-math approach (e.g. 10% plus 5%) and arrive at 36, in language a small-business owner can follow. Respond with exactly PASS or FAIL."
+
+  - description: "geometry with local context"
+    vars:
+      problem: "An engineer in Lagos is designing a circular water tank. The tank's circumference must be 66 meters. What is its radius? Use 22/7 for pi and explain the reasoning."
+    assert:
+      - type: llm-rubric
+        provider:
+          id: openai:chat:qwen2.5-3b-instruct
+          config:
+            apiBaseUrl: http://localhost:8083/v1
+            apiKey: "none"
+            response_format:
+              type: json_schema
+              json_schema:
+                name: grade
+                schema:
+                  type: object
+                  properties:
+                    reason:
+                      type: string
+                    pass:
+                      type: boolean
+                    score:
+                      type: number
+                  required: [pass, reason, score]
+        value: "The output must use C = 2 * pi * r with pi = 22/7 and arrive at r = 10.5 m, explaining each step. Respond with exactly PASS or FAIL."
+
+  - description: "fraction word problem"
+    vars:
+      problem: "A farmer harvested 5/8 of her 240-hectare farm before the rainy season, and 2/5 of the rest after. How many hectares remain unharvested?"
+    assert:
+      - type: llm-rubric
+        provider:
+          id: openai:chat:qwen2.5-3b-instruct
+          config:
+            apiBaseUrl: http://localhost:8083/v1
+            apiKey: "none"
+            response_format:
+              type: json_schema
+              json_schema:
+                name: grade
+                schema:
+                  type: object
+                  properties:
+                    reason:
+                      type: string
+                    pass:
+                      type: boolean
+                    score:
+                      type: number
+                  required: [pass, reason, score]
+        value: "The output must correctly compute: remaining after first harvest 90 hectares, second harvest 36 hectares, unharvested 54 hectares. Respond with exactly PASS or FAIL."
+
+  - description: "multivariable system"
+    vars:
+      problem: "Solve the system of equations: 2x + y = 7 and x - y = 2. Show the substitution or elimination method."
+    assert:
+      - type: llm-rubric
+        provider:
+          id: openai:chat:qwen2.5-3b-instruct
+          config:
+            apiBaseUrl: http://localhost:8083/v1
+            apiKey: "none"
+            response_format:
+              type: json_schema
+              json_schema:
+                name: grade
+                schema:
+                  type: object
+                  properties:
+                    reason:
+                      type: string
+                    pass:
+                      type: boolean
+                    score:
+                      type: number
+                  required: [pass, reason, score]
+        value: "The output must solve the system correctly (x = 3, y = 1) and show a coherent method. Respond with exactly PASS or FAIL."

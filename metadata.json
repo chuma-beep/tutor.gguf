@@ -1,8 +1,8 @@
 {
-  "team_id": "TBD",
+  "team_id": "chuma-beep",
   "domain": "math_scientific_reasoning",
   "language_scope": ["en"],
-  "african_alpha_claim": false,
+  "african_alpha_claim": true,
   "budget_laptop_claim": true,
   "submitter": {
     "name": "Wisdom Anwaegbu",
@@ -17,11 +17,11 @@
   "test_prompts": [
     {
       "prompt_id": "tp_001",
-      "prompt": "TBD"
+      "prompt": "A JAMB candidate needs help: the sum of the first n terms of an arithmetic progression is 3n^2 + n. Find the common difference of the progression."
     },
     {
       "prompt_id": "tp_002",
-      "prompt": "TBD"
+      "prompt": "Find x such that log_12(3x) = 2."
     }
   ],
   "model": {
