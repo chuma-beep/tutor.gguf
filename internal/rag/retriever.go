@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/chuma-beep/tutor.gguf/internal/prompt"
 	chromem "github.com/philippgille/chromem-go"
 )
 
@@ -204,65 +205,15 @@ func (c *SubdomainClassifier) Identify(query string) (string, bool) {
 	return best, bestHits >= c.minHits
 }
 
-// subdomainToPromptCategory maps the classifier's fine-grained subdomains
-// down to the coarse keys that subdomainInstructions has dedicated text
-// for. Retrieval filtering keeps using the fine-grained values; only
-// prompt-instruction selection goes through this bridge. Geometry maps to
-// itself because it gets its own instruction text.
-var subdomainToPromptCategory = map[string]string{
-	"algebra":       "calculus",
-	"precalculus":   "calculus",
-	"arithmetic":    "calculus",
-	"geometry":      "geometry",
-	"probability":   "discrete_math",
-	"number_theory": "discrete_math",
-}
-
-// PromptCategory converts a classifier subdomain into the coarse category
-// used for prompt-instruction selection, or "other" when unmapped.
-func PromptCategory(subdomain string) string {
-	if cat, ok := subdomainToPromptCategory[subdomain]; ok {
-		return cat
-	}
-	return "other"
-}
-
 // BuildPrompt assembles retrieved chunks into the context block fed to
-// Qwen2.5-Math. Kept separate from Retrieve so you can swap prompt
-// formatting without touching retrieval logic.
-
-var subdomainInstructions = map[string]string{
-	"discrete_math":  "Please reason step by step, stating each inference rule or proof technique used, and put your final answer within \\boxed{}.",
-	"calculus":       "Please reason step by step, stating the rule applied at each differentiation, integration, or algebraic step, and put your final answer within \\boxed{}.",
-	"linear_algebra": "Please reason step by step, showing matrix operations row by row, and put your final answer within \\boxed{}.",
-	"geometry":       "Please reason step by step, citing the relevant geometric theorem or property (Pythagorean theorem, triangle inequality, circle properties, etc.), and put your final answer within \\boxed{}.",
-}
-
+// Qwen2.5-Math. Kept separate from Retrieve so you can swap prompt formatting
+// without touching retrieval logic. It is a thin adapter over prompt.Builder —
+// ScoredChunk is converted here so internal/prompt stays independent of rag
+// (avoiding an import cycle).
 func BuildPrompt(query string, chunks []ScoredChunk, subdomain string) string {
-	var sb strings.Builder
-	sb.WriteString("<|im_start|>system\n")
-
-	instr, ok := subdomainInstructions[PromptCategory(subdomain)]
-	if !ok {
-		instr = "Please reason step by step, and put your final answer within \\boxed{}."
+	sources := make([]prompt.Source, len(chunks))
+	for i, c := range chunks {
+		sources[i] = prompt.Source{Text: c.Text, Subdomain: c.Subdomain}
 	}
-	sb.WriteString(instr)
-	sb.WriteString("<|im_end|>\n")
-
-	sb.WriteString("<|im_start|>user\n") // ← add this back
-
-	if len(chunks) > 0 {
-		sb.WriteString("Relevant reference material:\n\n")
-		for i, c := range chunks {
-			sb.WriteString(fmt.Sprintf("[%d] (%s)\n%s\n\n", i+1, c.Subdomain, c.Text))
-		}
-		sb.WriteString("---\n\n")
-	}
-
-	sb.WriteString("Student question: ")
-	sb.WriteString(query)
-	sb.WriteString("\n\nAnswer step by step, referencing the material above where relevant.<|im_end|>\n")
-	sb.WriteString("<|im_start|>assistant\n")
-
-	return sb.String()
+	return prompt.NewBuilder().Build(query, sources, subdomain)
 }

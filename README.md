@@ -192,10 +192,12 @@ algebra / arithmetic / precalculus / geometry / probability / number_theory, the
 - selects the domain-specific instruction text (e.g. "reason step by step, citing the relevant
   geometric theorem or property") prepended to the user turn.
 
-### Dead `internal/prompt/builder.go`
+### Prompt builder (`internal/prompt`)
 
-This package existed as an earlier prompt builder and is **not imported anywhere**; the live
-builder is `rag.BuildPrompt`. It is kept purely as a rough reference.
+`prompt.Builder` is the canonical prompt builder (ChatML framing, coarse-category CoT
+instructions, RAG context block, answer anchor). `rag.BuildPrompt` is a thin adapter over it,
+and `internal/prompt` also owns the subdomain → instruction mapping. Unit tests live in
+`internal/prompt/builder_test.go` (structure, instruction selection, and a golden prompt).
 
 ## Evaluation
 
