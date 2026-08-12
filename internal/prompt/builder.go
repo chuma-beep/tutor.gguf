@@ -55,7 +55,7 @@ func (b *Builder) Build(query string, chunks []Source, subdomain string) string 
 
 	sb.WriteString("Student question: ")
 	sb.WriteString(query)
-	sb.WriteString("\n\nAnswer step by step, referencing the material above where relevant. End your response with the final answer alone inside \\boxed{...} on the last line.<|im_end|>\n")
+	sb.WriteString("\n\nAnswer step by step, referencing the material above where relevant.<|im_end|>\n")
 	sb.WriteString("<|im_start|>assistant\n")
 
 	return sb.String()
@@ -88,17 +88,11 @@ func PromptCategory(subdomain string) string {
 // category. Edit these when redesigning the CoT instructions — remember to
 // update the golden fixture in builder_test.go too.
 var subdomainInstructions = map[string]string{
-	"discrete_math":  "Reason step by step, naming the proof technique or counting rule used at each step." + answerAnchor,
-	"calculus":       "Reason step by step. After each algebraic manipulation, state what the equation now says before continuing." + answerAnchor,
-	"linear_algebra": "Reason step by step, showing each row or vector operation explicitly before moving on." + answerAnchor,
-	"geometry":       "State the formula you use and substitute the given values, including the value of π given in the problem." + answerAnchor,
-	"other":          "Reason step by step." + answerAnchor,
+	"discrete_math":  "Please reason step by step, stating each inference rule or proof technique used, and put your final answer within \\boxed{}.",
+	"calculus":       "Please reason step by step, stating the rule applied at each differentiation, integration, or algebraic step, and put your final answer within \\boxed{}.",
+	"linear_algebra": "Please reason step by step, showing matrix operations row by row, and put your final answer within \\boxed{}.",
+	"geometry":       "Please reason step by step, citing the relevant geometric theorem or property (Pythagorean theorem, triangle inequality, circle properties, etc.), and put your final answer within \\boxed{}.",
 }
 
-// answerAnchor is the identical format mandate appended to every instruction.
-// Keeping it constant matters: the eval's answer parser relies on \boxed{...}
-// appearing just before the response ends, so the phrasing must not vary.
-const answerAnchor = " End with the final answer alone inside \\boxed{...} on the very last line."
-
 // defaultInstruction is used for categories without dedicated text.
-const defaultInstruction = "Reason step by step." + answerAnchor
+const defaultInstruction = "Please reason step by step, and put your final answer within \\boxed{}."
