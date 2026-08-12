@@ -144,12 +144,35 @@ running server.
 `max_tokens` and `temperature` are optional (server defaults 512 / 0.1). Response:
 
 ```json
-{ "content": "<model-generated solution>" }
+{ "content": "<model-generated solution>", "answer": "<parsed final answer>" }
 ```
+
+`answer` is a lightweight runtime parse of the model's final answer (`internal/parse`,
+mirroring the eval matcher's extractor: `\boxed{...}` → `final answer:` → `####` → whole
+output). It is omitted when nothing can be parsed. The eval configs keep using only
+`json.content`, so adding `answer` does not affect scoring.
 
 The server retrieves the top-K (default 3) chunks for the problem, classifies its subdomain,
 builds the RAG prompt, and blocks on generation before returning. The eval configs run it
 single-concurrency (`maxConcurrency: 1`).
+
+## Per-subdomain smoke matrix
+
+Quick sanity checks — one query per coarse prompt category (`make run` shows the selected
+system instruction; `curl /v1/complete` shows the parsed `answer`). Expect the geometry case
+to fall back to unfiltered retrieval when the geometry corpus slice is thin:
+
+| Category | Query | Expected instruction key |
+|---|---|---|
+| calculus | `Find the derivative of x^2.` | calculus |
+| calculus (integral) | `Integrate 2x * e^(x^2).` | calculus |
+| discrete_math | Prove by induction `1 + 2 + ... + n = n(n+1)/2` | discrete_math |
+| linear_algebra | `Solve 2x + y = 7, x - y = 2 using matrix row reduction.` | linear_algebra |
+| geometry | Lagos water tank, circumference 66, `π = 22/7` | geometry |
+| other | `Why does 0.999... equal 1? Explain clearly.` | other (default) |
+
+Each answer parsed correctly on the ADTC dev environment; subdomain text comes from
+`internal/prompt/subdomainInstructions`.
 
 ## Architecture
 
@@ -289,6 +312,7 @@ cmd/
 internal/
   rag/                   # retriever, embedder, chunker, prompt builder
   llm/client.go          # llama.cpp completion client
+  parse/                 # final-answer extractor (runtime `answer` field)
 evals/                   # promptfoo configs, sampler, matcher, results
 data/raw/                # corpus (git-ignored)
 data/chromem/            # persistent vector store (git-ignored)

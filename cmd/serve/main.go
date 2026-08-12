@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/chuma-beep/tutor.gguf/internal/llm"
+	"github.com/chuma-beep/tutor.gguf/internal/parse"
 	"github.com/chuma-beep/tutor.gguf/internal/rag"
 	chromem "github.com/philippgille/chromem-go"
 )
@@ -20,6 +21,7 @@ type requestBody struct {
 
 type responseBody struct {
 	Content string `json:"content"`
+	Answer  string `json:"answer,omitempty"`
 }
 
 func main() {
@@ -70,7 +72,7 @@ func main() {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(responseBody{Content: content})
+		json.NewEncoder(w).Encode(responseBody{Content: content, Answer: parse.Extract(content)})
 	})
 
 	log.Printf("tutor RAG server listening on :%s", *port)
