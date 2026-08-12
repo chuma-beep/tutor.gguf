@@ -12,7 +12,7 @@ func TestBuildChatMLStructure(t *testing.T) {
 		"<|im_start|>system\n",
 		"<|im_start|>user\n",
 		"Student question:",
-		"Answer step by step, referencing the material above where relevant.<|im_end|>\n",
+		"Answer step by step, referencing the material above where relevant. End your response with the final answer alone inside \\boxed{...} on the last line.<|im_end|>\n",
 		"<|im_start|>assistant\n",
 	}
 	pos := -1
@@ -110,7 +110,7 @@ func TestBuildQuestionAndAnchor(t *testing.T) {
 	if !strings.Contains(got, "Student question: "+q+"\n\n") {
 		t.Errorf("missing question anchor:\n%s", got)
 	}
-	if !strings.Contains(got, "Answer step by step, referencing the material above where relevant.<|im_end|>\n") {
+	if !strings.Contains(got, "Answer step by step, referencing the material above where relevant. End your response with the final answer alone inside \\boxed{...} on the last line.<|im_end|>\n") {
 		t.Errorf("missing answer anchor:\n%s", got)
 	}
 }
@@ -125,7 +125,7 @@ func TestBuildGoldenPrompt(t *testing.T) {
 	}, "algebra")
 
 	want := `<|im_start|>system
-Please reason step by step, stating the rule applied at each differentiation, integration, or algebraic step, and put your final answer within \boxed{}.<|im_end|>
+Reason step by step. After each algebraic manipulation, state what the equation now says before continuing. End with the final answer alone inside \boxed{...} on the very last line.<|im_end|>
 <|im_start|>user
 Relevant reference material:
 
@@ -141,7 +141,7 @@ Solution: 2x
 
 Student question: Find the derivative of x^2.
 
-Answer step by step, referencing the material above where relevant.<|im_end|>
+Answer step by step, referencing the material above where relevant. End your response with the final answer alone inside \boxed{...} on the last line.<|im_end|>
 <|im_start|>assistant
 `
 
