@@ -32,6 +32,7 @@
     "packaging": "binary_bundle"
   },
   "_runtime": {
-    "model_path": "model/qwen2.5-math-1.5b-instruct-q4_k_m.gguf"
+    "model_path": "model/qwen2.5-math-1.5b-instruct-q4_k_m.gguf",
+    "docker_image": "adtc-profiler:latest"
   }
 }
