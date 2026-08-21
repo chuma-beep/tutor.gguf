@@ -14,16 +14,22 @@ ROSEN_DIR     := data/raw/rosen
 EVAL_DIR      := evals
 SERVE_PORT    := 8082
 Q             ?= "find the derivative of x^2"
+THREADS       ?= 0
+CTX           ?= 2048
 
-.PHONY: serve-gen serve-embed serve-judge serve-tutor index run eval eval-fresh eval-quality eval-view eval-sample profile profile-audit
+.PHONY: serve-gen serve-embed serve-judge serve-tutor index run tui tui-ascii eval eval-fresh eval-quality eval-view eval-sample profile profile-audit
 
 # Start the generation model (Qwen2.5-Math)
+# THREADS=0 -> auto; use THREADS=4 in 4-core / Docker-audit environments (-t 4
+# beat auto-8 under a 4-CPU quota: 16.6 vs 14.8 t/s, see docs/tuning.md).
+# CTX=2048 is the tuned minimum: worst-case RAG prompt 1122 + 512 max output
+# = 1634 tokens; 4096 adds ~60 MB KV cache for no accuracy gain (see docs/tuning.md).
 serve-gen:
-	$(LLAMA_BIN) -m $(GEN_MODEL) --port $(GEN_PORT)
+	$(LLAMA_BIN) -m $(GEN_MODEL) --port $(GEN_PORT) -t $(THREADS) -c $(CTX)
 
 # Start the embedding model (nomic-embed-text)
 serve-embed:
-	$(LLAMA_BIN) -m $(EMBED_MODEL) --embeddings --batch-size 2048 --ubatch-size 2048 --port $(EMBED_PORT)
+	$(LLAMA_BIN) -m $(EMBED_MODEL) --embeddings --batch-size 2048 --ubatch-size 2048 --port $(EMBED_PORT) -t $(THREADS)
 
 # Start the judge model (Qwen2.5-3B-Instruct) for llm-rubric evals
 serve-judge:
@@ -48,6 +54,14 @@ index:
 # Run a test query against the tutor
 run:
 	go run ./cmd/tutor -embedder-url $(EMBEDDER_URL) -query "$(Q)"
+
+# Interactive Bubble Tea shell against a running serve-tutor (step 4)
+tui:
+	go run ./cmd/tui -tutor-url http://localhost:$(SERVE_PORT)
+
+# The same shell, with ASCII math fallbacks instead of Unicode symbols
+tui-ascii:
+	go run ./cmd/tui -ascii -tutor-url http://localhost:$(SERVE_PORT)
 
 # Generate a fresh sample of test cases from the corpus
 eval-sample:
