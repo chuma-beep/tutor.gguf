@@ -33,7 +33,7 @@ Target platform is the **ADTC 2026 Standard Laptop**:
 | Runtime | **llama.cpp + GGUF only** (competition rule) |
 | Connectivity | **100% offline** — zero outbound network calls during eval |
 
-The tutor runs CPU-only via llama.cpp and measures ~1.7 GB peak RSS, well inside the 7 GB
+The tutor runs CPU-only via llama.cpp and measures ~1.1 GB peak RSS, well inside the 7 GB
 budget. You can develop on any machine; only the final artifact is measured against the
 profile above.
 
@@ -128,6 +128,21 @@ curl -s localhost:8082/v1/complete \
 `make run` uses the already-indexed DB (skips ingestion when no corpus sources are passed) and
 is handy for inspecting exactly which chunks were retrieved and what prompt is sent, without a
 running server.
+
+### 6. Ask it from the terminal (interactive TUI)
+
+```bash
+make tui            # Bubble Tea shell, Unicode math (>≡ π … ≤, tall brackets, boxed answers)
+make tui-ascii      # same shell with ASCII-only fallbacks (x^2, sqrt()-style, +/- borders)
+```
+
+Both open a Bubble Tea alternate screen on `:8082`. Type a question, press Enter, and the
+model's output streams into the transcript with LaTeX spans (`\(...\)`, `\[...\]`, `$...$`)
+rendered as terminal art — stacked fractions, square/cube roots, sum/integral limits,
+binom, `\boxed` borders, and `\alpha` → α. The parser degrades gracefully: anything it
+doesn't model (rare `\begin{matrix}` synthetic-division tables) falls back to a linear
+passthrough, never blank. Unicode mode is the prettier default; ASCII mode trades the
+glyphs for wider terminal safety (useful for screenshots on exotic fonts).
 
 ## API
 
@@ -252,18 +267,22 @@ Current status (self-reported, 18/30 accuracy and 6/10 quality — failure detai
 
 ## Performance snapshot
 
-Measured with the official ADTC profiler in **participant mode** on the development machine
-(AMD Ryzen 9 6900HX, 29.1 GB RAM, no GPU, Arch Linux):
+Measured with the official ADTC profiler in **audit-profile mode** — the profiler's
+own Docker image running under `--memory=7.5g --cpus=4` with its baseline (no-AVX2)
+llama.cpp build, i.e. the closest local proxy for the Standard Laptop / audit VM:
 
 | Metric | Value |
 |---|---|
-| Peak RAM (RSS) | 1.71 GB |
-| Steady-state RAM (RSS) | 1.61 GB |
-| Generation speed | ~45.8 tokens/s |
-| First-token latency | ~2.0 s (512-token prompt) |
-| CPU p99 | 56.3% |
+| Peak RAM (RSS) | 1.10 GB |
+| Steady-state RAM (RSS) | 1.03 GB |
+| Generation speed | ~13–14 tokens/s (llama-bench default threads; 16.6 t/s at `-t 4`) |
+| First-token latency | ~23 s (512-token prompt) |
+| CPU p99 | 34.9% |
+| Core temp / throttling | 20 °C / `throttled: false` |
 
-Full methodology and notes in **REPORT.md**.
+> Earlier dev-machine numbers (45.78 t/s, 1.71 GB, native build, 16 cores) were
+> non-representative; everything below reflects the Docker audit profile. Full
+> methodology and tuning log in **docs/tuning.md**.
 
 ### Scoring context
 
@@ -272,16 +291,23 @@ Applying the official formulas to the numbers above:
 
 | Component | Formula | This submission |
 |---|---|---|
-| Throughput | `min(TPS / 15.0, 1.0) · 100` | 45.8 t/s → **capped at 100** |
-| Efficiency | `max(0, (7.0 − peak_rss_gb) / 7.0) · 100` | 1.71 GB → **≈ 75.6** |
+| Throughput | `min(TPS / 15.0, 1.0) · 100` | 13.5 t/s → **≈ 90** (16.6 t/s at `-t 4` → capped 100) |
+| Efficiency | `max(0, (7.0 − peak_rss_gb) / 7.0) · 100` | 1.10 GB → **≈ 84.3** |
 | Thermal penalty | `−10` if throttled or core temp > 85 °C | none observed (`throttled: false`) |
 
-These are self-reported development-machine values; the official audit runs on the
+These are self-reported audit-profile values; the official audit runs on the
 Standard Laptop. Reproduce locally with:
 
 ```bash
-make profile        # adtc-profiler run --mode participant
+make profile        # adtc-profiler run --mode participant (on this machine)
 make profile-audit  # adtc-profiler run --mode audit (gsm8k accuracy sample)
+# Docker audit profile (same env as this table):
+docker run --rm --memory=7.5g --cpus=4 -v "$PWD":/submission:ro \
+  -v ~/Projects/models:/home/wisdom/Projects/models:ro \
+  -e GIT_CONFIG_COUNT=1 -e GIT_CONFIG_KEY_0=safe.directory -e GIT_CONFIG_VALUE_0='*' \
+  -v "$PWD"/results:/artifacts \
+  adtc-profiler:latest run --submission /submission --mode audit \
+  --output /artifacts/audit.json --skip-accuracy
 ```
 
 ## ADTC 2026 compliance
@@ -309,10 +335,13 @@ field map, and scoring worksheet live in **[COMPLIANCE.md](COMPLIANCE.md)**. Sum
 cmd/
   serve/main.go          # RAG HTTP server (:8082)
   tutor/main.go          # ingestion + out-of-band query CLI
+  tui/main.go            # Bubble Tea shell (make tui / make tui-ascii)
 internal/
   rag/                   # retriever, embedder, chunker, prompt builder
   llm/client.go          # llama.cpp completion client
   parse/                 # final-answer extractor (runtime `answer` field)
+  renderer/              # LaTeX → AST → terminal-art renderer (Unicode + ASCII)
+  tui/                   # Bubble Tea model: input, streaming transcript, scroll
 evals/                   # promptfoo configs, sampler, matcher, results
 data/raw/                # corpus (git-ignored)
 data/chromem/            # persistent vector store (git-ignored)

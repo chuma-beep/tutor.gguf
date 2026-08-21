@@ -21,7 +21,7 @@ Status legend: ✅ verified in repo · ⚠️ needs action · ⭕ not yet done
 | Downloaded file is valid GGUF (`.gguf`) | ✅ | `Qwen2.5-Math-1.5B-Instruct-Q4_K_M.gguf` (bartowski) |
 | Runs 100% offline — zero outbound calls during eval | ✅ | all inference/retrieval/embeddings via `localhost`; no cloud SDKs; eval harness is local promptfoo + local judge |
 | Runtime is **llama.cpp + GGUF only** | ✅ | `llama-server` served by Makefile; `metadata.model.runtime = "llama.cpp"` |
-| Fits **8 GB RAM / 7 GB managed budget**; no OOM | ✅ | peak RSS 1.71 GB (≈24% of budget) from `submission.json` |
+| Fits **8 GB RAM / 7 GB managed budget**; no OOM | ✅ | peak RSS 1.10 GB (≈16% of budget) from `submission.json` |
 | No discrete GPU required | ✅ | CPU-only, AVX2 ramp |
 | Runs on Ubuntu 22.04 LTS reference | ⚠️ | developed on Arch; validate on Ubuntu before final audit |
 
@@ -54,7 +54,7 @@ Status legend: ✅ verified in repo · ⚠️ needs action · ⭕ not yet done
 | Component | Target | Submission fit |
 |---|---|---|
 | CPU | Intel i5 10th–12th / AMD Ryzen 5 3000–5000, x86-64 | CPU-only inference; dev machine is a Ryzen 9 6900HX (AVX2) — no instructions beyond baseline |
-| RAM | 8 GB DDR4 (7 GB managed) | peak RSS 1.71 GB ≈ 24% budget |
+| RAM | 8 GB DDR4 (7 GB managed) | peak RSS 1.10 GB ≈ 16% budget |
 | Graphics | integrated only, **no discrete GPU** | none used |
 | Storage | 256 GB SSD | models ≈ 1–2 GB; corpus ≈ 230 MB raw |
 | OS | Ubuntu 22.04 LTS (reference) | developed on Arch; Ubuntu 22.04 validation pending |
@@ -68,27 +68,26 @@ Status legend: ✅ verified in repo · ⚠️ needs action · ⭕ not yet done
 
 Official formula: `S_total = 0.50·S_acc + 0.30·S_perf + 0.20·S_eff − P_thermal`
 
-| Component | Formula | Value (from `submission.json`) | Result |
+| Component | Formula | Value (from `submission.json`, audit-profile) | Result |
 |---|---|---|---|
 | **S_acc** | qualitative + benchmark | self-reported 18/30 accuracy, 6/10 quality (see REPORT.md) | QA-track |
-| **S_perf** | `min(TPS/15.0, 1.0)·100` | 45.78 t/s | **100.0** (capped) |
-| **S_eff** | `max(0,(7.0−peak_rss_gb)/7.0)·100` | peak 1.71 GB | **≈ 75.6** |
+| **S_perf** | `min(TPS/15.0, 1.0)·100` | 13.5 t/s (16.6 at `-t 4`) | **≈ 90** (100 at `-t 4`) |
+| **S_eff** | `max(0,(7.0−peak_rss_gb)/7.0)·100` | peak 1.10 GB | **≈ 84.3** |
 | **P_thermal** | −10 if throttled / core > 85 °C | `throttled: false`, peak 20.0 °C | **0** |
 
-Max achievable from telemetry alone: `0.3·100 + 0.2·75.6 = 45.1 pts` (before S_acc and any
-penalties). Adding the 50% accuracy weight, S_total ≈ 75–95 for S_acc in the 60–100 range —
+Max achievable from telemetry alone: `0.3·100 + 0.2·84.3 = 46.9 pts` (before S_acc and any
+penalties). Adding the 50% accuracy weight, S_total ≈ 76–96 for S_acc in the 60–100 range —
 subject to official audit on the Standard Laptop.
 
-Self-reported dev-machine numbers only; official audit overrides.
+Self-reported audit-profile numbers only; official audit overrides.
 
-Local repro:
+Local repro (all numbers from the Docker audit profile, `--memory=7.5g --cpus=4`):
 
 ```bash
-make profile        # adtc-profiler run --mode participant (→ submission.json)
-make profile-audit  # adtc-profiler run --mode audit, gsm8k accuracy sample (→ audit.json)
+docker build -t adtc-profiler:latest ~/Projects/adtc-profiler
+# participant + audit in the same container profile, then:
+adtc-profiler compare submission.json audit.json --output verdict.json   # PASS
 ```
-
-`audit.json` is not yet generated in-repo — add it when a final profile run is done.
 
 ---
 
@@ -115,7 +114,8 @@ make profile-audit  # adtc-profiler run --mode audit, gsm8k accuracy sample (→
 - [ ] Screenshots / short video clips of the build in action
 - [ ] 2-minute demo video (solution + development journey)
 - [ ] Ubuntu 22.04 LTS validation pass (dev happened on Arch)
-- [ ] `audit.json` from an official audit run
+- [ ] `audit.json` from an official audit run — `audit.json` is now generated
+  locally in Docker audit mode (`compare` → **PASS**); official run still pending
 
 **Quality-of-documentation note:** ADTC qualitative scoring explicitly includes “quality of
 documentation”. README.md, REPORT.md, and this file are written to that standard.

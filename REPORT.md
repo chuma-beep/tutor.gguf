@@ -40,20 +40,29 @@ Nigerian CS undergraduates at distance-learning institutions need step-by-step m
 
 ## Benchmarks
 
-Measured on the participant's development machine via the official ADTC profiler (`adtc-profiler run --mode participant`).
+Measured with the official ADTC profiler in **audit-profile mode**: the profiler's own
+Docker image (`adtc-profiler:latest`) running under `--memory=7.5g --cpus=4` with its
+baseline (no-AVX2) llama.cpp build — the closest local proxy for the Standard Laptop /
+audit VM. Full tuning log in `docs/tuning.md`.
 
 | Metric | Value |
 |---|---|
-| Machine | AMD Ryzen 9 6900HX, 29.1 GB RAM, no GPU, Arch Linux |
-| Peak RAM (RSS) | 1.71 GB |
-| Steady-state RAM (RSS) | 1.61 GB |
-| Generation speed | 45.78 tokens/s |
-| Time to first token | ~1.98 s (512-token prompt, 128-token generation) |
-| CPU utilization (p99) | 56.3% |
+| Machine | host AMD Ryzen 9 6900HX, 29.1 GB RAM, no GPU; 4-vCPU / 7.5 GB container profile |
+| Peak RAM (RSS) | 1.10 GB |
+| Steady-state RAM (RSS) | 1.03 GB |
+| Generation speed | ~13–14 tokens/s (llama-bench default threads); 16.6 t/s at `-t 4` |
+| Time to first token | ~23 s (512-token prompt, 128-token generation) |
+| CPU utilization (p99) | 34.9% |
 | Core temp peak | 20.0°C (sensor read; no throttling flag) |
 | Thermal throttling | None observed (`throttled: false`) |
 
-Note: These are self-reported development benchmarks on a machine stronger than the ADTC Standard Laptop. Official scores are measured by the ADTC profiler on the standard evaluation machine. With a 15.0 t/s reference and a 7 GB RAM budget, the design has substantial headroom on both axes. Mapping to the official scoring formula (`0.5·S_acc + 0.3·S_perf + 0.2·S_eff − P_thermal`): 45.78 t/s caps S_perf at 100; 1.71 GB peak yields S_eff ≈ 75.6; no thermal penalty observed. See [COMPLIANCE.md](COMPLIANCE.md) for the full worksheet.
+Note: these are self-reported audit-profile values; the official audit runs the same
+profiler on the Standard Laptop. Mapping to the official scoring formula
+(`0.5·S_acc + 0.3·S_perf + 0.2·S_eff − P_thermal`): ~13.5 t/s yields S_perf ≈ 90
+(16.6 t/s at `-t 4` caps at 100); 1.10 GB peak yields S_eff ≈ 84.3; no thermal
+penalty observed. See [COMPLIANCE.md](COMPLIANCE.md) for the full worksheet.
+`submission.json` and `audit.json` in-repo reproduce the numbers via
+`adtc-profiler compare` (verdict **pass**).
 
 ## Accuracy & Eval Methodology
 
@@ -69,5 +78,6 @@ The tutor is built around the Nigerian undergraduate context: JAMB/WASSCE-style 
 
 - **Gate 1 pending items:** screenshots / short demo clips and the 2-minute demo video — add under `docs/` before the deadline.
 - **Validation:** developed on Arch Linux; run a pass on Ubuntu 22.04 LTS before the official audit.
-- **Repro:** every command lives in the [README](README.md) / Makefile; `adtc-profiler` participant mode reproduces `submission.json`.
+- **Repro:** every command lives in the [README](README.md) / Makefile / `docs/tuning.md`;
+  the Docker audit profile reproduces `submission.json` + `audit.json` (`compare` → PASS).
 - **Compliance:** full requirements matrix and scoring worksheet in [COMPLIANCE.md](COMPLIANCE.md).
