@@ -23,7 +23,7 @@ Status legend: ✅ verified in repo · ⚠️ needs action · ⭕ not yet done
 | Runtime is **llama.cpp + GGUF only** | ✅ | `llama-server` served by Makefile; `metadata.model.runtime = "llama.cpp"` |
 | Fits **8 GB RAM / 7 GB managed budget**; no OOM | ✅ | peak RSS 1.10 GB (≈16% of budget) from `submission.json` |
 | No discrete GPU required | ✅ | CPU-only, AVX2 ramp |
-| Runs on Ubuntu 22.04 LTS reference | ⚠️ | developed on Arch; validate on Ubuntu before final audit |
+| Runs on Ubuntu 22.04 LTS reference | ✅ | validated in an `ubuntu:22.04` container — fresh `download_model.sh`, byte-exact GGUF, idempotent re-run |
 
 ---
 
@@ -113,7 +113,8 @@ adtc-profiler compare submission.json audit.json --output verdict.json   # PASS
 - [x] `COMPLIANCE.md` requirements matrix (this file)
 - [ ] Screenshots / short video clips of the build in action
 - [ ] 2-minute demo video (solution + development journey)
-- [ ] Ubuntu 22.04 LTS validation pass (dev happened on Arch)
+- [x] Ubuntu 22.04 LTS validation pass (`ubuntu:22.04` container: clean `download_model.sh`
+  run, byte-exact GGUF size vs Hugging Face `content-length`, idempotent second run)
 - [ ] `audit.json` from an official audit run — `audit.json` is now generated
   locally in Docker audit mode (`compare` → **PASS**); official run still pending
 

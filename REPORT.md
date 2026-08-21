@@ -77,7 +77,8 @@ The tutor is built around the Nigerian undergraduate context: JAMB/WASSCE-style 
 ## Submission Status
 
 - **Gate 1 pending items:** screenshots / short demo clips and the 2-minute demo video — add under `docs/` before the deadline.
-- **Validation:** developed on Arch Linux; run a pass on Ubuntu 22.04 LTS before the official audit.
+- **Validation:** `download_model.sh` verified on Ubuntu 22.04 (fresh `ubuntu:22.04` container:
+  clean download to the exact expected byte size, valid GGUF header, idempotent re-run).
 - **Repro:** every command lives in the [README](README.md) / Makefile / `docs/tuning.md`;
   the Docker audit profile reproduces `submission.json` + `audit.json` (`compare` → PASS).
 - **Compliance:** full requirements matrix and scoring worksheet in [COMPLIANCE.md](COMPLIANCE.md).
