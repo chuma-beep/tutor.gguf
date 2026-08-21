@@ -1,7 +1,10 @@
-# Model weights
-model/*.gguf
-model/*.bin
-model/*.safetensors
+# Model weights — never commit (ADTC 2026 template rule)
+*.gguf
+model/
+
+# Compiled binaries
+/serve
+/tutor
 
 # macOS
 .DS_Store
@@ -14,6 +17,10 @@ __pycache__/
 # Local profiler output
 submission.json
 audit.json
+verdict.json
+
+# Tuning artifacts (dated snapshots of bench runs)
+results/
 
 # Experiment result artifacts (ad-hoc eval runs)
 evals/results_baseline_*.json
@@ -22,6 +29,3 @@ evals/results_quality_new.json
 
 data/
 corpus/
-
-#ROADMAP
-ROADMAP.md
