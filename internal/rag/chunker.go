@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -80,39 +81,72 @@ func LoadGSM8KFile(filePath string) ([]Chunk, error) {
 	return chunks, nil
 }
 
-// LoadRosenDir walks a directory of Rosen solution files and returns one chunk per file.
-// Each file is expected to be a self-contained problem+solution (.md or .txt).
+// LoadRosenDir walks a directory of Rosen solution files (recursively) and
+// returns one chunk per file. Accepted formats: .md, .txt, and .tex (raw LaTeX
+// exercise solutions — retrieval handles the markup fine). Files longer than
+// rosenMaxChunkChars are split on line boundaries so no chunk overflows the
+// embedding model's context window.
 func LoadRosenDir(dirPath string) ([]Chunk, error) {
 	var chunks []Chunk
-	entries, err := os.ReadDir(dirPath)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read Rosen directory: %w", err)
-	}
-	for _, entry := range entries {
-		if entry.IsDir() {
-			continue
+	err := filepath.WalkDir(dirPath, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
 		}
-		ext := filepath.Ext(entry.Name())
-		if ext != ".md" && ext != ".txt" {
-			continue
+		if d.IsDir() || path == dirPath {
+			return nil
 		}
-		path := filepath.Join(dirPath, entry.Name())
+		switch ext := filepath.Ext(d.Name()); ext {
+		case ".md", ".txt", ".tex":
+		default:
+			return nil
+		}
 		content, err := os.ReadFile(path)
 		if err != nil {
-			return nil, fmt.Errorf("failed to read Rosen file %s: %w", entry.Name(), err)
+			return fmt.Errorf("failed to read Rosen file %s: %w", d.Name(), err)
 		}
 		text := strings.TrimSpace(string(content))
 		if text == "" {
-			continue
+			return nil
 		}
-		chunks = append(chunks, Chunk{
-			Text:      text,
-			Subdomain: "discrete_math",
-			Source:    "rosen",
-			Level:     "undergraduate",
-		})
+		for _, seg := range splitOnLines(text, rosenMaxChunkChars) {
+			chunks = append(chunks, Chunk{
+				Text:      seg,
+				Subdomain: "discrete_math",
+				Source:    "rosen",
+				Level:     "undergraduate",
+			})
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to read Rosen directory: %w", err)
 	}
 	return chunks, nil
+}
+
+// rosenMaxChunkChars keeps every Rosen chunk comfortably below the embedding
+// server's 2048-token physical batch even for dense raw LaTeX.
+const rosenMaxChunkChars = 2000
+
+// splitOnLines cuts s into segments of at most max characters, preferring to
+// break after a newline so solutions don't split mid-equation.
+func splitOnLines(s string, max int) []string {
+	if len(s) <= max {
+		return []string{s}
+	}
+	var segs []string
+	for len(s) > max {
+		cut := strings.LastIndexByte(s[:max+1], '\n')
+		if cut < max/2 {
+			cut = max // no sane newline nearby; hard-cut
+		}
+		segs = append(segs, strings.TrimSpace(s[:cut]))
+		s = strings.TrimSpace(s[cut:])
+	}
+	if s != "" {
+		segs = append(segs, s)
+	}
+	return segs
 }
 
 // mapTypeToSubdomain standardizes raw dataset types to your internal categories.

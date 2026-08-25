@@ -5,6 +5,7 @@ model/
 # Compiled binaries
 /serve
 /tutor
+/bin/
 
 # macOS
 .DS_Store

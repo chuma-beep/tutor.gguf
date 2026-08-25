@@ -17,7 +17,19 @@ Q             ?= "find the derivative of x^2"
 THREADS       ?= 0
 CTX           ?= 2048
 
-.PHONY: serve-gen serve-embed serve-judge serve-tutor index run tui tui-ascii eval eval-fresh eval-quality eval-view eval-sample profile profile-audit
+# Single static binary built from ./cmd/tutor (subcommands: serve|index|chat)
+BIN           := bin/tutor
+
+.PHONY: build setup serve-gen serve-embed serve-judge serve-tutor index run tui tui-ascii eval eval-fresh eval-quality eval-view eval-sample profile profile-audit
+
+# Build the single tutor binary (trimpath + stripped for release-style size)
+build:
+	go build -trimpath -ldflags "-s -w" -o $(BIN) ./cmd/tutor
+
+# One-shot local provisioning via the binary itself (models + llama.cpp +
+# corpus into ~/.tutor, then index). Idempotent.
+setup:
+	go run ./cmd/tutor setup
 
 # Start the generation model (Qwen2.5-Math)
 # THREADS=0 -> auto; use THREADS=4 in 4-core / Docker-audit environments (-t 4
@@ -37,14 +49,14 @@ serve-judge:
 
 # Start the RAG tutor server (wraps retrieval + generation)
 serve-tutor:
-	go run ./cmd/serve \
+	go run ./cmd/tutor serve \
 		-embedder-url $(EMBEDDER_URL) \
 		-gen-url http://localhost:$(GEN_PORT) \
 		-port $(SERVE_PORT)
 
 # Index the corpus into chromem-go
 index:
-	go run ./cmd/tutor \
+	go run ./cmd/tutor index \
 		-embedder-url $(EMBEDDER_URL) \
 		-hendrycks-dir $(HENDRYCKS_DIR) \
 		-gsm8k-file $(GSM8K_FILE) \
@@ -53,15 +65,15 @@ index:
 
 # Run a test query against the tutor
 run:
-	go run ./cmd/tutor -embedder-url $(EMBEDDER_URL) -query "$(Q)"
+	go run ./cmd/tutor index -embedder-url $(EMBEDDER_URL) -query "$(Q)"
 
 # Interactive Bubble Tea shell against a running serve-tutor (step 4)
 tui:
-	go run ./cmd/tui -tutor-url http://localhost:$(SERVE_PORT)
+	go run ./cmd/tutor chat -tutor-url http://localhost:$(SERVE_PORT)
 
 # The same shell, with ASCII math fallbacks instead of Unicode symbols
 tui-ascii:
-	go run ./cmd/tui -ascii -tutor-url http://localhost:$(SERVE_PORT)
+	go run ./cmd/tutor chat -ascii -tutor-url http://localhost:$(SERVE_PORT)
 
 # Generate a fresh sample of test cases from the corpus
 eval-sample:

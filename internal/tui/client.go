@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// askRequest mirrors cmd/serve's requestBody.
+// askRequest mirrors internal/cli.Serve's requestBody.
 type askRequest struct {
 	Problem     string  `json:"problem"`
 	MaxTokens   int     `json:"max_tokens"`

@@ -81,6 +81,32 @@ OpenStax PDFs are scaffolded in `ROADMAP.md` but not yet loaded.
 
 ## Quick start
 
+### Just want to try it? (no toolchain needed)
+
+Grab a prebuilt binary from [Releases](https://github.com/chuma-beep/tutor.gguf/releases)
+(or run `install.sh`), then:
+
+```bash
+tutor setup   # one-time: downloads llama.cpp, models (~1.2 GB), corpus; builds index
+tutor chat    # interactive shell — starts the whole stack and tears it down on exit
+```
+
+`setup` is idempotent: re-run it any time, it skips what already exists. Artifacts live in
+`~/.tutor/` (`models/`, `corpus/`, `bin/llama-server`, `chromem/`, `logs/`). Everything after
+setup runs 100% offline. `TUTOR_HOME` relocates the directory; `TUTOR_LLAMA_SERVER`,
+`TUTOR_THREADS`, `TUTOR_CTX`, and `TUTOR_DB_PATH` override runtime pieces.
+
+`tutor serve` (HTTP API on :8082) and `tutor index` work the same way — with no URL flags they
+spawn their own llama-servers on free ports; pass `-gen-url`/`-embedder-url` to use external
+servers instead.
+
+Windows: download `tutor-windows-amd64.exe` from Releases, run `tutor setup`, then `tutor chat`.
+
+### Developer flow (repo checkout)
+
+The Makefile targets below drive the three llama-server processes explicitly — same
+components, manual orchestration, useful when tuning or running evals.
+
 ### 1. Get the models
 
 ```bash
@@ -194,8 +220,8 @@ Each answer parsed correctly on the ADTC dev environment; subdomain text comes f
 ```
                     classify subdomain ──▶ domain instruction
                                      ▼
-problem ──▶ cmd/serve ──▶ Retriever ──▶ chromem-go "tutor-corpus" (vector store)
-              (HTTP)          │              ▲
+problem ──▶ tutor serve ──▶ Retriever ──▶ chromem-go "tutor-corpus" (vector store)
+             (HTTP)           │              ▲
                               │              │ EmbedQuery (search_query prefix)
                               └── top-K chunks
                                      │
@@ -206,8 +232,9 @@ problem ──▶ cmd/serve ──▶ Retriever ──▶ chromem-go "tutor-corp
 
 Components, in the order a request flows through them:
 
-1. `cmd/serve/main.go` — HTTP layer. Decodes the request, calls retrieval, builds the prompt,
-   calls generation, encodes the JSON response.
+1. `internal/cli/serve.go` — HTTP layer (`tutor serve` subcommand). Decodes the request, calls
+   retrieval, builds the prompt, calls generation, encodes the JSON response. With no URL flags
+   it also supervises the llama-server processes via `internal/runtime`.
 2. `internal/rag/retriever.go` — `Retriever.Retrieve`: classifies the subdomain, embeds the
    query (**with the `search_query` prefix**), queries the vector store via `QueryEmbedding`,
    filters / picks top-K, and falls back to the unfiltered pool if a subdomain filter leaves
