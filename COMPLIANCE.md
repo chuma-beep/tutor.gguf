@@ -31,7 +31,7 @@ Status legend: ✅ verified in repo · ⚠️ needs action · ⭕ not yet done
 
 | Field | Required | Value in repo | Match |
 |---|---|---|---|
-| `team_id` | ✅ | `chuma-beep` | ✅ |
+| `team_id` | ✅ | `tutor-gguf` (Devpost project ID) | ✅ |
 | `domain` | ✅ | `math_scientific_reasoning` (must be one of the 7) | ✅ |
 | `language_scope` | ✅ array of BCP-47 | `["en"]` | ✅ |
 | `african_alpha_claim` | ✅ | `true` (claiming African Use Case Bonus) | ✅ |
