@@ -52,8 +52,9 @@ say "Running setup — downloads ~1.2 GB (models + llama.cpp + corpus), one time
 case ":$PATH:" in
   *":$PREFIX:"*) ;;
   *)
-    say "Add ${PREFIX} to your PATH to use tutor anywhere:"
-    printf '    echo "export PATH=\"%s:\$PATH\"" >> ~/.bashrc\n' "$PREFIX"
+    say "${PREFIX} is not on your PATH — fix now and persist it:"
+    printf '    export PATH="%s:$PATH"          # run this in your current shell\n' "$PREFIX"
+    printf '    echo '"'"'export PATH="%s:$PATH"'"'"' >> ~/.bashrc   # persist\n' "$PREFIX"
     ;;
 esac
 
