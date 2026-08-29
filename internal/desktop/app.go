@@ -6,12 +6,15 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
+
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"github.com/chuma-beep/tutor.gguf/internal/llm"
 	"github.com/chuma-beep/tutor.gguf/internal/parse"
 	"github.com/chuma-beep/tutor.gguf/internal/prompt"
 	"github.com/chuma-beep/tutor.gguf/internal/rag"
-	"github.com/chuma-beep/tutor.gguf/internal/runtime"
+	goruntime "github.com/chuma-beep/tutor.gguf/internal/runtime"
 	chromem "github.com/philippgille/chromem-go"
 )
 
@@ -19,7 +22,7 @@ import (
 // direct Go bindings (no HTTP hop) while keeping the TUI intact.
 type App struct {
 	ctx        context.Context
-	mgr        *runtime.Manager
+	mgr        *goruntime.Manager
 	db         *chromem.DB
 	collection *chromem.Collection
 	retriever  *rag.Retriever
@@ -52,24 +55,24 @@ func (a *App) Startup(ctx context.Context) {
 }
 
 func (a *App) initRAG(ctx context.Context) error {
-	if _, err := runtime.DiscoverLlamaServer(); err != nil {
+	if _, err := goruntime.DiscoverLlamaServer(); err != nil {
 		return err
 	}
-	genPath := runtime.GenModelPath()
+	genPath := goruntime.GenModelPath()
 	if _, err := os.Stat(genPath); err != nil {
 		return fmt.Errorf("generation model missing at %s — run setup", genPath)
 	}
-	embedPath := runtime.EmbedModelPath()
+	embedPath := goruntime.EmbedModelPath()
 	if _, err := os.Stat(embedPath); err != nil {
 		return fmt.Errorf("embedding model missing at %s — run setup", embedPath)
 	}
-	mgr := runtime.New(runtime.Config{
+	mgr := goruntime.New(goruntime.Config{
 		GenModel:   genPath,
 		EmbedModel: embedPath,
 		Threads:    envInt("TUTOR_THREADS", 0),
 		Ctx:        envInt("TUTOR_CTX", 2048),
-		LogDir:     runtime.LogsDir(),
-		Mode:       runtime.ModeBoth,
+		LogDir:     goruntime.LogsDir(),
+		Mode:       goruntime.ModeBoth,
 	})
 	if err := mgr.Start(ctx); err != nil {
 		mgr.Stop()
@@ -151,18 +154,63 @@ func (a *App) Ask(problem string) (*AskResult, error) {
 	}, nil
 }
 
+// AskStream streams generation token-by-token to the frontend via Wails
+// events (chunk), then a done event with the final answer. It mirrors
+// /v1/complete/stream without the HTTP hop.
+func (a *App) AskStream(problem string) error {
+	if !a.ready || a.retriever == nil || a.genClient == nil {
+		return fmt.Errorf("RAG not ready: %s — run setup", a.startErr)
+	}
+	if problem == "" {
+		return fmt.Errorf("missing problem")
+	}
+	ctx := a.ctx
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	chunks, subdomain, err := a.retriever.Retrieve(ctx, problem)
+	if err != nil {
+		log.Printf("AskStream retrieval failed: %v", err)
+		chunks, subdomain = nil, "other"
+	}
+	promptStr := rag.BuildPrompt(problem, chunks, subdomain)
+	category := prompt.PromptCategory(subdomain)
+
+	// Emit meta event so the UI can show the pill immediately
+	runtime.EventsEmit(ctx, "tutor:stream:meta", map[string]string{
+		"subdomain": subdomain,
+		"category":  category,
+	})
+
+	var accum strings.Builder
+	_, err = a.genClient.CompleteStream(ctx, promptStr, func(delta string) error {
+		accum.WriteString(delta)
+		runtime.EventsEmit(ctx, "tutor:stream:chunk", map[string]string{"content": delta})
+		return nil
+	})
+	if err != nil {
+		runtime.EventsEmit(ctx, "tutor:stream:error", map[string]string{"error": err.Error()})
+		return err
+	}
+	runtime.EventsEmit(ctx, "tutor:stream:done", map[string]string{
+		"content": accum.String(),
+		"answer":  parse.Extract(accum.String()),
+	})
+	return nil
+}
+
 // GetPaths exposes Tutor Home locations to the frontend.
 func (a *App) GetPaths() map[string]string {
 	return map[string]string{
-		"home":        runtime.TutorHome(),
-		"db":          runtime.DBPath(),
-		"models":      runtime.ModelsDir(),
-		"bin":         runtime.BinDir(),
-		"logs":        runtime.LogsDir(),
-		"corpus":      runtime.CorpusDir(),
-		"genModel":    runtime.GenModelPath(),
-		"embedModel":  runtime.EmbedModelPath(),
-		"llamaServer": runtime.LlamaServerPath(),
+		"home":        goruntime.TutorHome(),
+		"db":          goruntime.DBPath(),
+		"models":      goruntime.ModelsDir(),
+		"bin":         goruntime.BinDir(),
+		"logs":        goruntime.LogsDir(),
+		"corpus":      goruntime.CorpusDir(),
+		"genModel":    goruntime.GenModelPath(),
+		"embedModel":  goruntime.EmbedModelPath(),
+		"llamaServer": goruntime.LlamaServerPath(),
 		"dbResolved":  a.dbPath,
 	}
 }
@@ -194,15 +242,15 @@ func (a *App) GetStatus() Status {
 		s.GenURL = a.mgr.GenURL()
 		s.EmbedURL = a.mgr.EmbedURL()
 	}
-	if p, err := runtime.DiscoverLlamaServer(); err == nil {
+	if p, err := goruntime.DiscoverLlamaServer(); err == nil {
 		s.LlamaServer = p
 		s.LlamaExists = true
 	}
-	if info, err := os.Stat(runtime.GenModelPath()); err == nil {
+	if info, err := os.Stat(goruntime.GenModelPath()); err == nil {
 		s.GenModelExists = true
 		s.GenModelBytes = info.Size()
 	}
-	if info, err := os.Stat(runtime.EmbedModelPath()); err == nil {
+	if info, err := os.Stat(goruntime.EmbedModelPath()); err == nil {
 		s.EmbedExists = true
 		s.EmbedBytes = info.Size()
 	}
@@ -271,7 +319,7 @@ func resolveDBPath(flagVal string) string {
 	if _, err := os.Stat("go.mod"); err == nil {
 		return "./data/chromem"
 	}
-	return runtime.DBPath()
+	return goruntime.DBPath()
 }
 
 func envInt(key string, fallback int) int {

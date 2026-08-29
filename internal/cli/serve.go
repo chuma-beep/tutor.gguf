@@ -14,6 +14,7 @@ import (
 
 	"github.com/chuma-beep/tutor.gguf/internal/llm"
 	"github.com/chuma-beep/tutor.gguf/internal/parse"
+	"github.com/chuma-beep/tutor.gguf/internal/prompt"
 	"github.com/chuma-beep/tutor.gguf/internal/rag"
 	chromem "github.com/philippgille/chromem-go"
 )
@@ -81,6 +82,57 @@ func NewRAGHandler(ctx context.Context, embedderURL, genURL, dbPath string) (htt
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(responseBody{Content: content, Answer: parse.Extract(content)})
+	})
+	mux.HandleFunc("/v1/complete/stream", func(w http.ResponseWriter, r *http.Request) {
+		var req requestBody
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, `{"error":"bad request"}`, 400)
+			return
+		}
+		if req.Problem == "" {
+			http.Error(w, `{"error":"missing problem"}`, 400)
+			return
+		}
+		chunks, subdomain, err := retriever.Retrieve(r.Context(), req.Problem)
+		if err != nil {
+			log.Printf("ERROR retrieval failed: %v", err)
+			chunks, subdomain = nil, "other"
+		}
+		fullPrompt := rag.BuildPrompt(req.Problem, chunks, subdomain)
+
+		// SSE headers
+		w.Header().Set("Content-Type", "text/event-stream")
+		w.Header().Set("Cache-Control", "no-cache")
+		w.Header().Set("Connection", "keep-alive")
+		w.Header().Set("X-Accel-Buffering", "no")
+		flusher, ok := w.(http.Flusher)
+		if !ok {
+			http.Error(w, `{"error":"streaming not supported"}`, 500)
+			return
+		}
+		// Send subdomain/category as initial event for UI pill
+		meta, _ := json.Marshal(map[string]string{"subdomain": subdomain, "category": prompt.PromptCategory(subdomain)})
+		fmt.Fprintf(w, "data: %s\n\n", string(meta))
+		flusher.Flush()
+
+		accum := ""
+		_, err = genClient.CompleteStream(r.Context(), fullPrompt, func(delta string) error {
+			accum += delta
+			chunk, _ := json.Marshal(map[string]string{"content": delta})
+			fmt.Fprintf(w, "data: %s\n\n", string(chunk))
+			flusher.Flush()
+			return nil
+		})
+		if err != nil {
+			chunk, _ := json.Marshal(map[string]string{"error": err.Error()})
+			fmt.Fprintf(w, "data: %s\n\n", string(chunk))
+			flusher.Flush()
+			return
+		}
+		final, _ := json.Marshal(map[string]string{"content": "", "answer": parse.Extract(accum), "done": "true"})
+		fmt.Fprintf(w, "data: %s\n\n", string(final))
+		fmt.Fprintf(w, "data: [DONE]\n\n")
+		flusher.Flush()
 	})
 	return mux, nil
 }

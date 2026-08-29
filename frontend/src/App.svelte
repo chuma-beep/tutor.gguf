@@ -14,29 +14,69 @@
   let retryLoading = false;
   let paths = null;
 
-  // Try wails binding, fallback to HTTP
-  async function askBackend(problem) {
-    // Wails binding (when running via wails dev/build)
+  let streamCleanup = null;
+
+  // Streaming backend: wails events when available, else HTTP SSE fallback.
+  // Calls onMeta({subdomain,category}), onDelta(content), onDone({content,answer}),
+  // onError(err).
+  function streamBackend(problem, { onMeta, onDelta, onDone, onError }) {
+    // Wails path (events emitted by App.AskStream)
     try {
       // @ts-ignore
       if (window.go && window.go.desktop && window.go.desktop.App) {
+        const offs = [];
         // @ts-ignore
-        const res = await window.go.desktop.App.Ask(problem);
-        return res;
+        const offMeta = window.runtime.EventsOn('tutor:stream:meta', (e) => onMeta && onMeta(e));
+        // @ts-ignore
+        const offChunk = window.runtime.EventsOn('tutor:stream:chunk', (e) => onDelta && onDelta(e.content || ''));
+        // @ts-ignore
+        const offDone = window.runtime.EventsOn('tutor:stream:done', (e) => { cleanup(); onDone && onDone(e); });
+        // @ts-ignore
+        const offErr = window.runtime.EventsOn('tutor:stream:error', (e) => { cleanup(); onError && onError(e.error || String(e)); });
+        const cleanup = () => { [offMeta, offChunk, offDone, offErr].forEach(f => f && f()); };
+        streamCleanup = cleanup;
+        // @ts-ignore
+        window.go.desktop.App.AskStream(problem).then(() => {}).catch((e) => { cleanup(); onError && onError(String(e)); });
+        return;
       }
     } catch (e) {
-      console.log('wails binding not available, falling back to HTTP', e);
+      console.log('wails streaming not available, falling back to HTTP SSE', e);
     }
-    // Fallback HTTP to local RAG server (dev without wails)
-    const resp = await fetch('http://127.0.0.1:8082/v1/complete', {
+    // HTTP SSE fallback
+    fetch('http://127.0.0.1:8082/v1/complete/stream', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ problem })
-    });
-    if (!resp.ok) throw new Error(`server error ${resp.status}`);
-    const data = await resp.json();
-    // data is {content, answer}
-    return { content: data.content, answer: data.answer, subdomain: 'other', category: 'other', chunks: [], prompt: '' };
+    }).then(async (resp) => {
+      if (!resp.ok) throw new Error(`server error ${resp.status}`);
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = '';
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        let idx;
+        while ((idx = buf.indexOf('\n\n')) >= 0) {
+          const block = buf.slice(0, idx);
+          buf = buf.slice(idx + 2);
+          for (const line of block.split('\n')) {
+            const l = line.trim();
+            if (!l.startsWith('data:')) continue;
+            const payload = l.slice(5).trim();
+            if (payload === '[DONE]') continue;
+            let ev;
+            try { ev = JSON.parse(payload); } catch { continue; }
+            if (ev.error) { onError && onError(ev.error); continue; }
+            if (ev.subdomain || ev.category) { onMeta && onMeta({subdomain: ev.subdomain, category: ev.category}); continue; }
+            if (ev.done) { onDone && onDone({content: ev.content || '', answer: ev.answer || ''}); continue; }
+            if (ev.content) onDelta && onDelta(ev.content);
+          }
+        }
+      }
+      // stream closed without done marker
+      onDone && onDone({ content: '', answer: '' });
+    }).catch((e) => onError && onError(String(e)));
   }
 
   function saveHistory() {
@@ -97,34 +137,50 @@
     }
   }
 
-  async function submit() {
+  function finalizeStream(q, { content, answer, subdomain, category }) {
+    const turn = {
+      question: q,
+      answer: content || streaming?.answer || '',
+      boxed: answer || '',
+      subdomain: subdomain || streaming?.subdomain || 'other',
+      category: category || streaming?.category || 'other',
+      chunks: [],
+      prompt: ''
+    };
+    turns = [...turns, turn];
+    saveHistory();
+    streaming = null;
+    loading = false;
+  }
+
+  function submit() {
     const q = input.trim();
     if (!q || loading) return;
     input = '';
     loading = true;
     errorMsg = '';
-    streaming = { question: q, answer: '' };
-    try {
-      const res = await askBackend(q);
-      const turn = {
-        question: q,
-        answer: res.content || '',
-        boxed: res.answer || '',
-        subdomain: res.subdomain || 'other',
-        category: res.category || 'other',
-        chunks: res.chunks || [],
-        prompt: res.prompt || ''
-      };
-      turns = [...turns, turn];
-      saveHistory();
-    } catch (e) {
-      const turn = { question: q, error: e.message || String(e) };
-      turns = [...turns, turn];
-      saveHistory();
-    } finally {
-      streaming = null;
-      loading = false;
-    }
+    streaming = { question: q, answer: '', subdomain: 'other', category: 'other' };
+    let done = false;
+    streamBackend(q, {
+      onMeta: (m) => {
+        if (streaming) { streaming = { ...streaming, subdomain: m.subdomain || streaming.subdomain, category: m.category || streaming.category }; }
+      },
+      onDelta: (d) => {
+        if (streaming) streaming = { ...streaming, answer: streaming.answer + d };
+      },
+      onDone: (e) => {
+        if (done) return; done = true;
+        finalizeStream(q, e);
+      },
+      onError: (err) => {
+        if (done) return; done = true;
+        const turn = { question: q, error: String(err) };
+        turns = [...turns, turn];
+        saveHistory();
+        streaming = null;
+        loading = false;
+      }
+    });
   }
 
   function handleKey(e) {
@@ -137,6 +193,7 @@
   function clearHistory() {
     turns = [];
     localStorage.removeItem('tutor-history');
+    if (streamCleanup) { streamCleanup(); streamCleanup = null; }
   }
   function escapeHtml(s) {
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
