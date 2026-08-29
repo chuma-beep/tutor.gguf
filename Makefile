@@ -40,8 +40,9 @@ serve-gen:
 	$(LLAMA_BIN) -m $(GEN_MODEL) --port $(GEN_PORT) -t $(THREADS) -c $(CTX)
 
 # Start the embedding model (nomic-embed-text)
+# batch 8192 = nomic native context; 2048 rejected >2048-token docs (500).
 serve-embed:
-	$(LLAMA_BIN) -m $(EMBED_MODEL) --embeddings --batch-size 2048 --ubatch-size 2048 --port $(EMBED_PORT) -t $(THREADS)
+	$(LLAMA_BIN) -m $(EMBED_MODEL) --embeddings --batch-size 8192 --ubatch-size 8192 -c 8192 --port $(EMBED_PORT) -t $(THREADS)
 
 # Start the judge model (Qwen2.5-3B-Instruct) for llm-rubric evals
 serve-judge:

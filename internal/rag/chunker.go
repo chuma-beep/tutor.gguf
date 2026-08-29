@@ -32,26 +32,37 @@ type GSM8KItem struct {
 	Answer   string `json:"answer"`
 }
 
-// LoadHendrycksFile processes a single Hendrycks JSON file into one chunk.
-func LoadHendrycksFile(filePath string) (Chunk, error) {
+// LoadHendrycksFile processes a single Hendrycks JSON file. It returns one
+// chunk, or several when the problem+solution text exceeds
+// hendrycksMaxChunkChars — dense LaTeX solutions (e.g. Asymptote geometry)
+// can run > 2000 tokens, so splitting keeps every chunk safely inside the
+// embedding server's physical batch.
+func LoadHendrycksFile(filePath string) ([]Chunk, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
-		return Chunk{}, fmt.Errorf("failed to open Hendrycks file: %w", err)
+		return nil, fmt.Errorf("failed to open Hendrycks file: %w", err)
 	}
 	defer file.Close()
 	var item HendrycksItem
 	if err := json.NewDecoder(file).Decode(&item); err != nil {
-		return Chunk{}, fmt.Errorf("failed to decode Hendrycks JSON: %w", err)
+		return nil, fmt.Errorf("failed to decode Hendrycks JSON: %w", err)
 	}
-	return Chunk{
-		Text:      fmt.Sprintf("Problem: %s\nSolution: %s", item.Problem, item.Solution),
-		Subdomain: mapTypeToSubdomain(item.Type),
-		Source:    "hendrycks_math",
-		Level:     item.Level,
-	}, nil
+	text := fmt.Sprintf("Problem: %s\nSolution: %s", item.Problem, item.Solution)
+	subdomain := mapTypeToSubdomain(item.Type)
+	var chunks []Chunk
+	for _, seg := range splitOnLines(text, hendrycksMaxChunkChars) {
+		chunks = append(chunks, Chunk{
+			Text:      seg,
+			Subdomain: subdomain,
+			Source:    "hendrycks_math",
+			Level:     item.Level,
+		})
+	}
+	return chunks, nil
 }
 
-// LoadGSM8KFile processes an entire GSM8K JSONL file, returning one chunk per line.
+// LoadGSM8KFile processes an entire GSM8K JSONL file, returning one chunk per
+// line (or more when a line's problem+solution exceeds gsm8kMaxChunkChars).
 func LoadGSM8KFile(filePath string) ([]Chunk, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -69,11 +80,14 @@ func LoadGSM8KFile(filePath string) ([]Chunk, error) {
 		if err := json.Unmarshal(line, &item); err != nil {
 			return nil, fmt.Errorf("failed to decode GSM8K line: %w", err)
 		}
-		chunks = append(chunks, Chunk{
-			Text:      fmt.Sprintf("Problem: %s\nSolution: %s", item.Question, item.Answer),
-			Subdomain: "calculus", // GSM8K consists of word problems
-			Source:    "gsm8k",
-		})
+		text := fmt.Sprintf("Problem: %s\nSolution: %s", item.Question, item.Answer)
+		for _, seg := range splitOnLines(text, gsm8kMaxChunkChars) {
+			chunks = append(chunks, Chunk{
+				Text:      seg,
+				Subdomain: "calculus", // GSM8K consists of word problems
+				Source:    "gsm8k",
+			})
+		}
 	}
 	if err := scanner.Err(); err != nil {
 		return nil, fmt.Errorf("error reading GSM8K file: %w", err)
@@ -124,9 +138,16 @@ func LoadRosenDir(dirPath string) ([]Chunk, error) {
 	return chunks, nil
 }
 
-// rosenMaxChunkChars keeps every Rosen chunk comfortably below the embedding
-// server's 2048-token physical batch even for dense raw LaTeX.
-const rosenMaxChunkChars = 2000
+// Chunk-size budgets in characters. Rosen keeps its proven 2000-char budget
+// (≈600 dense-LaTeX tokens — safely inside the 8192-token physical batch).
+// Hendrycks and GSM8K use a larger budget since their texts are one
+// problem+solution unit; the 8192 batch leaves ample headroom (6000 chars
+// ≈ 2000 tokens + the search_document prefix).
+const (
+	rosenMaxChunkChars     = 2000
+	hendrycksMaxChunkChars = 6000
+	gsm8kMaxChunkChars     = 6000
+)
 
 // splitOnLines cuts s into segments of at most max characters, preferring to
 // break after a newline so solutions don't split mid-equation.

@@ -116,8 +116,24 @@ func RunIndex(ctx context.Context, o IndexOptions) error {
 		}
 
 		fmt.Printf("embedding + indexing %d chunks (this calls the embedder once per chunk, sequentially)...\n", len(docs))
-		if err := collection.AddDocuments(ctx, docs, 1); err != nil {
-			return fmt.Errorf("add documents: %w", err)
+		// Index per-document so one pathological chunk (e.g. > context
+		// window even after splitting) warns and continues instead of
+		// aborting the whole corpus. AddDocument is a single embed+store;
+		// the previous AddDocuments(ctx, docs, 1) was already one HTTP call
+		// per doc, so this has no extra cost.
+		var skipped int
+		for i, d := range docs {
+			if err := collection.AddDocument(ctx, d); err != nil {
+				fmt.Printf("  ⚠ skipping document '%s': %v\n", d.ID, err)
+				skipped++
+				continue
+			}
+			if (i+1)%500 == 0 {
+				fmt.Printf("  … %d/%d indexed\n", i+1, len(docs))
+			}
+		}
+		if skipped > 0 {
+			fmt.Printf("⚠ index partial: %d/%d chunks indexed (%d skipped)\n", len(docs)-skipped, len(docs), skipped)
 		}
 		fmt.Println("indexing done")
 	}
@@ -147,7 +163,8 @@ func RunIndex(ctx context.Context, o IndexOptions) error {
 }
 
 // loadHendrycksDir applies LoadHendrycksFile across every .json file in a
-// directory, since the chunker only handles one file at a time.
+// directory. Each file may yield one or more chunks (oversized solutions are
+// split by the chunker).
 func loadHendrycksDir(dir string) ([]rag.Chunk, error) {
 	entries, err := readJSONFiles(dir)
 	if err != nil {
@@ -155,11 +172,11 @@ func loadHendrycksDir(dir string) ([]rag.Chunk, error) {
 	}
 	var chunks []rag.Chunk
 	for _, path := range entries {
-		c, err := rag.LoadHendrycksFile(path)
+		cs, err := rag.LoadHendrycksFile(path)
 		if err != nil {
 			return nil, fmt.Errorf("%s: %w", path, err)
 		}
-		chunks = append(chunks, c)
+		chunks = append(chunks, cs...)
 	}
 	return chunks, nil
 }

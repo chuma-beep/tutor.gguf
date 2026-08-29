@@ -117,8 +117,12 @@ func (m *Manager) Start(ctx context.Context) error {
 		cmd, err := m.spawn(server, "embed", []string{
 			"-m", m.cfg.EmbedModel,
 			"--embeddings",
-			"--batch-size", "2048",
-			"--ubatch-size", "2048",
+			// Physical batch = nomic-embed-text native context (8192).
+			// 2048 rejected single-doc embeddings > 2048 tokens (e.g. a
+			// dense LaTeX Hendrycks solution, 2209 tokens → 500).
+			"--batch-size", "8192",
+			"--ubatch-size", "8192",
+			"-c", "8192",
 			"--port", strconv.Itoa(port),
 			"-t", strconv.Itoa(m.cfg.Threads),
 		})
