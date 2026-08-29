@@ -10,6 +10,7 @@ import (
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
+	"github.com/chuma-beep/tutor.gguf/internal/cli"
 	"github.com/chuma-beep/tutor.gguf/internal/llm"
 	"github.com/chuma-beep/tutor.gguf/internal/parse"
 	"github.com/chuma-beep/tutor.gguf/internal/prompt"
@@ -196,6 +197,46 @@ func (a *App) AskStream(problem string) error {
 		"content": accum.String(),
 		"answer":  parse.Extract(accum.String()),
 	})
+	return nil
+}
+
+// Setup runs the 8-phase provisioning in the background, emitting
+// tutor:setup:progress events. Returns an error if any phase fails; on
+// success it re-initializes the RAG stack so chat is immediately available.
+func (a *App) Setup(force, skipModels, skipCorpus bool) error {
+	ctx := a.ctx
+	if ctx == nil {
+		ctx = context.Background()
+		a.ctx = ctx
+	}
+	err := cli.SetupWithProgress(ctx, cli.SetupOptions{
+		Force:      force,
+		SkipModels: skipModels,
+		SkipCorpus: skipCorpus,
+		Progress: func(p cli.SetupProgress) {
+			runtime.EventsEmit(ctx, "tutor:setup:progress", map[string]string{
+				"phase":   p.Phase,
+				"message": p.Message,
+			})
+		},
+	})
+	if err != nil {
+		runtime.EventsEmit(ctx, "tutor:setup:error", map[string]string{"error": err.Error()})
+		return err
+	}
+	runtime.EventsEmit(ctx, "tutor:setup:done", map[string]string{"message": "setup complete"})
+	// Re-init the RAG stack now that artifacts exist.
+	if a.mgr != nil {
+		a.mgr.Stop()
+		a.mgr = nil
+	}
+	a.ready = false
+	a.startErr = ""
+	if err := a.initRAG(ctx); err != nil {
+		a.startErr = err.Error()
+		return err
+	}
+	a.ready = true
 	return nil
 }
 

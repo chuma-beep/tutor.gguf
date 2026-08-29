@@ -13,6 +13,8 @@
   let checking = true;
   let retryLoading = false;
   let paths = null;
+  let setupLog = []; // { phase, message }
+  let setupRunning = false;
 
   let streamCleanup = null;
 
@@ -91,10 +93,43 @@
     } catch {}
   }
 
+  function onSetupProgress(e) {
+    setupLog = [...setupLog.slice(-200), e];
+  }
+
   onMount(async () => {
     loadHistory();
+    // Subscribe to setup progress events when running under Wails
+    // @ts-ignore
+    if (window.runtime && window.runtime.EventsOn) {
+      // @ts-ignore
+      window.runtime.EventsOn('tutor:setup:progress', onSetupProgress);
+      // @ts-ignore
+      window.runtime.EventsOn('tutor:setup:error', (e) => { setupRunning = false; setupLog = [...setupLog, { phase: 'error', message: e.error || String(e) }]; });
+      // @ts-ignore
+      window.runtime.EventsOn('tutor:setup:done', async () => { setupRunning = false; await checkStatus(); });
+    }
     await checkStatus();
   });
+
+  async function runSetup() {
+    setupRunning = true;
+    setupLog = [];
+    try {
+      // @ts-ignore
+      if (window.go && window.go.desktop && window.go.desktop.App) {
+        // @ts-ignore
+        await window.go.desktop.App.Setup(false, false, false);
+      } else {
+        // Dev without wails: hint to run in terminal
+        setupLog = [{ phase: 'info', message: 'Not under Wails — run `tutor setup` in a terminal, then refresh.' }];
+        setupRunning = false;
+      }
+    } catch (e) {
+      setupRunning = false;
+      setupLog = [...setupLog, { phase: 'error', message: String(e) }];
+    }
+  }
 
   async function checkStatus() {
     checking = true;
@@ -274,10 +309,20 @@
         <li>DB: {status.dbChunks} chunks @ {status.dbPath}</li>
       </ul>
       <div class="setup-row">
-        <button on:click={retryInit} disabled={retryLoading}>{retryLoading ? 'Retrying…' : 'Retry'}</button>
+        <button on:click={runSetup} disabled={setupRunning}>{setupRunning ? 'Setting up…' : 'Run Setup'}</button>
+        <button on:click={retryInit} disabled={retryLoading || setupRunning}>{retryLoading ? 'Retrying…' : 'Retry'}</button>
         <button class="ghost" on:click={checkStatus}>Refresh</button>
-        <span class="muted">Background setup: run <code>tutor setup</code> in terminal, then Retry. Chat is enabled when DB has chunks.</span>
       </div>
+      {#if setupRunning || setupLog.length}
+        <div class="setup-progress">
+          {#each setupLog as e, i}
+            <div class:setup-error={e.phase === 'error'}>[{e.phase}] {e.message}</div>
+          {/each}
+          {#if setupRunning}<span class="spinner">● working…</span>{/if}
+        </div>
+      {:else}
+        <p class="muted">First launch downloads ~1.2 GB (models + corpus), builds the index, then enables chat automatically. Runs in background — cancel-safe.</p>
+      {/if}
       {#if paths}<details><summary>Paths</summary><pre class="prompt">{JSON.stringify(paths, null, 2)}</pre></details>{/if}
     </div>
   {/if}
@@ -362,4 +407,6 @@
   .muted { color: #aaa; font-size: 12px; }
   .status { font-size: 12px; color: #bbb; }
   .setup-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
+  .setup-progress { background: #111; border-radius: 6px; padding: 8px; font-size: 11px; color: #8f8; margin-top: 8px; max-height: 160px; overflow-y: auto; }
+  .setup-progress .setup-error { color: #ff6b6b; }
 </style>

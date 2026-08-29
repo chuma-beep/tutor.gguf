@@ -43,6 +43,27 @@ var hendrycksConfigs = []string{
 	"number_theory", "prealgebra", "precalculus",
 }
 
+// SetupProgress is a phase-level progress event emitted during setup.
+type SetupProgress struct {
+	Phase   string `json:"phase"`
+	Message string `json:"message"`
+}
+
+// SetupOptions controls one SetupWithProgress run.
+type SetupOptions struct {
+	Force       bool
+	SkipModels  bool
+	SkipCorpus  bool
+	Progress    func(SetupProgress)
+}
+
+func report(p ProgressFn, phase, format string, a ...interface{}) {
+	if p == nil {
+		return
+	}
+	p(SetupProgress{Phase: phase, Message: fmt.Sprintf(format, a...)})
+}
+
 // Setup provisions everything needed to run offline: the llama.cpp server
 // binary, both GGUF models, the corpus snapshot (Rosen ships embedded in this
 // binary), and the vector-store index. Every step is idempotent.
@@ -62,8 +83,24 @@ func Setup(args []string) error {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
+	return SetupWithProgress(ctx, SetupOptions{
+		Force:      *force,
+		SkipModels: *skipModels,
+		SkipCorpus: *skipCorpus,
+		Progress: func(p SetupProgress) {
+			fmt.Printf("[%s] %s\n", p.Phase, p.Message)
+		},
+	})
+}
+
+// ProgressFn receives phase progress during setup.
+type ProgressFn func(SetupProgress)
+
+// SetupWithProgress runs the full 8-phase provisioning with a progress
+// callback. Shared by the CLI (Setup) and the desktop App.
+func SetupWithProgress(ctx context.Context, opts SetupOptions) error {
 	base := runtime.TutorHome()
-	fmt.Printf("tutor setup — installing into %s\n\n", base)
+	report(opts.Progress, "dirs", "installing into %s", base)
 	for _, d := range []string{runtime.ModelsDir(), runtime.BinDir(), runtime.LogsDir(),
 		filepath.Join(runtime.CorpusDir(), "gsm8k"),
 		filepath.Join(runtime.CorpusDir(), "hendrycks_math", "train")} {
@@ -72,39 +109,50 @@ func Setup(args []string) error {
 		}
 	}
 
-	if !*skipModels {
-		if err := ensureLlamaServer(ctx, *force); err != nil {
+	if !opts.SkipModels {
+		report(opts.Progress, "llama", "installing llama-server (tag %s)", envOr("TUTOR_LLAMA_TAG", defaultLlamaTag))
+		if err := ensureLlamaServer(ctx, opts.Force); err != nil {
 			return err
 		}
-		if err := ensureGGUF(ctx, genModelURL, runtime.GenModelPath(), "~1.1 GB (generation)", *force); err != nil {
+		report(opts.Progress, "gen-model", "download %s", "~1.1 GB (generation)")
+		if err := ensureGGUF(ctx, genModelURL, runtime.GenModelPath(), "~1.1 GB (generation)", opts.Force); err != nil {
 			return err
 		}
-		if err := ensureGGUF(ctx, embedModelURL, runtime.EmbedModelPath(), "~90 MB (embeddings)", *force); err != nil {
-			return err
-		}
-	}
-
-	if !*skipCorpus {
-		if err := ensureGSM8K(ctx, *force); err != nil {
-			return err
-		}
-		if err := ensureHendrycks(ctx, *force); err != nil {
-			return err
-		}
-		if err := ensureRosen(*force); err != nil {
+		report(opts.Progress, "embed-model", "download %s", "~90 MB (embeddings)")
+		if err := ensureGGUF(ctx, embedModelURL, runtime.EmbedModelPath(), "~90 MB (embeddings)", opts.Force); err != nil {
 			return err
 		}
 	}
 
-	if err := runSetupIndex(ctx, *force); err != nil {
+	if !opts.SkipCorpus {
+		report(opts.Progress, "gsm8k", "downloading GSM8K training problems")
+		if err := ensureGSM8K(ctx, opts.Force); err != nil {
+			return err
+		}
+		report(opts.Progress, "hendrycks", "downloading Hendrycks MATH train split (%d configs)", len(hendrycksConfigs))
+		if err := ensureHendrycks(ctx, opts.Force); err != nil {
+			return err
+		}
+		report(opts.Progress, "rosen", "writing embedded Rosen corpus")
+		if err := ensureRosen(opts.Force); err != nil {
+			return err
+		}
+	}
+
+	report(opts.Progress, "index", "building vector index (sequential embeddings, may take a while)")
+	if err := runSetupIndex(ctx, opts.Force); err != nil {
 		return err
 	}
 
-	fmt.Printf("\n✓ setup complete\n")
-	fmt.Printf("  models: %s\n  index:  %s\n", runtime.ModelsDir(), runtime.DBPath())
-	fmt.Println("\nStart tutoring:")
-	fmt.Println("  tutor chat")
+	report(opts.Progress, "done", "setup complete — models: %s, index: %s", runtime.ModelsDir(), runtime.DBPath())
 	return nil
+}
+
+func envOr(key, fallback string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
+	}
+	return fallback
 }
 
 func ensureLlamaServer(ctx context.Context, force bool) error {
