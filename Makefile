@@ -20,7 +20,7 @@ CTX           ?= 2048
 # Single static binary built from ./cmd/tutor (subcommands: serve|index|chat)
 BIN           := bin/tutor
 
-.PHONY: build setup serve-gen serve-embed serve-judge serve-tutor index run tui tui-ascii eval eval-fresh eval-quality eval-view eval-sample profile profile-audit build-desktop dev-desktop
+.PHONY: build setup serve-gen serve-embed serve-judge serve-tutor index run tui tui-ascii eval eval-fresh eval-quality eval-view eval-sample profile profile-audit build-desktop dev-desktop dev-desktop-nobind
 
 # Build the single tutor binary (trimpath + stripped for release-style size)
 build:
@@ -113,6 +113,11 @@ build-desktop:
 # Dev shell with hot reload (Svelte + Go)
 dev-desktop:
 	wails dev -tags desktop
+
+# Dev without bindings generation (workaround for AppArmor noexec on /tmp)
+# Use when 'wails dev' hits 'fork/exec .../wailsbindings: permission denied'
+dev-desktop-nobind:
+	wails dev -tags desktop -skipbindings
 
 # Run the ADTC profiler with a real accuracy benchmark (Sacc estimate)
 profile-audit:
