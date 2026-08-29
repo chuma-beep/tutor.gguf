@@ -10,5 +10,27 @@
   "author": {
     "name": "chuma-beep",
     "email": "wisboynelson123@gmail.com"
+  },
+  "info": {
+    "companyName": "tutor.gguf",
+    "productName": "Tutor.gguf",
+    "productVersion": "0.1.0",
+    "copyright": "© 2026 chuma-beep",
+    "comments": "On-device math tutor. Download once, runs 100% offline."
+  },
+  "windows": {
+    "icon": "build/windows/icon.png",
+    "nsis": {
+      "installMode": "perMachine"
+    }
+  },
+  "darwin": {
+    "icon": "build/darwin/icon.icns",
+    "universal": true
+  },
+  "linux": {
+    "icon": "build/linux/icon.png",
+    "deb": {},
+    "appimage": {}
   }
 }

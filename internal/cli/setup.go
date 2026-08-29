@@ -46,8 +46,10 @@ var hendrycksConfigs = []string{
 
 // SetupProgress is a phase-level progress event emitted during setup.
 type SetupProgress struct {
-	Phase   string `json:"phase"`
-	Message string `json:"message"`
+	Phase      string `json:"phase"`
+	Message    string `json:"message"`
+	Downloaded int64  `json:"downloaded,omitempty"`
+	Total      int64  `json:"total,omitempty"`
 }
 
 // SetupOptions controls one SetupWithProgress run.
@@ -63,6 +65,14 @@ func report(p ProgressFn, phase, format string, a ...interface{}) {
 		return
 	}
 	p(SetupProgress{Phase: phase, Message: fmt.Sprintf(format, a...)})
+}
+
+// reportBytes emits a progress event carrying byte counts for the UI bar.
+func reportBytes(p ProgressFn, phase string, downloaded, total int64) {
+	if p == nil {
+		return
+	}
+	p(SetupProgress{Phase: phase, Downloaded: downloaded, Total: total})
 }
 
 // Setup provisions everything needed to run offline: the llama.cpp server
@@ -112,15 +122,15 @@ func SetupWithProgress(ctx context.Context, opts SetupOptions) error {
 
 	if !opts.SkipModels {
 		report(opts.Progress, "llama", "installing llama-server (tag %s)", envOr("TUTOR_LLAMA_TAG", defaultLlamaTag))
-		if err := ensureLlamaServer(ctx, opts.Force); err != nil {
+		if err := ensureLlamaServer(ctx, opts.Force, opts.Progress); err != nil {
 			return err
 		}
 		report(opts.Progress, "gen-model", "download %s", "~1.1 GB (generation)")
-		if err := ensureGGUF(ctx, genModelURL, runtime.GenModelPath(), "~1.1 GB (generation)", opts.Force); err != nil {
+		if err := ensureGGUF(ctx, genModelURL, runtime.GenModelPath(), "~1.1 GB (generation)", "gen-model", opts.Force, opts.Progress); err != nil {
 			return err
 		}
 		report(opts.Progress, "embed-model", "download %s", "~90 MB (embeddings)")
-		if err := ensureGGUF(ctx, embedModelURL, runtime.EmbedModelPath(), "~90 MB (embeddings)", opts.Force); err != nil {
+		if err := ensureGGUF(ctx, embedModelURL, runtime.EmbedModelPath(), "~90 MB (embeddings)", "embed-model", opts.Force, opts.Progress); err != nil {
 			return err
 		}
 	}
@@ -156,7 +166,7 @@ func envOr(key, fallback string) string {
 	return fallback
 }
 
-func ensureLlamaServer(ctx context.Context, force bool) error {
+func ensureLlamaServer(ctx context.Context, force bool, p ProgressFn) error {
 	if !force {
 		if p, err := runtime.DiscoverLlamaServer(); err == nil {
 			fmt.Printf("✓ llama-server: %s\n", p)
@@ -181,7 +191,9 @@ func ensureLlamaServer(ctx context.Context, force bool) error {
 	}
 	defer os.RemoveAll(tmp)
 	archive := filepath.Join(tmp, filepath.Base(url))
-	if _, err := fetch.EnsureFile(ctx, url, archive); err != nil {
+	if _, err := fetch.EnsureFileProgress(ctx, url, archive, func(d, t int64) {
+		reportBytes(p, "llama", d, t)
+	}); err != nil {
 		return fmt.Errorf("fetching prebuilt llama.cpp failed (%w) — build it from source and point $TUTOR_LLAMA_SERVER at llama-server instead", err)
 	}
 
@@ -209,14 +221,14 @@ func ensureLlamaServer(ctx context.Context, force bool) error {
 	if err := os.Chmod(runtime.LlamaServerPath(), 0o755); err != nil {
 		return err
 	}
-	p, err := runtime.DiscoverLlamaServer()
+	bin, err := runtime.DiscoverLlamaServer()
 	if err != nil {
 		return fmt.Errorf("installed llama-server but still cannot find it: %w", err)
 	}
-	if err := verifyLlamaServer(p); err != nil {
+	if err := verifyLlamaServer(bin); err != nil {
 		return err
 	}
-	fmt.Printf("✓ llama-server installed: %s\n", p)
+	fmt.Printf("✓ llama-server installed: %s\n", bin)
 	return nil
 }
 
@@ -239,7 +251,7 @@ func llamaAssetSuffix(goos, goarch string) (string, error) {
 	}
 }
 
-func ensureGGUF(ctx context.Context, url, dest, label string, force bool) error {
+func ensureGGUF(ctx context.Context, url, dest, label, phase string, force bool, p ProgressFn) error {
 	if !force {
 		if info, err := os.Stat(dest); err == nil && info.Size() > 0 {
 			fmt.Printf("✓ %s (%s)\n", dest, humanSize(info.Size()))
@@ -247,7 +259,9 @@ func ensureGGUF(ctx context.Context, url, dest, label string, force bool) error 
 		}
 	}
 	fmt.Printf("↓ downloading %s → %s\n", label, dest)
-	did, err := fetch.EnsureFile(ctx, url, dest)
+	did, err := fetch.EnsureFileProgress(ctx, url, dest, func(d, t int64) {
+		reportBytes(p, phase, d, t)
+	})
 	if err != nil {
 		return err
 	}

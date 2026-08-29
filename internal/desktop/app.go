@@ -31,6 +31,8 @@ type App struct {
 	dbPath     string
 	ready      bool
 	startErr   string
+
+	setupCancel context.CancelFunc
 }
 
 // NewApp creates a new App.
@@ -201,23 +203,30 @@ func (a *App) AskStream(problem string) error {
 	return nil
 }
 
-// Setup runs the 8-phase provisioning in the background, emitting
-// tutor:setup:progress events. Returns an error if any phase fails; on
-// success it re-initializes the RAG stack so chat is immediately available.
+// Setup runs the 8-phase provisioning, emitting tutor:setup:progress events
+// (including byte counts for the progress bar). Returns an error if any phase
+// fails; on success it re-initializes the RAG stack so chat is available.
 func (a *App) Setup(force, skipModels, skipCorpus bool) error {
 	ctx := a.ctx
 	if ctx == nil {
 		ctx = context.Background()
 		a.ctx = ctx
 	}
-	err := cli.SetupWithProgress(ctx, cli.SetupOptions{
+	// Cancel any previous run, then give this run a cancellable context.
+	a.CancelSetup()
+	setupCtx, cancel := context.WithCancel(ctx)
+	a.setupCancel = cancel
+	defer func() { a.setupCancel = nil }()
+	err := cli.SetupWithProgress(setupCtx, cli.SetupOptions{
 		Force:      force,
 		SkipModels: skipModels,
 		SkipCorpus: skipCorpus,
 		Progress: func(p cli.SetupProgress) {
-			runtime.EventsEmit(ctx, "tutor:setup:progress", map[string]string{
-				"phase":   p.Phase,
-				"message": p.Message,
+			runtime.EventsEmit(ctx, "tutor:setup:progress", map[string]interface{}{
+				"phase":      p.Phase,
+				"message":    p.Message,
+				"downloaded": p.Downloaded,
+				"total":      p.Total,
 			})
 		},
 	})
@@ -239,6 +248,15 @@ func (a *App) Setup(force, skipModels, skipCorpus bool) error {
 	}
 	a.ready = true
 	return nil
+}
+
+// CancelSetup cancels an in-flight Setup. The next setup call will resume
+// from where it stopped (idempotent phases + .part resume).
+func (a *App) CancelSetup() {
+	if a.setupCancel != nil {
+		a.setupCancel()
+		a.setupCancel = nil
+	}
 }
 
 // GetPaths exposes Tutor Home locations to the frontend.

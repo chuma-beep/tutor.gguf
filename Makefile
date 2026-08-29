@@ -20,7 +20,7 @@ CTX           ?= 2048
 # Single static binary built from ./cmd/tutor (subcommands: serve|index|chat)
 BIN           := bin/tutor
 
-.PHONY: build setup serve-gen serve-embed serve-judge serve-tutor index run tui tui-ascii eval eval-fresh eval-quality eval-view eval-sample profile profile-audit build-desktop dev-desktop dev-desktop-nobind
+.PHONY: build setup serve-gen serve-embed serve-judge serve-tutor index run tui tui-ascii eval eval-fresh eval-quality eval-view eval-sample profile profile-audit build-desktop build-desktop-wails release-desktop bundle-offline dev-desktop dev-desktop-nobind
 
 # Build the single tutor binary (trimpath + stripped for release-style size)
 build:
@@ -118,6 +118,22 @@ build-desktop-wails:
 	npm --prefix frontend ci --legacy-peer-deps
 	npm --prefix frontend run build
 	wails build -clean -tags desktop -ldflags "-s -w"
+
+# Production installers for all platforms (thin: ~15 MB, no models bundled).
+# First launch auto-downloads ~1.2 GB, then runs 100% offline. Unsigned.
+release-desktop:
+	npm --prefix frontend ci --legacy-peer-deps
+	npm --prefix frontend run build
+	wails build -clean -tags desktop -ldflags "-s -w" -platform linux/amd64 -nsis || true
+	wails build -clean -tags desktop -ldflags "-s -w" -platform windows/amd64 -nsis || true
+	wails build -clean -tags desktop -ldflags "-s -w" -platform darwin/universal || true
+	ls -lh build/bin/
+
+# Fat offline pack for air-gapped labs: pre-seeded ~/.tutor (models + corpus +
+# index), ~1.4 GB. Campus Wi-Fi once, then USB.
+bundle-offline:
+	go run ./cmd/tutor setup
+	tar -C $$(go env HOME)/.tutor -czf build/bin/tutor-offline.tar.gz .
 
 # Dev shell with hot reload (Svelte + Go)
 dev-desktop:

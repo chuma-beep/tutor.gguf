@@ -20,6 +20,15 @@ import (
 // EnsureFile downloads url to dest unless dest already exists non-empty.
 // It reports whether a download actually happened.
 func EnsureFile(ctx context.Context, url, dest string) (bool, error) {
+	return EnsureFileProgress(ctx, url, dest, nil)
+}
+
+// ProgressFunc reports download progress in bytes.
+type ProgressFunc func(downloaded, total int64)
+
+// EnsureFileProgress is EnsureFile with a progress callback (called every
+// ~2% of a known-length download).
+func EnsureFileProgress(ctx context.Context, url, dest string, onProgress ProgressFunc) (bool, error) {
 	if info, err := os.Stat(dest); err == nil && info.Size() > 0 {
 		return false, nil
 	}
@@ -47,7 +56,7 @@ func EnsureFile(ctx context.Context, url, dest string) (bool, error) {
 	if err != nil {
 		return false, fmt.Errorf("create %s: %w", tmp, err)
 	}
-	progress := &progressWriter{total: resp.ContentLength}
+	progress := &progressWriter{total: resp.ContentLength, onProgress: onProgress}
 	if _, err := io.Copy(io.MultiWriter(out, progress), resp.Body); err != nil {
 		out.Close()
 		return false, fmt.Errorf("download %s: %w", url, err)
@@ -63,16 +72,24 @@ func EnsureFile(ctx context.Context, url, dest string) (bool, error) {
 }
 
 type progressWriter struct {
-	total int64
-	n     int64
-	last  int64
+	total      int64
+	n          int64
+	last       int64
+	onProgress ProgressFunc
 }
 
 func (p *progressWriter) Write(b []byte) (int, error) {
 	p.n += int64(len(b))
+	// Terminal line every ~2%; callback every ~2% when a listener exists.
 	if p.total > 0 && p.n-p.last > p.total/50 && p.n < p.total {
 		p.last = p.n
 		fmt.Printf("\r    %3d%%  (%s / %s)", p.n*100/p.total, human(p.n), human(p.total))
+		if p.onProgress != nil {
+			p.onProgress(p.n, p.total)
+		}
+	}
+	if p.total <= 0 && p.onProgress != nil {
+		p.onProgress(p.n, 0)
 	}
 	return len(b), nil
 }

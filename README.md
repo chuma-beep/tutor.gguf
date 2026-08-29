@@ -102,7 +102,14 @@ servers instead.
 
 Windows: download `tutor-windows-amd64.exe` from Releases, run `tutor setup`, then `tutor chat`.
 
-Desktop (Wails): download `tutor-desktop-linux-amd64` / `tutor-desktop-darwin-universal` / `tutor-desktop-windows-amd64.exe` from Releases — same `tutor setup` flow, then a native window with KaTeX math. Linux needs `webkit2gtk-4.1` (`sudo apt install libwebkit2gtk-4.1-0` on Ubuntu 22.04); macOS/Windows use system WebView. Or build locally: `make build-desktop` (requires Node 20 + Go + webkit2gtk) then `build/bin/tutor-desktop`; `make dev-desktop` for hot reload (Svelte + Go).
+Desktop (Wails): download `tutor-desktop-linux-amd64.deb` / `tutor-desktop-linux-amd64.AppImage` /
+`tutor-desktop-darwin-universal.dmg` / `tutor-desktop-windows-amd64-installer.exe` from
+Releases — **double-click to install, then just chat**. First launch automatically downloads
+the ~1.2 GB model + corpus (~10 min on 10 Mbps, more on slower data) with a progress bar,
+then everything runs 100% offline forever. No terminal, no commands. Power cut? Just open
+again — it resumes. No internet lab? Grab the `tutor-offline.tar.gz` USB pack instead
+(campus Wi-Fi once, then copy). Linux needs `webkit2gtk-4.1` (`sudo apt install libwebkit2gtk-4.1-0`
+on Ubuntu 24.04; 22.04 uses the 4.0 build).
 
 ### Developer flow (repo checkout)
 

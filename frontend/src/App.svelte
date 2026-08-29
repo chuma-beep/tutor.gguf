@@ -85,7 +85,11 @@
     } catch {}
   }
 
-  function onSetupProgress(e) { setupLog = [...setupLog.slice(-200), e] }
+  function onSetupProgress(e) {
+    setupLog = [...setupLog.slice(-200), e]
+  }
+
+  let autoSetupFired = false
 
   onMount(async () => {
     loadHistory()
@@ -95,6 +99,11 @@
       onEvent('tutor:setup:done', async () => { setupRunning = false; await checkStatus() })
     }
     await checkStatus()
+    // Auto-provision on first launch: no terminal, no "Run Setup" click.
+    if (hasWails() && status && !status.ready && !autoSetupFired) {
+      autoSetupFired = true
+      setTimeout(() => { if (status && !status.ready && !setupRunning) runSetup() }, 1000)
+    }
   })
 
   async function runSetup() {
@@ -111,6 +120,16 @@
       setupRunning = false
       setupLog = [...setupLog, { phase: 'error', message: String(e) }]
     }
+  }
+
+  function cancelSetup() {
+    try {
+      if (hasWails() && window.go.desktop.App.CancelSetup) {
+        window.go.desktop.App.CancelSetup()
+      }
+    } catch {}
+    setupRunning = false
+    setupLog = [...setupLog, { phase: 'info', message: 'Setup paused — resumes on next launch.' }]
   }
 
   async function checkStatus() {
@@ -232,7 +251,7 @@
       <div class="checking-panel"><span class="spin" aria-hidden="true"></span> Checking setup…</div>
     </div>
   {:else if status && !status.ready}
-    <div class="center-wrap"><SetupPanel {status} {setupLog} {setupRunning} {paths} {retryLoading} onRunSetup={runSetup} onRetry={retry} onRefresh={checkStatus} /></div>
+    <div class="center-wrap"><SetupPanel {status} {setupLog} {setupRunning} {paths} {retryLoading} onRunSetup={runSetup} onRetry={retry} onRefresh={checkStatus} onCancel={cancelSetup} /></div>
   {:else}
     {#if !railCollapsed}
       <LeftRail {turns} {activeIndex} onSelectTurn={selectTurn} onRename={renameTurn} />
