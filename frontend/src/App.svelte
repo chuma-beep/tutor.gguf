@@ -369,7 +369,7 @@
 
   <div class="input-row">
     {#if loading}<span class="spinner">● thinking</span>{/if}
-    <input bind:value={input} on:keydown={handleKey} placeholder="Ask a math question (Enter to send)" maxlength="512" disabled={loading} />
+    <input autofocus bind:value={input} on:keydown={handleKey} placeholder="Ask a math question (Enter to send)" maxlength="512" disabled={loading} />
     <button on:click={submit} disabled={loading || !input.trim()}>Send</button>
     <button class="ghost" on:click={clearHistory}>Clear</button>
   </div>

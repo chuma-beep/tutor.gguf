@@ -159,6 +159,7 @@ func (a *App) Ask(problem string) (*AskResult, error) {
 // events (chunk), then a done event with the final answer. It mirrors
 // /v1/complete/stream without the HTTP hop.
 func (a *App) AskStream(problem string) error {
+	log.Printf("AskStream called problem=%q", problem)
 	if !a.ready || a.retriever == nil || a.genClient == nil {
 		return fmt.Errorf("RAG not ready: %s — run setup", a.startErr)
 	}

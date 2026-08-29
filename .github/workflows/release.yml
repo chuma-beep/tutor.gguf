@@ -81,8 +81,9 @@ jobs:
           npm --prefix frontend run build
           NAME="tutor-desktop-${GOOS}-${GOARCH}"
           [ "$GOOS" = "windows" ] && NAME="$NAME.exe"
+          # ubuntu-latest ships webkit2gtk-4.0; darwin/windows use wails build
           $(go env GOPATH)/bin/wails build -clean -tags desktop -ldflags "-s -w" -o "dist/$NAME" -platform ${{ matrix.goos }}/${{ matrix.goarch }} || \
-            go build -tags desktop -trimpath -ldflags "-s -w" -o "dist/$NAME" ./cmd/desktop
+            go build -tags "desktop production" -trimpath -ldflags "-s -w" -o "dist/$NAME" ./cmd/desktop
           ls -lh dist/
 
       - uses: actions/upload-artifact@v4

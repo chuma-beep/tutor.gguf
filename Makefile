@@ -103,9 +103,17 @@ profile:
 		--output submission.json \
 		--skip-accuracy
 
-# Build the Wails desktop (requires Node + webkit2gtk, CGO_ENABLED=1 on Linux)
-# Frontend is built via wails.json frontend:build (npm run build). Ensure frontend/dist exists for embed.
+# Build the Wails desktop. On systems with webkit2gtk-4.1 (Arch, Ubuntu 24.04+)
+# use the webkit2_41 tag so CGO finds pkg-config; wails build alone fails there
+# (4.0 missing) and leaves a stale ar archive. On Ubuntu 22.04 (webkit2gtk-4.0)
+# use build-desktop-wails instead.
 build-desktop:
+	npm --prefix frontend ci --legacy-peer-deps
+	npm --prefix frontend run build
+	CGO_ENABLED=1 go build -tags "desktop production webkit2_41" -trimpath -ldflags "-s -w" -o build/bin/tutor-desktop ./cmd/desktop
+
+# Ubuntu 22.04 / webkit2gtk-4.0 path (wails build handles deps + bindings)
+build-desktop-wails:
 	npm --prefix frontend ci --legacy-peer-deps
 	npm --prefix frontend run build
 	wails build -clean -tags desktop -ldflags "-s -w"
