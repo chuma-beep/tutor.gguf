@@ -10,14 +10,25 @@ demo video. Deadline: **Aug 25, 2026**.
 Capture at a clean terminal font size, light or dark theme consistent across shots.
 Save as `docs/screenshots/NN-description.png`.
 
-| # | Shot | How |
-|---|---|---|
-| 01 | TUI streaming a calculus solution | `make serve-gen` + `make serve-tutor`, then `make tui`; ask `Find the derivative of x^2.` and capture mid-stream + final rendered answer |
-| 02 | Induction proof in the TUI | same session; ask `Prove by induction that 1 + 2 + ... + n = n(n+1)/2` |
-| 03 | JAMB-style word problem | ask the `tp_001` arithmetic-progression prompt verbatim (shows African-context framing) |
-| 04 | ASCII fallback mode | `make tui-ascii`, re-ask shot 01's question (shows graceful degradation) |
-| 05 | Raw API response | `curl -s localhost:8082/v1/complete -H 'Content-Type: application/json' -d '{"problem":"find x such that log_12(3x) = 2"}'` — shows JSON `content` + parsed `answer` |
-| 06 | Retrieval transparency (optional bonus) | `make run Q="Integrate 2x * e^(x^2)."` — shows retrieved chunks + subdomain instruction |
+| # | Shot | Status | File |
+|---|---|---|---|
+| 01 | TUI streaming a calculus solution | ✅ captured | `docs/screenshots/01-tui-calculus.png` |
+| 02 | Induction proof in the TUI | ✅ captured | `docs/screenshots/02-tui-induction.png` |
+| 03 | JAMB-style word problem (`tp_001`) | ✅ captured | `docs/screenshots/03-tui-jamb-word-problem.png` |
+| 04 | ASCII fallback mode | ✅ captured | `docs/screenshots/04-tui-ascii-fallback.png` |
+| 05 | Raw API response (JSON `content` + `answer`) | ✅ captured | `docs/screenshots/05-api-json-response.png` |
+| 06 | Retrieval transparency (chunks + prompt) | ✅ captured | `docs/screenshots/06-retrieval-transparency.png` |
+| 07 | Desktop Wails window (Svelte + KaTeX) | ✅ captured | `docs/screenshots/07-desktop-wails-chat.png` |
+
+Recapture instructions (how each was produced):
+
+- 01: `bin/tutor chat -tutor-url http://localhost:8086` on a running `tutor serve`; ask `find the derivative of x^2`
+- 02: same session, `Ctrl+L`, ask `Prove by induction that 1 + 2 + ... + n = n(n+1)/2`
+- 03: same session, `Ctrl+L`, ask `tp_001` verbatim
+- 04: `bin/tutor chat -ascii -tutor-url http://localhost:8086`, ask `find the derivative of x^2`
+- 05: `curl -s http://localhost:8086/v1/complete -H 'Content-Type: application/json' -d '{"problem":"find x such that log_12(3x) = 2"}' | python3 -m json.tool`
+- 06: `make run Q="Integrate 2x * e^(x^2)." EMBEDDER_URL=http://localhost:8085` (shows retrieved chunks + final ChatML prompt)
+- 07: desktop binary built with `-tags "desktop production webkit2_41"`, window on Hyprland, `wtype` query `find the derivative of x^2`
 
 Tip: `kooha` or OBS for clips; `flameshot`/`grim` for stills. A 10–15 s screen
 recording of shot 01 streaming doubles as a video asset.
