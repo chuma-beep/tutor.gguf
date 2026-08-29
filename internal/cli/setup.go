@@ -6,6 +6,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"io/fs"
 	"net/http"
 	"net/url"
@@ -269,32 +270,57 @@ func ensureGSM8K(ctx context.Context, force bool) error {
 
 // ensureHendrycks fetches the MATH train split (7 subdomains) from the HF
 // datasets-server rows API and writes one JSON file per problem, matching the
-// flat per-file layout our non-recursive chunker expects.
+// flat per-file layout our non-recursive chunker expects. Per-config
+// idempotent: a config that already has files on disk is skipped, so a
+// partial failure can be resumed with a plain `tutor setup` re-run.
+// A config that keeps failing after retries is skipped with a warning — the
+// corpus stays partial rather than aborting setup — unless nothing at all
+// was fetched.
 func ensureHendrycks(ctx context.Context, force bool) error {
 	dest := runtime.HendrycksTrainDir()
-	if !force {
-		if n, err := countFiles(dest, ".json"); err == nil && n > 0 {
-			fmt.Printf("✓ Hendrycks MATH corpus: %s (%d files)\n", filepath.Dir(dest), n)
-			return nil
-		}
+	return ensureHendrycksURLs(ctx, "https://datasets-server.huggingface.co/rows", dest, force, nil)
+}
+
+// ensureHendrycksURLs is ensureHendrycks with injectable base URL, dest dir
+// and config list (nil = the standard seven). Used by tests.
+func ensureHendrycksURLs(ctx context.Context, baseURL, dest string, force bool, configs []string) error {
+	if configs == nil {
+		configs = hendrycksConfigs
 	}
-	fmt.Println("↓ downloading Hendrycks MATH train split…")
 	if err := os.MkdirAll(dest, 0o755); err != nil {
 		return err
 	}
+	fmt.Println("↓ downloading Hendrycks MATH train split…")
 	total := 0
-	for _, cfg := range hendrycksConfigs {
-		n, err := fetchHendrycksConfig(ctx, cfg, dest)
+	var skipped []string
+	for _, cfg := range configs {
+		if !force {
+			if n, err := countFilesPrefixed(dest, ".json", cfg+"-"); err == nil && n > 0 {
+				fmt.Printf("  ✓ %s: %d problems (already on disk)\n", cfg, n)
+				total += n
+				continue
+			}
+		}
+		n, err := fetchHendrycksConfigURL(ctx, baseURL, cfg, dest, hendrycksDataset)
 		if err != nil {
-			return fmt.Errorf("%s: %w", cfg, err)
+			// Warn and continue with a partial corpus. Setup still
+			// completes; the missing subdomain just won't retrieve.
+			fmt.Printf("  ⚠ %s: failed after retries: %v\n", cfg, err)
+			fmt.Printf("    continuing with a partial corpus — re-run `tutor setup` to retry this config\n")
+			skipped = append(skipped, cfg)
+			continue
 		}
 		fmt.Printf("  ✓ %s: %d problems\n", cfg, n)
 		total += n
 	}
 	if total == 0 {
-		return errors.New("no problems fetched — datasets-server response may have changed")
+		return errors.New("no problems fetched — datasets-server response may have changed; check network or HF status")
 	}
-	fmt.Printf("✓ Hendrycks MATH corpus: %d problems\n", total)
+	if len(skipped) > 0 {
+		fmt.Printf("⚠ Hendrycks MATH corpus partial: %d problems (missing %s)\n", total, strings.Join(skipped, ", "))
+	} else {
+		fmt.Printf("✓ Hendrycks MATH corpus: %d problems\n", total)
+	}
 	return nil
 }
 
@@ -305,31 +331,135 @@ type hendrycksRow struct {
 	Type     string `json:"type"`
 }
 
+// hendrycksClient is the shared HTTP client for datasets-server pages.
+var hendrycksClient = &http.Client{Timeout: 60 * time.Second}
+
+// Retry knobs — variables so tests can shrink the backoff.
+var (
+	hendrycksMaxAttempts = 5
+	hendrycksBackoff     = time.Second
+)
+
+// fetchHendrycksConfig downloads one subdomain's problems page by page.
+// It guards HTTP status (datasets-server can answer 429/500 with an HTML
+// error page), sets a real User-Agent, retries transient failures up to 5
+// times with exponential backoff (honoring Retry-After), and paces pages so
+// anonymous rate limits are not tripped.
 func fetchHendrycksConfig(ctx context.Context, config, destDir string) (int, error) {
-	client := &http.Client{Timeout: 60 * time.Second}
+	return fetchHendrycksConfigURL(ctx, "https://datasets-server.huggingface.co/rows", config, destDir, hendrycksDataset)
+}
+
+// fetchHendrycksConfigURL downloads one subdomain's problems page by page.
+// It guards HTTP status (datasets-server can answer 429/500 with an HTML
+// error page), sets a real User-Agent, retries transient failures up to 5
+// times with exponential backoff (honoring Retry-After), and paces pages so
+// anonymous rate limits are not tripped. baseURL and dataset are injectable
+// for tests.
+func fetchHendrycksConfigURL(ctx context.Context, baseURL, config, destDir, dataset string) (int, error) {
 	const page = 100
 	written := 0
 	for offset := 0; ; offset += page {
-		u, err := url.Parse("https://datasets-server.huggingface.co/rows")
+		u, err := url.Parse(baseURL)
 		if err != nil {
 			return 0, err
 		}
 		q := u.Query()
-		q.Set("dataset", hendrycksDataset)
+		q.Set("dataset", dataset)
 		q.Set("config", config)
 		q.Set("split", "train")
 		q.Set("offset", strconv.Itoa(offset))
 		q.Set("length", strconv.Itoa(page))
 		u.RawQuery = q.Encode()
 
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
+		rows, numTotal, err := fetchHendrycksPage(ctx, u.String(), config, offset)
 		if err != nil {
-			return 0, err
+			return written, err
 		}
-		resp, err := client.Do(req)
+
+		for i, r := range rows {
+			out, err := json.Marshal(r)
+			if err != nil {
+				return written, err
+			}
+			name := filepath.Join(destDir, fmt.Sprintf("%s-%05d.json", config, offset+i))
+			if err := os.WriteFile(name, out, 0o644); err != nil {
+				return written, err
+			}
+			written++
+		}
+		if len(rows) == 0 || offset+len(rows) >= numTotal {
+			return written, nil
+		}
+		// Pace anonymous requests — ~21 pages total across configs; keep
+		// well under the ~100 req/min anonymous bucket.
+		select {
+		case <-ctx.Done():
+			return written, ctx.Err()
+		case <-time.After(300 * time.Millisecond):
+		}
+	}
+}
+
+// fetchHendrycksPage performs one paginated GET with retries. Transient
+// errors (429/500/502/503) retry up to 5 times with exponential backoff,
+// honoring a Retry-After header when present.
+func fetchHendrycksPage(ctx context.Context, urlStr, config string, offset int) ([]hendrycksRow, int, error) {
+	maxAttempts := hendrycksMaxAttempts
+	var lastErr error
+	for attempt := 0; attempt < maxAttempts; attempt++ {
+		if attempt > 0 {
+			backoff := time.Duration(1<<attempt) * hendrycksBackoff
+			select {
+			case <-ctx.Done():
+				return nil, 0, ctx.Err()
+			case <-time.After(backoff):
+			}
+		}
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, urlStr, nil)
 		if err != nil {
-			return 0, err
+			return nil, 0, err
 		}
+		req.Header.Set("User-Agent", "tutor.gguf/0.1.0 (ADTC; +https://github.com/chuma-beep/tutor.gguf)")
+		req.Header.Set("Accept", "application/json")
+		if tok := os.Getenv("HF_TOKEN"); tok != "" {
+			req.Header.Set("Authorization", "Bearer "+tok)
+		}
+
+		resp, err := hendrycksClient.Do(req)
+		if err != nil {
+			lastErr = err
+			continue
+		}
+
+		if resp.StatusCode != http.StatusOK {
+			snippet, _ := io.ReadAll(io.LimitReader(resp.Body, 2048))
+			resp.Body.Close()
+			lastErr = fmt.Errorf("datasets-server %s at offset %d (config %s): %q",
+				resp.Status, offset, config, string(snippet))
+			// Transient statuses retry; anything else is a hard failure.
+			if resp.StatusCode != http.StatusTooManyRequests &&
+				resp.StatusCode != http.StatusInternalServerError &&
+				resp.StatusCode != http.StatusBadGateway &&
+				resp.StatusCode != http.StatusServiceUnavailable {
+				return nil, 0, lastErr
+			}
+			// 429 may carry Retry-After (seconds) — respect it once.
+			if resp.StatusCode == http.StatusTooManyRequests {
+				if ra := resp.Header.Get("Retry-After"); ra != "" {
+					if secs, err := strconv.Atoi(ra); err == nil && secs > 0 && secs <= 30 {
+						select {
+						case <-ctx.Done():
+							return nil, 0, ctx.Err()
+						case <-time.After(time.Duration(secs) * time.Second):
+						}
+						// One Retry-After wait per attempt loop iteration.
+						continue
+					}
+				}
+			}
+			continue
+		}
+
 		var body struct {
 			NumRowsTotal int `json:"num_rows_total"`
 			Rows         []struct {
@@ -339,29 +469,16 @@ func fetchHendrycksConfig(ctx context.Context, config, destDir string) (int, err
 		err = json.NewDecoder(resp.Body).Decode(&body)
 		resp.Body.Close()
 		if err != nil {
-			return 0, fmt.Errorf("decode rows at offset %d: %w", offset, err)
+			lastErr = fmt.Errorf("decode rows at offset %d (config %s): %w", offset, config, err)
+			continue
 		}
-
-		for i, r := range body.Rows {
-			out, err := json.Marshal(r.Row)
-			if err != nil {
-				return 0, err
-			}
-			name := filepath.Join(destDir, fmt.Sprintf("%s-%05d.json", config, offset+i))
-			if err := os.WriteFile(name, out, 0o644); err != nil {
-				return 0, err
-			}
-			written++
+		rows := make([]hendrycksRow, 0, len(body.Rows))
+		for _, r := range body.Rows {
+			rows = append(rows, r.Row)
 		}
-		if len(body.Rows) == 0 || offset+len(body.Rows) >= body.NumRowsTotal {
-			return written, nil
-		}
-		select {
-		case <-ctx.Done():
-			return written, ctx.Err()
-		default:
-		}
+		return rows, body.NumRowsTotal, nil
 	}
+	return nil, 0, fmt.Errorf("giving up after %d attempts: %w", maxAttempts, lastErr)
 }
 
 // ensureRosen writes the embedded Rosen discrete-math corpus to disk so the
@@ -448,12 +565,18 @@ func indexedChunkCount(dbPath string) (int, error) {
 }
 
 func countFiles(dir, ext string) (int, error) {
+	return countFilesPrefixed(dir, ext, "")
+}
+
+// countFilesPrefixed counts files in dir with the given extension whose name
+// starts with prefix ("" matches all).
+func countFilesPrefixed(dir, ext, prefix string) (int, error) {
 	n := 0
 	err := filepath.WalkDir(dir, func(_ string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		if !d.IsDir() && filepath.Ext(d.Name()) == ext {
+		if !d.IsDir() && strings.HasPrefix(d.Name(), prefix) && filepath.Ext(d.Name()) == ext {
 			n++
 		}
 		return nil
