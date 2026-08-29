@@ -1,26 +1,47 @@
+@import './tokens.css';
+@import './fonts.css';
+
 html {
-    background-color: rgba(27, 38, 54, 1);
-    text-align: center;
-    color: white;
+  background: var(--slate);
+  color: var(--chalk);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  scrollbar-gutter: stable;
 }
 
 body {
-    margin: 0;
-    color: white;
-    font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-}
-
-@font-face {
-    font-family: "Nunito";
-    font-style: normal;
-    font-weight: 400;
-    src: local(""),
-    url("assets/fonts/nunito-v16-latin-regular.woff2") format("woff2");
+  color: var(--chalk);
+  background: var(--slate);
+  overflow: hidden;
 }
 
 #app {
-    height: 100vh;
-    text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+* {
+  scrollbar-color: var(--green-30) transparent;
+  scrollbar-width: thin;
+}
+
+::selection {
+  background: rgba(63, 143, 95, 0.32);
+}
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* Budget motion — everything static unless one of the two beats. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

@@ -16,12 +16,14 @@ func main() {
 
 	err := wails.Run(&options.App{
 		Title:  "Tutor.gguf — On-device Math Tutor",
-		Width:  1024,
-		Height: 768,
+		Width:  1120,
+		Height: 780,
+		MinWidth:  960,
+		MinHeight: 640,
 		AssetServer: &assetserver.Options{
 			Assets: tutor.FrontendDist,
 		},
-		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
+		BackgroundColour: &options.RGBA{R: 0x1C, G: 0x22, B: 0x2E, A: 1}, // #1C222E chalkboard slate
 		OnStartup:        app.Startup,
 		OnShutdown:       app.Shutdown,
 		Bind: []interface{}{

@@ -1,0 +1,37 @@
+/* Chalkboard design tokens — single source of truth. */
+:root {
+  /* Surface — chalkboard, not black */
+  --slate: #1C222E;
+  --slate-elev: #262E3D;
+  --slate-line: rgba(237, 232, 218, 0.08);
+  --slate-line2: rgba(237, 232, 218, 0.14);
+
+  /* Ink — warm chalk, never pure white */
+  --chalk: #EDE8DA;
+  --chalk-bright: #F5F1E8;
+  --chalk-muted: rgba(237, 232, 218, 0.72);
+  --chalk-faint: rgba(237, 232, 218, 0.48);
+
+  /* Secondary labels */
+  --muted: #8891A3;
+
+  /* Accent — muted school green, sparingly */
+  --green: #3F8F5F;
+  --green-12: rgba(63, 143, 95, 0.12);
+  --green-30: rgba(63, 143, 95, 0.3);
+
+  /* Signal — the boxed answer, the one allowed special color */
+  --amber: #D9A441;
+  --amber-12: rgba(217, 164, 65, 0.11);
+  --amber-tick: #E7B55A;
+
+  /* Error — desaturated to sit in chalk harmony */
+  --error: #E76F51;
+
+  /* Shape */
+  --radius: 14px;
+  --radius-sm: 10px;
+
+  /* Shadow — one, quiet */
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.28), 0 1px 0 rgba(255, 255, 255, 0.03) inset;
+}
