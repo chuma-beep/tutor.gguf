@@ -38,7 +38,7 @@
 
 <style>
   .dock {
-    grid-column: 1 / -1;
+    grid-area: input;
     position: sticky;
     bottom: 0;
     background: linear-gradient(to top, var(--slate) 72%, transparent);

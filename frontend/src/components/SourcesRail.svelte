@@ -33,6 +33,7 @@
 
 <style>
   .rail {
+    grid-area: right;
     background: var(--slate);
     border-left: 1px solid var(--slate-line);
     overflow-y: auto;

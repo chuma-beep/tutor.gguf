@@ -217,7 +217,7 @@
   }
 </script>
 
-<main>
+<main class:rail-collapsed={railCollapsed} class:has-sources={activeIndex >= 0}>
   <Header
     ready={!!status && !!status.ready}
     {checking}
@@ -276,10 +276,42 @@
     display: grid;
     grid-template-rows: 56px 1fr auto;
     grid-template-columns: 220px 1fr 320px;
+    grid-template-areas:
+      "header header header"
+      "left center right"
+      "input input input";
     min-height: 100vh;
     background: var(--slate);
     color: var(--chalk);
   }
+
+  /* Hide history: left rail collapses, center + right stay put. */
+  main.rail-collapsed {
+    grid-template-columns: 1fr 320px;
+    grid-template-areas:
+      "header header"
+      "center right"
+      "input input";
+  }
+  /* Hide history AND no active sources: center takes the full width. */
+  main.rail-collapsed:not(.has-sources) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "center"
+      "input";
+  }
+  /* No active sources but history shown: left + center only. */
+  main:not(.rail-collapsed):not(.has-sources) {
+    grid-template-columns: 220px 1fr;
+    grid-template-areas:
+      "header header"
+      "left center"
+      "input input";
+  }
+
+  header { grid-area: header; }
+  .transcript { grid-area: center; }
 
   .transcript {
     background: var(--slate-elev);
@@ -289,6 +321,40 @@
     margin: 16px 20px;
     overflow-y: auto;
     padding: 20px 24px;
+  }
+
+  @media (max-width: 1120px) {
+    /* Spec: right rail off by default on narrow windows. */
+    main,
+    main.rail-collapsed,
+    main.rail-collapsed.has-sources {
+      grid-template-columns: 200px 1fr;
+      grid-template-areas:
+        "header header"
+        "left center"
+        "input input";
+    }
+    main.rail-collapsed {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "header"
+        "center"
+        "input";
+    }
+    .transcript { margin: 12px 14px; }
+  }
+  @media (max-width: 760px) {
+    main,
+    main.rail-collapsed,
+    main.rail-collapsed.has-sources,
+    main:not(.rail-collapsed):not(.has-sources) {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "header"
+        "center"
+        "input";
+    }
+    .transcript { margin: 10px 8px; }
   }
 
   .center-wrap {
