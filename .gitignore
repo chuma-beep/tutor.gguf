@@ -30,3 +30,12 @@ evals/results_quality_new.json
 
 data/
 corpus/
+
+# Agent skills (Matt Pocock) — nested repo, editor-only, not published
+skills/
+
+# Wails desktop
+frontend/dist/
+frontend/node_modules/
+frontend/wailsjs/
+build/bin/

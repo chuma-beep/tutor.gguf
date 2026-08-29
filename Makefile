@@ -20,7 +20,7 @@ CTX           ?= 2048
 # Single static binary built from ./cmd/tutor (subcommands: serve|index|chat)
 BIN           := bin/tutor
 
-.PHONY: build setup serve-gen serve-embed serve-judge serve-tutor index run tui tui-ascii eval eval-fresh eval-quality eval-view eval-sample profile profile-audit
+.PHONY: build setup serve-gen serve-embed serve-judge serve-tutor index run tui tui-ascii eval eval-fresh eval-quality eval-view eval-sample profile profile-audit build-desktop dev-desktop
 
 # Build the single tutor binary (trimpath + stripped for release-style size)
 build:
@@ -102,6 +102,17 @@ profile:
 		--mode participant \
 		--output submission.json \
 		--skip-accuracy
+
+# Build the Wails desktop (requires Node + webkit2gtk, CGO_ENABLED=1 on Linux)
+# Frontend is built via wails.json frontend:build (npm run build). Ensure frontend/dist exists for embed.
+build-desktop:
+	npm --prefix frontend ci --legacy-peer-deps
+	npm --prefix frontend run build
+	wails build -clean -tags desktop -ldflags "-s -w"
+
+# Dev shell with hot reload (Svelte + Go)
+dev-desktop:
+	wails dev -tags desktop
 
 # Run the ADTC profiler with a real accuracy benchmark (Sacc estimate)
 profile-audit:

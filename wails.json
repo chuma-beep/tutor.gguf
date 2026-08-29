@@ -1,0 +1,14 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "tutor-gguf",
+  "outputfilename": "tutor-desktop",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "main": "cmd/desktop/main.go",
+  "author": {
+    "name": "chuma-beep",
+    "email": "wisboynelson123@gmail.com"
+  }
+}

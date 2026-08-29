@@ -102,6 +102,8 @@ servers instead.
 
 Windows: download `tutor-windows-amd64.exe` from Releases, run `tutor setup`, then `tutor chat`.
 
+Desktop (Wails): download `tutor-desktop-linux-amd64` / `tutor-desktop-darwin-universal` / `tutor-desktop-windows-amd64.exe` from Releases — same `tutor setup` flow, then a native window with KaTeX math. Linux needs `webkit2gtk-4.1` (`sudo apt install libwebkit2gtk-4.1-0` on Ubuntu 22.04); macOS/Windows use system WebView. Or build locally: `make build-desktop` (requires Node 20 + Go + webkit2gtk) then `build/bin/tutor-desktop`; `make dev-desktop` for hot reload (Svelte + Go).
+
 ### Developer flow (repo checkout)
 
 The Makefile targets below drive the three llama-server processes explicitly — same

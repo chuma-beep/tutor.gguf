@@ -47,6 +47,14 @@ func NewRAGHandler(ctx context.Context, embedderURL, genURL, dbPath string) (htt
 	genClient := llm.NewClient(genURL)
 
 	mux := http.NewServeMux()
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(`{"status":"ok"}`))
+	})
+	mux.HandleFunc("/v1/health", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(`{"status":"ok"}`))
+	})
 	mux.HandleFunc("/v1/complete", func(w http.ResponseWriter, r *http.Request) {
 		var req requestBody
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
