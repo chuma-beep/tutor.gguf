@@ -49,14 +49,23 @@ func NewRAGHandler(ctx context.Context, embedderURL, genURL, dbPath string) (htt
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		if handleCORS(w, r) {
+			return
+		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(`{"status":"ok"}`))
 	})
 	mux.HandleFunc("/v1/health", func(w http.ResponseWriter, r *http.Request) {
+		if handleCORS(w, r) {
+			return
+		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(`{"status":"ok"}`))
 	})
 	mux.HandleFunc("/v1/complete", func(w http.ResponseWriter, r *http.Request) {
+		if handleCORS(w, r) {
+			return
+		}
 		var req requestBody
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			http.Error(w, `{"error":"bad request"}`, 400)
@@ -84,6 +93,9 @@ func NewRAGHandler(ctx context.Context, embedderURL, genURL, dbPath string) (htt
 		json.NewEncoder(w).Encode(responseBody{Content: content, Answer: parse.Extract(content)})
 	})
 	mux.HandleFunc("/v1/complete/stream", func(w http.ResponseWriter, r *http.Request) {
+		if handleCORS(w, r) {
+			return
+		}
 		var req requestBody
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			http.Error(w, `{"error":"bad request"}`, 400)
@@ -110,8 +122,8 @@ func NewRAGHandler(ctx context.Context, embedderURL, genURL, dbPath string) (htt
 			http.Error(w, `{"error":"streaming not supported"}`, 500)
 			return
 		}
-		// Send subdomain/category as initial event for UI pill
-		meta, _ := json.Marshal(map[string]string{"subdomain": subdomain, "category": prompt.PromptCategory(subdomain)})
+		// Send subdomain/category + prompt/chunks as initial event for UI pill + citations
+		meta, _ := json.Marshal(map[string]interface{}{"subdomain": subdomain, "category": prompt.PromptCategory(subdomain), "prompt": fullPrompt, "chunks": chunks})
 		fmt.Fprintf(w, "data: %s\n\n", string(meta))
 		flusher.Flush()
 
@@ -198,4 +210,15 @@ func Serve(args []string) error {
 		}
 		return nil
 	}
+}
+
+func handleCORS(w http.ResponseWriter, r *http.Request) bool {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusNoContent)
+		return true
+	}
+	return false
 }

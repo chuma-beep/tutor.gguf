@@ -24,7 +24,7 @@
     return n + ' B'
   }
 
-  const STEPS = ['llama', 'gen-model', 'embed-model', 'gsm8k', 'hendrycks', 'rosen', 'index']
+  const STEPS = ['dirs', 'llama', 'gen-model', 'embed-model', 'gsm8k', 'hendrycks', 'rosen', 'index']
   $: donePhases = new Set(setupLog.map((e) => e.phase).filter((p) => STEPS.includes(p)))
   $: stepIndex = STEPS.findIndex((s) => !donePhases.has(s))
 

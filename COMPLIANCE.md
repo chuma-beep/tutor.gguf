@@ -58,6 +58,7 @@ Status legend: ✅ verified in repo · ⚠️ needs action · ⭕ not yet done
 | Graphics | integrated only, **no discrete GPU** | none used |
 | Storage | 256 GB SSD | models ≈ 1–2 GB; corpus ≈ 230 MB raw |
 | OS | Ubuntu 22.04 LTS (reference) | developed on Arch; Ubuntu 22.04 validation pending |
+| WebView (desktop) | `webkit2gtk-4.0` (22.04) / `4.1` (24.04, Arch), `WebView2` Windows, `WKWebView` macOS | `wails build -tags desktop` links `webkit2gtk-4.0` on ubuntu-latest; `build-desktop` uses `webkit2_41` tag on 4.1 hosts; no CDN — KaTeX self-hosted via `npm`, CSP `default-src 'self'` |
 
 > The three llama-server processes (gen + embed + judge) together stay well under the 7 GB
 > cap; at runtime the judge is never loaded, so live footprint is even smaller.

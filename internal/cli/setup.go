@@ -156,6 +156,8 @@ func SetupWithProgress(ctx context.Context, opts SetupOptions) error {
 	}
 
 	report(opts.Progress, "done", "setup complete — models: %s, index: %s", runtime.ModelsDir(), runtime.DBPath())
+	sentinel := filepath.Join(base, ".setup-complete")
+	_ = os.WriteFile(sentinel, []byte(time.Now().Format(time.RFC3339)), 0o644)
 	return nil
 }
 

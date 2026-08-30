@@ -66,7 +66,7 @@
             let ev
             try { ev = JSON.parse(payload) } catch { continue }
             if (ev.error) { onError && onError(ev.error); continue }
-            if (ev.subdomain || ev.category) { onMeta && onMeta({ subdomain: ev.subdomain, category: ev.category }); continue }
+            if (ev.subdomain || ev.category || ev.chunks || ev.prompt) { onMeta && onMeta(ev); continue }
             if (ev.done) { onDone && onDone({ content: ev.content || '', answer: ev.answer || '' }); continue }
             if (ev.content) onDelta && onDelta(ev.content)
           }
@@ -194,8 +194,8 @@
       boxed: answer || '',
       subdomain: subdomain || (streaming && streaming.subdomain) || 'other',
       category: category || (streaming && streaming.category) || 'other',
-      chunks: [],
-      prompt: ''
+      chunks: (streaming && streaming.chunks) || [],
+      prompt: (streaming && streaming.prompt) || ''
     }
     turns = [...turns, turn]
     saveHistory()
@@ -210,11 +210,11 @@
     input = ''
     loading = true
     errorMsg = ''
-    streaming = { question: q, answer: '', subdomain: 'other', category: 'other' }
+    streaming = { question: q, answer: '', subdomain: 'other', category: 'other', chunks: [], prompt: '' }
     let done = false
     streamBackend(q, {
       onMeta: (m) => {
-        if (streaming) streaming = { ...streaming, subdomain: m.subdomain || streaming.subdomain, category: m.category || streaming.category }
+        if (streaming) streaming = { ...streaming, subdomain: m.subdomain || streaming.subdomain, category: m.category || streaming.category, chunks: m.chunks || streaming.chunks, prompt: m.prompt || streaming.prompt }
       },
       onDelta: (d) => {
         if (streaming) streaming = { ...streaming, answer: streaming.answer + d }

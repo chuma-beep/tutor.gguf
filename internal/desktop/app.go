@@ -180,10 +180,12 @@ func (a *App) AskStream(problem string) error {
 	promptStr := rag.BuildPrompt(problem, chunks, subdomain)
 	category := prompt.PromptCategory(subdomain)
 
-	// Emit meta event so the UI can show the pill immediately
-	runtime.EventsEmit(ctx, "tutor:stream:meta", map[string]string{
+	// Emit meta event so the UI can show the pill + citations immediately
+	runtime.EventsEmit(ctx, "tutor:stream:meta", map[string]interface{}{
 		"subdomain": subdomain,
 		"category":  category,
+		"prompt":    promptStr,
+		"chunks":    chunks,
 	})
 
 	var accum strings.Builder
