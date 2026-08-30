@@ -5,6 +5,8 @@
   export let onClear
   export let onToggleRail
   export let railCollapsed = false
+  export let numberWordsEnabled = false
+  export let onToggleNumberWords = () => {}
 </script>
 
 <header>
@@ -17,6 +19,10 @@
     <button class="ghost" on:click={onToggleRail} title="Toggle history">
       {railCollapsed ? '☰ History' : 'Hide History'}
     </button>
+    <label class="toggle" title="Convert word numbers to digits before sending to model (e.g. one plus one → 1 + 1)">
+      <input type="checkbox" checked={numberWordsEnabled} on:change={onToggleNumberWords} />
+      <span>1+1</span>
+    </label>
     <span class="offline" title="No internet needed — everything runs on this laptop">● Offline</span>
     {#if checking}
       <span class="status checking">● Checking…</span>
@@ -79,4 +85,20 @@
     transition: border-color 160ms ease, color 160ms ease;
   }
   .ghost:hover { border-color: var(--green-30); color: var(--chalk-bright); }
+
+  .toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font: 500 11px/1 'JetBrains Mono', monospace;
+    color: var(--chalk-muted);
+    background: var(--slate-elev);
+    border: 1px solid var(--slate-line);
+    border-radius: 99px;
+    padding: 4px 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .toggle:has(input:checked) { border-color: var(--green-30); color: var(--green); background: var(--green-12); }
+  .toggle input { accent-color: var(--green); }
 </style>

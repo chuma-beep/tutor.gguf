@@ -33,6 +33,9 @@ func NewBuilder() *Builder {
 // Build assembles the ChatML-formatted prompt: domain instruction + retrieved
 // examples + student question + answer anchor.
 func (b *Builder) Build(query string, chunks []Source, subdomain string) string {
+	if NumberWordsEnabled {
+		query = NormalizeNumberWords(query)
+	}
 	var sb strings.Builder
 	sb.WriteString("<|im_start|>system\n")
 

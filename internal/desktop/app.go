@@ -361,6 +361,12 @@ func (a *App) RetryInit() (Status, error) {
 	return a.GetStatus(), nil
 }
 
+// SetNumberWords toggles word-number normalization (e.g. "one plus one" -> "1 + 1").
+func (a *App) SetNumberWords(enabled bool) { prompt.SetNumberWords(enabled) }
+
+// GetNumberWords returns whether word-number normalization is enabled.
+func (a *App) GetNumberWords() bool { return prompt.NumberWordsEnabled }
+
 // Greet is a placeholder bound method for smoke testing the Wails bridge.
 func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, Tutor.gguf desktop is ready!", name)

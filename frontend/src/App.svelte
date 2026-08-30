@@ -25,6 +25,7 @@
   let setupRunning = false
   let railCollapsed = false
   let activeIndex = -1
+  let numberWordsEnabled = false
 
   let streamCleanup = null
 
@@ -93,6 +94,19 @@
 
   onMount(async () => {
     loadHistory()
+    // Restore number-words toggle
+    try {
+      const saved = localStorage.getItem('tutor-number-words')
+      if (saved !== null) numberWordsEnabled = saved === 'true'
+      if (hasWails()) {
+        try {
+          const remote = await window.go.desktop.App.GetNumberWords()
+          numberWordsEnabled = remote
+        } catch {}
+        // Apply to backend
+        try { await window.go.desktop.App.SetNumberWords(numberWordsEnabled) } catch {}
+      }
+    } catch {}
     if (hasRuntime()) {
       onEvent('tutor:setup:progress', onSetupProgress)
       onEvent('tutor:setup:error', (e) => { setupRunning = false; setupLog = [...setupLog, { phase: 'error', message: e.error || String(e) }] })
@@ -105,6 +119,14 @@
       setTimeout(() => { if (status && !status.ready && !setupRunning) runSetup() }, 1000)
     }
   })
+
+  function toggleNumberWords() {
+    numberWordsEnabled = !numberWordsEnabled
+    try { localStorage.setItem('tutor-number-words', String(numberWordsEnabled)) } catch {}
+    if (hasWails()) {
+      try { window.go.desktop.App.SetNumberWords(numberWordsEnabled) } catch {}
+    }
+  }
 
   async function runSetup() {
     setupRunning = true
@@ -244,6 +266,8 @@
     onClear={clearHistory}
     onToggleRail={() => (railCollapsed = !railCollapsed)}
     {railCollapsed}
+    {numberWordsEnabled}
+    onToggleNumberWords={toggleNumberWords}
   />
 
   {#if checking}
@@ -344,9 +368,7 @@
 
   @media (max-width: 1120px) {
     /* Spec: right rail off by default on narrow windows. */
-    main,
-    main.rail-collapsed,
-    main.rail-collapsed.has-sources {
+    main {
       grid-template-columns: 200px 1fr;
       grid-template-areas:
         "header header"
@@ -363,10 +385,7 @@
     .transcript { margin: 12px 14px; }
   }
   @media (max-width: 760px) {
-    main,
-    main.rail-collapsed,
-    main.rail-collapsed.has-sources,
-    main:not(.rail-collapsed):not(.has-sources) {
+    main {
       grid-template-columns: 1fr;
       grid-template-areas:
         "header"
