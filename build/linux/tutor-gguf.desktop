@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Tutor.gguf
+GenericName=Math Tutor
+Comment=On-device math tutor. Download once, runs 100% offline.
+Exec=/home/wisdom/Projects/tutor.gguf/build/bin/tutor-desktop
+Icon=/home/wisdom/Projects/tutor.gguf/build/linux/icon.png
+Categories=Education;
+Terminal=false
+StartupWMClass=tutor-gguf
+Keywords=math;tutor;offline;education;
+Path=/home/wisdom/Projects/tutor.gguf

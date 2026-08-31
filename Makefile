@@ -20,7 +20,7 @@ CTX           ?= 2048
 # Single static binary built from ./cmd/tutor (subcommands: serve|index|chat)
 BIN           := bin/tutor
 
-.PHONY: build setup serve-gen serve-embed serve-judge serve-tutor index run tui tui-ascii eval eval-fresh eval-quality eval-view eval-sample profile profile-audit build-desktop build-desktop-wails release-desktop bundle-offline dev-desktop dev-desktop-nobind
+.PHONY: build setup serve-gen serve-embed serve-judge serve-tutor index run tui tui-ascii eval eval-fresh eval-quality eval-view eval-sample profile profile-audit build-desktop build-desktop-wails release-desktop bundle-offline dev-desktop dev-desktop-nobind install-desktop uninstall-desktop
 
 # Build the single tutor binary (trimpath + stripped for release-style size)
 build:
@@ -143,6 +143,22 @@ dev-desktop:
 # Use when 'wails dev' hits 'fork/exec .../wailsbindings: permission denied'
 dev-desktop-nobind:
 	wails dev -tags desktop -skipbindings
+
+# Desktop entry for Arch / Ubuntu (user-local, no sudo)
+install-desktop: build/linux/icon.png
+	mkdir -p ~/.local/share/applications
+	cp build/linux/tutor-gguf.desktop ~/.local/share/applications/tutor-gguf.desktop
+	update-desktop-database ~/.local/share/applications || true
+	mkdir -p ~/Desktop
+	cp ~/.local/share/applications/tutor-gguf.desktop ~/Desktop/tutor-gguf.desktop
+	chmod +x ~/Desktop/tutor-gguf.desktop
+	-gio set ~/Desktop/tutor-gguf.desktop metadata::trusted true 2>/dev/null || true
+	@echo "installed: ~/.local/share/applications/tutor-gguf.desktop + ~/Desktop/tutor-gguf.desktop"
+
+uninstall-desktop:
+	rm -f ~/.local/share/applications/tutor-gguf.desktop ~/Desktop/tutor-gguf.desktop
+	update-desktop-database ~/.local/share/applications || true
+	@echo "uninstalled"
 
 # Run the ADTC profiler with a real accuracy benchmark (Sacc estimate)
 profile-audit:
