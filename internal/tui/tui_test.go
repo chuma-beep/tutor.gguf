@@ -149,3 +149,37 @@ func upd(m Model, msg tea.Msg) (Model, tea.Cmd) {
 	mm, cmd := m.Update(msg)
 	return mm.(Model), cmd
 }
+
+// TestTranscriptBottomPin verifies a long transcript pins to the tail: the
+// final answer line must be visible without scrolling (regression: the old
+// offset math clamped to the head, hiding boxed answers on long turns).
+func TestTranscriptBottomPin(t *testing.T) {
+	m := newModel(Options{TutorURL: "http://t.example", Render: identity})
+	m, _ = upd(m, tea.WindowSizeMsg{Width: 80, Height: 24})
+
+	var sb strings.Builder
+	for i := 0; i < 40; i++ {
+		sb.WriteString("filler line\n")
+	}
+	sb.WriteString("TAIL MARKER")
+	m, _ = upd(m, tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("q")})
+	m, _ = upd(m, tea.KeyMsg{Type: tea.KeyEnter})
+	m, _ = upd(m, answerMsg{id: m.nextID - 1, delta: sb.String(), done: true})
+
+	if !strings.Contains(m.View(), "TAIL MARKER") {
+		t.Fatal("pinned transcript should show the tail of a long answer")
+	}
+
+	// Scroll check: PgUp moves toward the head, PgDn back to the tail.
+	m, _ = upd(m, tea.KeyMsg{Type: tea.KeyPgUp})
+	m, _ = upd(m, tea.KeyMsg{Type: tea.KeyPgUp})
+	if strings.Contains(m.View(), "TAIL MARKER") {
+		t.Fatal("scrolled-up transcript should hide the tail")
+	}
+	for i := 0; i < 60; i++ {
+		m, _ = upd(m, tea.KeyMsg{Type: tea.KeyPgDown})
+	}
+	if !strings.Contains(m.View(), "TAIL MARKER") {
+		t.Fatal("scrolling back down should restore the tail")
+	}
+}

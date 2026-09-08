@@ -109,7 +109,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "pgup":
 			if m.scroll == -1 {
 				m.scroll = 0
-			} else {
+			} else if m.scroll < transcriptOverscan(m.height, m.transcriptLines()) {
 				m.scroll++
 			}
 			return m, nil
@@ -218,15 +218,21 @@ func (m Model) View() string {
 // trailing cursor when not done) so partial output is visible.
 func (m Model) transcriptView() string {
 	lines := m.transcriptLines()
-	if m.scroll == -1 {
-		m.scroll = transcriptOverscan(m.height, lines)
+	viewH := m.height - 6
+	if viewH < 1 {
+		viewH = 1
 	}
-
-	top := -1 * m.scroll
+	// scroll counts hidden lines below the viewport: 0 (or -1, pinned)
+	// shows the tail; N shows the viewport N lines up from the bottom.
+	off := m.scroll
+	if off < 0 {
+		off = 0
+	}
+	top := len(lines) - viewH - off
 	if top < 0 {
 		top = 0
 	}
-	bottom := top + m.height - 6
+	bottom := top + viewH
 	if bottom > len(lines) {
 		bottom = len(lines)
 	}
