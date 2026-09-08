@@ -19,15 +19,24 @@ Save as `docs/screenshots/NN-description.png`.
 | 05 | Raw API response (JSON `content` + `answer`) | ✅ captured | `docs/screenshots/05-api-json-response.png` |
 | 06 | Retrieval transparency (chunks + prompt) | ✅ captured | `docs/screenshots/06-retrieval-transparency.png` |
 | 07 | Desktop Wails window (Svelte + KaTeX) | ✅ captured | `docs/screenshots/07-desktop-wails-chat.png` |
+| 08 | Desktop chalkboard redesign (three-zone desk) | ✅ captured | `docs/screenshots/08-desktop-chalkboard.png` |
+
+> 03–06 recaptured 2026-09-08 from the live local stack (gen :8080, embed :8081,
+> tutor :8082): 03/04 via `bin/tutor chat` in a headless tmux pty (question sent
+> with `tmux send-keys`, pane captured after the stream settled — JAMB `tp_001`
+> boxes **6**, ASCII derivative boxes **2x**); 05 via `curl /v1/complete`
+> (`tp_002`, `\boxed{48}` / `"answer": "48"`); 06 via `make run`. Rendered to PNG
+> with Adwaita Mono on the app's dark background — content is byte-faithful
+> program output, not a compositor screenshot.
 
 Recapture instructions (how each was produced):
 
-- 01: `bin/tutor chat -tutor-url http://localhost:8086` on a running `tutor serve`; ask `find the derivative of x^2`
+- 01: `bin/tutor chat -tutor-url http://localhost:8082` on a running `tutor serve`; ask `find the derivative of x^2`
 - 02: same session, `Ctrl+L`, ask `Prove by induction that 1 + 2 + ... + n = n(n+1)/2`
-- 03: same session, `Ctrl+L`, ask `tp_001` verbatim
-- 04: `bin/tutor chat -ascii -tutor-url http://localhost:8086`, ask `find the derivative of x^2`
-- 05: `curl -s http://localhost:8086/v1/complete -H 'Content-Type: application/json' -d '{"problem":"find x such that log_12(3x) = 2"}' | python3 -m json.tool`
-- 06: `make run Q="Integrate 2x * e^(x^2)." EMBEDDER_URL=http://localhost:8085` (shows retrieved chunks + final ChatML prompt)
+- 03: `tmux new-session -d -x 100 -y 60 './bin/tutor chat -tutor-url http://localhost:8082'`, `tmux send-keys` the `tp_001` text + Enter, wait for the stream to settle, `tmux capture-pane -p`
+- 04: same with `chat -ascii`, ask `find the derivative of x^2`
+- 05: `curl -s http://localhost:8082/v1/complete -H 'Content-Type: application/json' -d '{"problem":"Find x such that log_12(3x) = 2.","max_tokens":256}' | python3 -m json.tool`
+- 06: `make run Q="Integrate 2x * e^(x^2)."` (shows retrieved chunks + final ChatML prompt)
 - 07: desktop binary built with `-tags "desktop production webkit2_41"`, window on Hyprland, `wtype` query `find the derivative of x^2`
 
 Tip: `kooha` or OBS for clips; `flameshot`/`grim` for stills. A 10–15 s screen

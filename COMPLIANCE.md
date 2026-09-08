@@ -101,7 +101,7 @@ adtc-profiler compare submission.json audit.json --output verdict.json   # PASS
 | Design alternatives & final decisions | REPORT.md → Design Decisions | ✅ |
 | Tools used and why | REPORT.md → Design Decisions / Accuracy | ✅ |
 | Performance tests & benchmarks | REPORT.md → Benchmarks | ✅ |
-| Screenshots / demo clips | **pending** | ⭕ |
+| Screenshots / demo clips | `docs/screenshots/` (8 captures, all unique — see `docs/media-kit.md`) | ✅ |
 
 ---
 
@@ -112,7 +112,7 @@ adtc-profiler compare submission.json audit.json --output verdict.json   # PASS
 - [x] `download_model.sh` idempotent, credential-free, correct target path
 - [x] `REPORT.md` technical writeup
 - [x] `COMPLIANCE.md` requirements matrix (this file)
-- [ ] Screenshots / short video clips of the build in action
+- [x] Screenshots / short video clips of the build in action (`docs/screenshots/`, 8 captures)
 - [ ] 2-minute demo video (solution + development journey)
 - [x] Ubuntu 22.04 LTS validation pass (`ubuntu:22.04` container: clean `download_model.sh`
   run, byte-exact GGUF size vs Hugging Face `content-length`, idempotent second run)
