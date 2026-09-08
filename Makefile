@@ -145,9 +145,11 @@ dev-desktop-nobind:
 	wails dev -tags desktop -skipbindings
 
 # Desktop entry for Arch / Ubuntu (user-local, no sudo)
-install-desktop: build/linux/icon.png
+# The template in build/linux uses __APP_DIR__ placeholders so the repo copy
+# stays machine-independent; paths are expanded at install time.
+install-desktop: build/linux/icon.png build/linux/tutor-gguf.desktop
 	mkdir -p ~/.local/share/applications
-	cp build/linux/tutor-gguf.desktop ~/.local/share/applications/tutor-gguf.desktop
+	sed "s#__APP_DIR__#$(PWD)#g" build/linux/tutor-gguf.desktop > ~/.local/share/applications/tutor-gguf.desktop
 	update-desktop-database ~/.local/share/applications || true
 	mkdir -p ~/Desktop
 	cp ~/.local/share/applications/tutor-gguf.desktop ~/Desktop/tutor-gguf.desktop
