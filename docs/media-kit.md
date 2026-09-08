@@ -82,3 +82,19 @@ Recording notes:
 - Terminal recorder: `kooha --file=...` or OBS; 1920×1080, font ≥ 14 pt.
 - Voiceover: any mic is fine; re-record section by section rather than one take.
 - Export MP4 (H.264), ≤ 200 MB, name `tutor-gguf-demo.mp4`.
+
+## 3. Current demo video (`docs/tutor-gguf-demo.mp4`, 104 s, silent v1)
+
+Built 2026-09-08 from genuine artifacts — no screen recorder needed:
+
+- Title/problem/how/numbers/close cards rendered with ImageMagick (Adwaita Mono
+  on `#0b0d16`, script above as on-screen text — the narration, readable silent).
+- Demo beats are real captures from the live local stack: TUI spinner +
+  JAMB `tp_001` answer (boxes **6**) + full induction proof, via
+  `tmux capture-pane` on `bin/tutor chat`.
+- Assembled with ffmpeg (1280×720, H.264, faststart): cards at fixed durations,
+  answer PNGs panned top-half → bottom-half so the boxed finale is readable.
+
+To re-cut with voiceover: record the script section-by-section over this video
+as reference, or re-run the tmux capture while screen-recording and swap in
+the `s5*` segments.

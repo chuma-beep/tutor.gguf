@@ -357,8 +357,8 @@ field map, and scoring worksheet live in **[COMPLIANCE.md](COMPLIANCE.md)**. Sum
   `download_model.sh` idempotent and writing to `_runtime.model_path`; no weights committed.
 - **Bonus claims:** `african_alpha_claim: true` (JAMB/WASSCE-style Nigerian context,
   naira word problems), `budget_laptop_claim: true`.
-- **Gate-1 package status:** repo + REPORT.md + screenshots done; **the 2-minute demo
-  video is still pending** — record per `docs/media-kit.md` before submission.
+- **Gate-1 package status:** repo + REPORT.md + screenshots + demo video done
+  (`docs/tutor-gguf-demo.mp4`, 104 s silent v1 — narrated re-cut optional).
 
 > Official references: [challenge page](https://africadeeptech.org/challenge-2026/) ·
 > [submission template](https://github.com/Africa-Deep-Tech-Foundation/adtc-2026-submission-template) ·
