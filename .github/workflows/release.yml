@@ -76,17 +76,23 @@ jobs:
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
       - name: Build desktop
+        # Git Bash on Windows so the script below (bashisms) parses everywhere.
+        shell: bash
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
           CGO_ENABLED: "1"
+          # macOS runners noexec /tmp for the wailsbindings helper — HOME is exec-safe.
+          TMPDIR: ${{ runner.temp }}
         run: |
           npm --prefix frontend ci --legacy-peer-deps
           npm --prefix frontend run build
           NAME="tutor-desktop-${GOOS}-${GOARCH}"
           [ "$GOOS" = "windows" ] && NAME="$NAME.exe"
-          # ubuntu-latest ships webkit2gtk-4.1 on 24.04, 4.0 on 22.04; darwin/windows use wails build
-          $(go env GOPATH)/bin/wails build -clean -tags desktop -ldflags "-s -w" -o "dist/$NAME" -platform ${{ matrix.goos }}/${{ matrix.goarch }} || \
+          # ubuntu-latest is 24.04 (webkit2gtk-4.1 only); 22.04/4.0 needs -tags desktop.
+          TAGS="desktop"
+          [ "$GOOS" = "linux" ] && TAGS="desktop webkit2_41"
+          $(go env GOPATH)/bin/wails build -clean -tags "$TAGS" -ldflags "-s -w" -o "dist/$NAME" -platform ${{ matrix.goos }}/${{ matrix.goarch }} || \
             go build -tags "desktop production" -trimpath -ldflags "-s -w" -o "dist/$NAME" ./cmd/desktop
           ls -lh dist/
 
