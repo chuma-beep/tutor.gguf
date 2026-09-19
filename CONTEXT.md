@@ -1,45 +1,73 @@
 # Tutor.gguf
 
-Offline, on-device math tutor for Nigerian CS undergraduates. RAG over GSM8K / Hendrycks MATH / Rosen over Qwen2.5-Math-1.5B GGUF on llama.cpp, CPU-only, 7 GB budget, 100% offline at eval.
+An offline math tutor for Nigerian CS undergraduates. It runs on-device. It uses RAG over
+GSM8K / Hendrycks MATH / Rosen and Qwen2.5-Math-1.5B GGUF on llama.cpp. CPU-only. 7 GB budget.
+100% offline at eval.
 
 ## Language
 
-**Tutor**:
-The end-to-end product: retrieval + prompt build + generation + math rendering. Avoid: bot, assistant as noun for the product.
+**Tutor**
+The end-to-end product: retrieval, prompt build, generation and math rendering. Avoid "bot" or
+"assistant" as a noun for the product.
 
-**Managed RAG**:
-The `internal/runtime.Manager` + `internal/rag.Retriever` + `internal/llm.Client` + `internal/prompt.Builder` stack that turns a `Problem` string into `Content` + `Answer`. Includes llama-server lifecycle (gen + embed), freePort, waitHealthy.
+**Managed RAG**
+The `internal/runtime.Manager` + `internal/rag.Retriever` + `internal/llm.Client` +
+`internal/prompt.Builder` stack. It turns a `Problem` string into `Content` + `Answer`. It also
+owns the llama-server lifecycle (gen and embed), freePort and waitHealthy.
 
-**Scored Chunk**:
-`internal/rag.ScoredChunk` — a corpus `Chunk` plus `ID` + `Similarity` after `QueryEmbedding`. Not to be confused with `Chunk` itself (pre-embedding, holds `Text/Subdomain/Source/Level` from `chunker.go`).
+**Scored Chunk**
+`internal/rag.ScoredChunk`. A corpus `Chunk` plus `ID` + `Similarity` after `QueryEmbedding`.
+Do not confuse it with `Chunk` itself, which is pre-embedding and holds
+`Text/Subdomain/Source/Level` from `chunker.go`.
 
-**Chunk**:
-Corpus unit from `LoadHendrycksFile` / `LoadGSM8KFile` / `LoadRosenDir` with `Text/Subdomain/Source/Level`. Homogeneous, embedded with `search_document` prefix.
+**Chunk**
+The corpus unit from `LoadHendrycksFile` / `LoadGSM8KFile` / `LoadRosenDir`. It holds
+`Text/Subdomain/Source/Level`. Chunks are homogeneous and embedded with the `search_document`
+prefix.
 
-**Subdomain**:
-Fine label assigned by chunker (`algebra`, `precalculus`, `arithmetic`, `geometry`, `probability`, `number_theory`, `calculus` for GSM8K, `discrete_math` for Rosen). Chunk-filter + prompt instruction selector.
+**Subdomain**
+The fine label assigned by the chunker (`algebra`, `precalculus`, `arithmetic`, `geometry`,
+`probability`, `number_theory`, `calculus` for GSM8K, `discrete_math` for Rosen). It drives the
+chunk filter and the prompt instruction selector.
 
-**Prompt Category**:
-Coarse bucket (`calculus`, `discrete_math`, `linear_algebra`, `geometry`, `other`) derived from `Subdomain` via `prompt.PromptCategory` / `subdomainToPromptCategory`. Selects `subdomainInstructions` text.
+**Prompt Category**
+A coarse bucket (`calculus`, `discrete_math`, `linear_algebra`, `geometry`, `other`). It is
+derived from `Subdomain` through `prompt.PromptCategory` / `subdomainToPromptCategory`. It
+selects the `subdomainInstructions` text.
 
-**Tutor Home**:
-`TUTOR_HOME` env or `~/.tutor` — root for `models/`, `bin/llama-server`, `corpus/`, `chromem` DB (`DBPath`), `logs/`. Env overrides: `TUTOR_LLAMA_SERVER`, `TUTOR_THREADS`, `TUTOR_CTX`, `TUTOR_DB_PATH`.
+**Tutor Home**
+`TUTOR_HOME` or `~/.tutor`. It is the root for `models/`, `bin/llama-server`, `corpus/`, the
+`chromem` DB (`DBPath`) and `logs/`. Env overrides: `TUTOR_LLAMA_SERVER`, `TUTOR_THREADS`,
+`TUTOR_CTX`, `TUTOR_DB_PATH`.
 
-**GGUF / Quantization**:
-`Q4_K_M` quantized model file `qwen2.5-math-1.5b-instruct-q4_k_m.gguf` (`GenModelFile`) and `nomic-embed-text-v1.5.Q4_K_M.gguf` (`EmbedModelFile`). Runtime is `llama.cpp` only.
+**GGUF / Quantization**
+The `Q4_K_M` model files `qwen2.5-math-1.5b-instruct-q4_k_m.gguf` (`GenModelFile`) and
+`nomic-embed-text-v1.5.Q4_K_M.gguf` (`EmbedModelFile`). The runtime is `llama.cpp` only.
 
-**Answer**:
-`parse.Extract(content)` — boxed `\\boxed{}` → `final answer:` → `####` → trimmed output. Shown as badge alongside `Content`.
+**Answer**
+`parse.Extract(content)`. It tries boxed `\\boxed{}`, then `final answer:`, then `####`, then
+the trimmed output. It is shown as a badge next to `Content`.
 
-**Wails Desktop**:
-Native desktop shell (`cmd/desktop` + `internal/desktop.App`) wrapping Managed RAG via direct Go bindings (no HTTP hop), WebView frontend (Svelte + Vite + Tailwind + KaTeX). Keeps TUI (`tutor chat` via `internal/tui`) alongside — dual frontend, shared backend and shared `chromem` DB. Setup runs background non-blocking (`EventsEmit("setup:progress")`); v1 is blocking `Complete` + spinner, streaming SSE is Phase 2; distribution is Linux `deb/AppImage` + `darwin/universal` + `windows/amd64` WebView2 via `wails build -tags desktop`.
+**Wails Desktop**
+A native desktop shell (`cmd/desktop` + `internal/desktop.App`) that wraps Managed RAG through
+direct Go bindings (no HTTP hop). The WebView frontend is Svelte + Vite + Tailwind + KaTeX. It
+sits alongside the TUI (`tutor chat` through `internal/tui`): dual frontend, shared backend and
+shared `chromem` DB. Setup runs in the background (`EventsEmit("setup:progress")`). v1 uses
+blocking `Complete` plus a spinner. Streaming SSE is Phase 2. Distribution is Linux
+`deb/AppImage`, `darwin/universal` and `windows/amd64` WebView2 through
+`wails build -tags desktop`.
 
-**TUI**:
-Bubble Tea shell `internal/tui.Model` with `transcriptLines`/`transcriptView`, `askCmd` (`AnswerMsg{id,delta,done,err}`), `renderer.Render` terminal art (stacked frac/root, `glyph` superscripts). Kept for headless/SSH and dev loop; `ascii=true` stays TUI-only, desktop uses KaTeX only; history stays TUI in-memory, desktop history is `localStorage` capped ~100 with `Ctrl+L` clear.
+**TUI**
+The Bubble Tea shell `internal/tui.Model` with `transcriptLines`/`transcriptView` and `askCmd`
+(`AnswerMsg{id,delta,done,err}`). It renders terminal art through `renderer.Render` (stacked
+frac/root, `glyph` superscripts). Kept for headless/SSH and the dev loop. `ascii=true` is
+TUI-only; desktop uses KaTeX only. TUI history is in-memory. Desktop history is `localStorage`
+capped at ~100 with `Ctrl+L` to clear.
 
 ## Relationships
 
-- Managed RAG holds a Retriever (needs Embedder + Subdomain Classifier + chromem Collection) and a Prompt Builder + LLM Client
-- TUI and Wails Desktop are two frontends over the same Managed RAG; neither owns the other
-- Prompt Category is derived from Subdomain; Subdomain is assigned by Chunker
-- Tutor Home contains DBPath, LogsDir, ModelsDir, BinDir, CorpusDir
+- Managed RAG holds a Retriever (which needs an Embedder, a Subdomain Classifier and a chromem
+  Collection) and a Prompt Builder plus an LLM Client.
+- TUI and Wails Desktop are two frontends over the same Managed RAG. Neither owns the other.
+- Prompt Category is derived from Subdomain. Subdomain is assigned by the Chunker.
+- Tutor Home contains DBPath, LogsDir, ModelsDir, BinDir and CorpusDir.

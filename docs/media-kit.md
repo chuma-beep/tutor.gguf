@@ -1,14 +1,14 @@
 # Gate-1 Media Kit — screenshots & demo video
 
-Everything ADTC Gate 1 needs beyond the repo: the screenshot set and the 2-minute
-demo video. Deadline: **Aug 25, 2026**.
+Everything ADTC Gate 1 needs beyond the repo: the screenshot set and the 2-minute demo video.
+Deadline: **Aug 25, 2026**.
 
 ---
 
 ## 1. Screenshot shot list (`docs/screenshots/`)
 
-Capture at a clean terminal font size, light or dark theme consistent across shots.
-Save as `docs/screenshots/NN-description.png`.
+Capture at a clean terminal font size. Keep the theme consistent across shots. Save each as
+`docs/screenshots/NN-description.png`.
 
 | # | Shot | Status | File |
 |---|---|---|---|
@@ -21,15 +21,15 @@ Save as `docs/screenshots/NN-description.png`.
 | 07 | Desktop Wails window (Svelte + KaTeX) | ✅ captured | `docs/screenshots/07-desktop-wails-chat.png` |
 | 08 | Desktop chalkboard redesign (three-zone desk) | ✅ captured | `docs/screenshots/08-desktop-chalkboard.png` |
 
-> 03–06 recaptured 2026-09-08 from the live local stack (gen :8080, embed :8081,
-> tutor :8082): 03/04 via `bin/tutor chat` in a headless tmux pty (question sent
-> with `tmux send-keys`, pane captured after the stream settled — JAMB `tp_001`
-> boxes **6**, ASCII derivative boxes **2x**); 05 via `curl /v1/complete`
-> (`tp_002`, `\boxed{48}` / `"answer": "48"`); 06 via `make run`. Rendered to PNG
-> with Adwaita Mono on the app's dark background — content is byte-faithful
-> program output, not a compositor screenshot.
+> 03–06 were recaptured on 2026-09-08 from the live local stack (gen :8080, embed :8081,
+> tutor :8082). Shots 03 and 04 came from `bin/tutor chat` in a headless tmux pty. The question
+> was sent with `tmux send-keys`, the pane was captured after the stream settled. JAMB `tp_001`
+> boxes **6**; the ASCII derivative boxes **2x**. Shot 05 came from `curl /v1/complete`
+> (`tp_002`, `\boxed{48}` / `"answer": "48"`). Shot 06 came from `make run`. All were rendered
+> to PNG with Adwaita Mono on the app's dark background. The content is byte-faithful program
+> output, not a compositor screenshot.
 
-Recapture instructions (how each was produced):
+How each was produced:
 
 - 01: `bin/tutor chat -tutor-url http://localhost:8082` on a running `tutor serve`; ask `find the derivative of x^2`
 - 02: same session, `Ctrl+L`, ask `Prove by induction that 1 + 2 + ... + n = n(n+1)/2`
@@ -39,62 +39,65 @@ Recapture instructions (how each was produced):
 - 06: `make run Q="Integrate 2x * e^(x^2)."` (shows retrieved chunks + final ChatML prompt)
 - 07: desktop binary built with `-tags "desktop production webkit2_41"`, window on Hyprland, `wtype` query `find the derivative of x^2`
 
-Tip: `kooha` or OBS for clips; `flameshot`/`grim` for stills. A 10–15 s screen
-recording of shot 01 streaming doubles as a video asset.
+Tip: `kooha` or OBS for clips, `flameshot` or `grim` for stills. A 10–15 s screen recording of
+shot 01 streaming doubles as a video asset.
 
 ## 2. Two-minute demo video script
 
-Pacing: ~300 words total. Record the terminal segments first, narrate over them.
+Pacing: about 300 words total. Record the terminal segments first. Narrate over them.
 
 ### [0:00–0:20] The problem
-> In Nigeria, most university students can't afford cloud AI — API fees in naira,
-> unstable fibre, unreliable power. Yet the laptop they already own can run a
-> language model. This is Tutor.gguf: a fully offline math tutor for discrete math,
-> calculus and linear algebra, built for the Africa Deep Tech Challenge Standard
-> Laptop — 8 GB RAM, integrated graphics, zero internet.
+
+> In Nigeria, most university students can't afford cloud AI: API fees in naira, unstable
+> fibre and unreliable power. Yet the laptop they already own can run a language model. This is
+> Tutor.gguf: a fully offline math tutor for discrete math, calculus and linear algebra. It is
+> built for the Africa Deep Tech Challenge Standard Laptop — 8 GB RAM, integrated graphics and
+> zero internet.
 
 ### [0:20–0:55] Live demo *(screen recording)*
-> Everything you see runs locally on CPU. I ask it to differentiate x squared —
-> it streams a step-by-step solution with proper math rendering.
-> *(type the induction prompt)* It handles proofs. And it speaks the student's
-> context — here's a JAMB exam-style problem on arithmetic progressions.
+
+> Everything you see runs locally on CPU. I ask it to differentiate x squared. It streams a
+> step-by-step solution with proper math rendering.
+> *(type the induction prompt)* It handles proofs. And it speaks the student's context. Here is
+> a JAMB exam-style problem on arithmetic progressions.
 > *(show boxed final answer)* Every answer ends in an unambiguous boxed result.
 
 ### [0:55–1:25] How it works *(architecture diagram or README scroll)*
-> Under the hood: Qwen2.5-Math 1.5B quantized to GGUF Q4_K_M on llama.cpp — the
-> required runtime. Around it, a retrieval-augmented pipeline: a local embedding
-> model indexes worked examples from GSM8K, Hendrycks MATH and Rosen's Discrete
-> Mathematics; a keyword classifier picks domain-specific instructions per question.
-> No cloud, no API keys — the whole stack is localhost.
+
+> Under the hood: Qwen2.5-Math 1.5B quantized to GGUF Q4_K_M on llama.cpp, the required
+> runtime. Around it, a retrieval-augmented pipeline. A local embedding model indexes worked
+> examples from GSM8K, Hendrycks MATH and Rosen's Discrete Mathematics. A keyword classifier
+> picks domain-specific instructions per question. No cloud, no API keys. The whole stack is
+> localhost.
 
 ### [1:25–1:45] The numbers *(benchmark table on screen)*
-> Measured with the official ADTC profiler under the audit profile: peak RAM of
-> 1.1 gigabytes — about 16 percent of the 7-gigabyte budget — roughly 14 tokens
-> per second and no thermal throttling.
+
+> Measured with the official ADTC profiler under the audit profile: peak RAM of 1.1 gigabytes,
+> about 16 percent of the 7-gigabyte budget, roughly 14 tokens per second and no thermal
+> throttling.
 
 ### [1:45–2:00] Journey & close
+
 > Building this meant tuning threads and context for a 4-core budget, building a
-> LaTeX-to-terminal renderer so math reads properly and running 30-case evals
-> on-device. It's open source, it runs offline and it runs on the hardware
-> Africa already has. Thank you.
+> LaTeX-to-terminal renderer so math reads properly and running 30-case evals on-device. It's
+> open source. It runs offline. And it runs on the hardware Africa already has. Thank you.
 
 Recording notes:
-- Terminal recorder: `kooha --file=...` or OBS; 1920×1080, font ≥ 14 pt.
-- Voiceover: any mic is fine; re-record section by section rather than one take.
+
+- Terminal recorder: `kooha --file=...` or OBS. 1920×1080, font ≥ 14 pt.
+- Voiceover: any mic is fine. Re-record section by section rather than one take.
 - Export MP4 (H.264), ≤ 200 MB, name `tutor-gguf-demo.mp4`.
 
 ## 3. Current demo video (`docs/tutor-gguf-demo.mp4`, 104 s, silent v1)
 
-Built 2026-09-08 from genuine artifacts — no screen recorder needed:
+Built 2026-09-08 from genuine artifacts. No screen recorder needed.
 
-- Title/problem/how/numbers/close cards rendered with ImageMagick (Adwaita Mono
-  on `#0b0d16`, script above as on-screen text — the narration, readable silent).
-- Demo beats are real captures from the live local stack: TUI spinner +
-  JAMB `tp_001` answer (boxes **6**) + full induction proof, via
-  `tmux capture-pane` on `bin/tutor chat`.
-- Assembled with ffmpeg (1280×720, H.264, faststart): cards at fixed durations,
-  answer PNGs panned top-half → bottom-half so the boxed finale is readable.
+- Title, problem, how, numbers and close cards rendered with ImageMagick (Adwaita Mono on
+  `#0b0d16`, script above as on-screen text). The narration is readable silent.
+- Demo beats are real captures from the live local stack: TUI spinner, JAMB `tp_001` answer
+  (boxes **6**) and the full induction proof, via `tmux capture-pane` on `bin/tutor chat`.
+- Assembled with ffmpeg (1280×720, H.264, faststart). Cards run at fixed durations. Answer PNGs
+  pan top-half to bottom-half so the boxed finale is readable.
 
-To re-cut with voiceover: record the script section-by-section over this video
-as reference, or re-run the tmux capture while screen-recording and swap in
-the `s5*` segments.
+To re-cut with voiceover: record the script section by section over this video as reference, or
+re-run the tmux capture while screen-recording and swap in the `s5*` segments.

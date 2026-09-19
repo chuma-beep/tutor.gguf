@@ -485,7 +485,7 @@ func (p *parser) readNestDelim() string {
 	return t.val
 }
 
-// maybeASCII returns unicode, or the ASCII fallback for name when ascii mode is
+// maybeASCII returns unicode or the ASCII fallback for name when ascii mode is
 // enabled and the asciiMap has an entry for it.
 func maybeASCII(unicode, name string, ascii bool) string {
 	if ascii {

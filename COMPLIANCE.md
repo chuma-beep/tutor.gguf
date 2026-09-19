@@ -14,7 +14,7 @@ Status legend: ✅ verified in repo · ⚠️ needs action · ⭕ not yet done
 
 | Rule (from template) | Status | Evidence / notes |
 |---|---|---|
-| Repository public on GitHub at evaluation time | ⚠️ | repo is `chuma-beep/tutor.gguf`; make sure it is public before Gate 1 |
+| Repository public on GitHub at evaluation time | ✅ | public at `chuma-beep/tutor.gguf` |
 | No model weights in git (`*.gguf`, `model/` ignored) | ✅ | `.gitignore` lists `model/*.gguf` and `model/*.bin` |
 | `metadata.json` fully filled, no placeholders, exactly **2 test prompts** | ✅ | 2 prompts (`tp_001`, `tp_002`); no placeholders |
 | `download_model.sh` idempotent, no credentials, downloads to `_runtime.model_path` | ✅ | script exits early when file exists; public URL; path matches `model/qwen2.5-math-1.5b-instruct-q4_k_m.gguf` |
@@ -57,11 +57,11 @@ Status legend: ✅ verified in repo · ⚠️ needs action · ⭕ not yet done
 | RAM | 8 GB DDR4 (7 GB managed) | peak RSS 1.10 GB ≈ 16% budget |
 | Graphics | integrated only, **no discrete GPU** | none used |
 | Storage | 256 GB SSD | models ≈ 1–2 GB; corpus ≈ 230 MB raw |
-| OS | Ubuntu 22.04 LTS (reference) | developed on Arch; Ubuntu 22.04 validation pending |
-| WebView (desktop) | `webkit2gtk-4.0` (22.04) / `4.1` (24.04, Arch), `WebView2` Windows, `WKWebView` macOS | `wails build -tags desktop` links `webkit2gtk-4.0` on ubuntu-latest; `build-desktop` uses `webkit2_41` tag on 4.1 hosts; no CDN — KaTeX self-hosted via `npm`, CSP `default-src 'self'` |
+| OS | Ubuntu 22.04 LTS (reference) | developed on Arch; validated in an `ubuntu:22.04` container (see checklist) |
+| WebView (desktop) | `webkit2gtk-4.0` (22.04) / `4.1` (24.04, Arch), `WebView2` Windows, `WKWebView` macOS | `wails build -tags desktop` links `webkit2gtk-4.0` on ubuntu-latest; `build-desktop` uses the `webkit2_41` tag on 4.1 hosts; no CDN — KaTeX self-hosted via `npm`, CSP `default-src 'self'` |
 
-> The three llama-server processes (gen + embed + judge) together stay well under the 7 GB
-> cap; at runtime the judge is never loaded, so live footprint is even smaller.
+> The three llama-server processes (gen, embed and judge) together stay well under the 7 GB
+> cap. At runtime the judge is never loaded, so the live footprint is even smaller.
 
 ---
 
@@ -76,11 +76,9 @@ Official formula: `S_total = 0.50·S_acc + 0.30·S_perf + 0.20·S_eff − P_ther
 | **S_eff** | `max(0,(7.0−peak_rss_gb)/7.0)·100` | peak 1.10 GB | **≈ 84.3** |
 | **P_thermal** | −10 if throttled / core > 85 °C | `throttled: false`, peak 20.0 °C | **0** |
 
-Max achievable from telemetry alone: `0.3·100 + 0.2·84.3 = 46.9 pts` (before S_acc and any
-penalties). Adding the 50% accuracy weight, S_total ≈ 76–96 for S_acc in the 60–100 range —
-subject to official audit on the Standard Laptop.
-
-Self-reported audit-profile numbers only; official audit overrides.
+Telemetry alone gives at most `0.3·100 + 0.2·84.3 = 46.9 pts`, before S_acc and any penalties.
+Add the 50% accuracy weight and S_total lands near 76–96 for S_acc in the 60–100 range. The
+official audit on the Standard Laptop overrides these numbers.
 
 Local repro (all numbers from the Docker audit profile, `--memory=7.5g --cpus=4`):
 
@@ -108,7 +106,7 @@ adtc-profiler compare submission.json audit.json --output verdict.json   # PASS
 
 ## 6. Gate-1 deliverable checklist
 
-- [x] Open-source public GitHub repo (set visibility before submission)
+- [x] Open-source public GitHub repo (public at `chuma-beep/tutor.gguf`)
 - [x] `metadata.json` fully filled, exactly 2 test prompts
 - [x] `download_model.sh` idempotent, credential-free, correct target path
 - [x] `REPORT.md` technical writeup
@@ -117,8 +115,8 @@ adtc-profiler compare submission.json audit.json --output verdict.json   # PASS
 - [x] 2-minute demo video (`docs/tutor-gguf-demo.mp4`, 104 s silent v1 — narrated re-cut optional)
 - [x] Ubuntu 22.04 LTS validation pass (`ubuntu:22.04` container: clean `download_model.sh`
   run, byte-exact GGUF size vs Hugging Face `content-length`, idempotent second run)
-- [ ] `audit.json` from an official audit run — `audit.json` is now generated
-  locally in Docker audit mode (`compare` → **PASS**); official run still pending
+- [ ] `audit.json` from an official audit run — `audit.json` is now generated locally in Docker
+  audit mode (`compare` → **PASS**); the official run is still pending
 
 **Quality-of-documentation note:** ADTC qualitative scoring explicitly includes “quality of
 documentation”. README.md, REPORT.md and this file are written to that standard.

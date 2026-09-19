@@ -1,8 +1,9 @@
 # Tutor.gguf — On-device Math Tutor
 
-A fully offline, on-device math tutor for Nigerian CS undergraduates at distance-learning
-institutions. Given a math problem, it retrieves relevant worked examples from a local corpus
-(RAG) and generates a step-by-step solution — no GPU, no internet, no cloud API fees.
+Tutor.gguf is a fully offline math tutor. It runs on the laptop you already own. It is built
+for Nigerian CS undergraduates at distance-learning institutions. Give it a math problem. It
+finds similar worked examples in a local corpus (RAG). Then it writes a step-by-step solution.
+No GPU. No internet. No cloud API fees.
 
 > **Team:** chuma-beep · **Domain:** math_scientific_reasoning · **Language:** en
 > **Claims:** African Alpha use case, budget-laptop compatible
@@ -13,20 +14,21 @@ institutions. Given a math problem, it retrieves relevant worked examples from a
 
 ## What it does
 
-- **Model:** Qwen2.5-Math-1.5B-Instruct (GGUF Q4_K_M) generates step-by-step solutions with
-  LaTeX `\boxed{}` final answers.
-- **Retrieval:** nomic-embed-text-v1.5 embeddings + chromem-go vector store + a lightweight
-  keyword subdomain classifier (algebra / calculus / discrete math / geometry / probability /
-  number theory) that filters retrieved context and selects domain-specific prompt instructions.
-- **Corpus:** GSM8K, Hendrycks MATH, Rosen Discrete Math solutions and OpenStax textbooks.
-- **Runtime:** 100% local llama.cpp (`llama-server`) — CPU-only, no GPU required.
+- **Model.** Qwen2.5-Math-1.5B-Instruct (GGUF Q4_K_M) writes step-by-step solutions. Final
+  answers use LaTeX `\boxed{}`.
+- **Retrieval.** nomic-embed-text-v1.5 embeddings feed a chromem-go vector store. A small
+  keyword classifier sorts each question into algebra / calculus / discrete math / geometry /
+  probability / number theory. It then filters the retrieved context and picks the right
+  prompt instructions.
+- **Corpus.** GSM8K, Hendrycks MATH, Rosen Discrete Math solutions and OpenStax textbooks.
+- **Runtime.** 100% local llama.cpp (`llama-server`). CPU-only. No GPU needed.
 
-Covers Discrete Mathematics, Calculus I/II, Linear Algebra and Geometry-style problems in the
-style Nigerian students meet in JAMB/WASSCE and first-year CS courses.
+It covers Discrete Mathematics, Calculus I/II, Linear Algebra and Geometry-style problems.
+These match what Nigerian students see in JAMB/WASSCE and first-year CS courses.
 
 ## Requirements
 
-Target platform is the **ADTC 2026 Standard Laptop**:
+The target platform is the **ADTC 2026 Standard Laptop**:
 
 | Constraint | Spec |
 |---|---|
@@ -37,20 +39,20 @@ Target platform is the **ADTC 2026 Standard Laptop**:
 | Runtime | **llama.cpp + GGUF only** (competition rule) |
 | Connectivity | **100% offline** — zero outbound network calls during eval |
 
-The tutor runs CPU-only via llama.cpp and measures ~1.1 GB peak RSS, well inside the 7 GB
-budget. You can develop on any machine; only the final artifact is measured against the
+Tutor.gguf runs CPU-only through llama.cpp. It uses about 1.1 GB peak RSS, well under the
+7 GB budget. You can develop on any machine. Only the final artifact is measured against the
 profile above.
 
 Toolchain:
 
-- Go 1.26+ (for the Go components)
-- [llama.cpp](https://github.com/ggml-org/llama.cpp) build with `llama-server`
-  (and `llama-bench`), on PATH or pointed at in the Makefile
+- Go 1.26+ for the Go components
+- [llama.cpp](https://github.com/ggml-org/llama.cpp) built with `llama-server` and
+  `llama-bench`. Keep it on your PATH or point the Makefile at it.
 - Python 3.11+ and [promptfoo](https://promptfoo.dev) for the eval workflow
 - The three models and the corpus data (see below)
 
-> **Note on the 3-model setup.** Three local models play three different roles —
-> only one of them is the scored submission model:
+> **Note on the 3-model setup.** Three local models do three different jobs. Only one of them
+> is the scored submission model:
 >
 > | Model | Role in the system | Status |
 > |---|---|---|
@@ -58,8 +60,8 @@ Toolchain:
 > | nomic-embed-text | RAG retrieval dependency (index + query) | supporting (not scored directly) |
 > | Qwen2.5-3B | eval-only judge (`llm-rubric`), never used at inference time | tooling |
 >
-> `download_model.sh` fetches only the scored model; the embedder and judge are
-> dev-loop dependencies the pipeline needs locally.
+> `download_model.sh` fetches only the scored model. The embedder and judge are dev
+> dependencies the pipeline needs locally.
 
 ### Models
 
@@ -69,7 +71,7 @@ Toolchain:
 | `nomic-embed-text-v1.5.Q4_K_M.gguf` | embeddings | embedding server is separate from generation |
 | `qwen2.5-3b-instruct-q4_k_m.gguf` | grading judge | used only by the eval harness |
 
-Model and server paths are defined at the top of the `Makefile` — adjust to your environment.
+Model and server paths live at the top of the `Makefile`. Adjust them to your environment.
 
 ### Corpus (`data/raw/`, git-ignored)
 
@@ -80,54 +82,60 @@ Model and server paths are defined at the top of the `Makefile` — adjust to yo
 | `rosen/` | discrete math solutions (.md/.txt) | open |
 | `openstax/` | college algebra / calculus PDFs | CC BY |
 
-Ingestion for Hendrycks MATH, GSM8K and Rosen is implemented in `internal/rag/chunker.go`;
-OpenStax PDFs are scaffolded in `ROADMAP.md` but not yet loaded.
+`internal/rag/chunker.go` ingests Hendrycks MATH, GSM8K and Rosen. OpenStax PDFs are
+scaffolded in `ROADMAP.md` but not loaded yet.
 
 ## Quick start
 
 ### Just want to try it? (no toolchain needed)
 
-Grab a prebuilt binary from [Releases](https://github.com/chuma-beep/tutor.gguf/releases)
-(or run `install.sh`), then:
+Grab a prebuilt binary from [Releases](https://github.com/chuma-beep/tutor.gguf/releases) or
+run `install.sh`. Then:
 
 ```bash
-tutor setup   # one-time: downloads llama.cpp, models (~1.2 GB), corpus; builds index
+tutor setup   # one-time: downloads llama.cpp, models (~1.2 GB) and corpus, then builds the index
 tutor chat    # interactive shell — starts the whole stack and tears it down on exit
 ```
 
-`setup` is idempotent: re-run it any time, it skips what already exists. Artifacts live in
-`~/.tutor/` (`models/`, `corpus/`, `bin/llama-server`, `chromem/`, `logs/`). Everything after
-setup runs 100% offline. `TUTOR_HOME` relocates the directory; `TUTOR_LLAMA_SERVER`,
+`setup` is idempotent. Re-run it any time: it skips what already exists. Artifacts live in
+`~/.tutor/` (`models/`, `corpus/`, `bin/llama-server`, `chromem/`, `logs/`). After setup,
+everything runs 100% offline. `TUTOR_HOME` moves the directory. `TUTOR_LLAMA_SERVER`,
 `TUTOR_THREADS`, `TUTOR_CTX` and `TUTOR_DB_PATH` override runtime pieces.
 
-`tutor serve` (HTTP API on :8082) and `tutor index` work the same way — with no URL flags they
-spawn their own llama-servers on free ports; pass `-gen-url`/`-embedder-url` to use external
+`tutor serve` (HTTP API on :8082) and `tutor index` work the same way. With no URL flags they
+start their own llama-servers on free ports. Pass `-gen-url`/`-embedder-url` to use external
 servers instead.
 
-Windows: download `tutor-windows-amd64.exe` from Releases, run `tutor setup`, then `tutor chat`.
+Windows: download `tutor-windows-amd64.exe` from Releases. Run `tutor setup`, then
+`tutor chat`.
 
-Desktop (Wails): download `tutor-desktop-linux-amd64.deb` / `tutor-desktop-linux-amd64.AppImage` /
-`tutor-desktop-darwin-universal.dmg` / `tutor-desktop-windows-amd64-installer.exe` from
-Releases — **double-click to install, then just chat**. First launch automatically downloads
-the ~1.2 GB model + corpus (~10 min on 10 Mbps, more on slower data) with a progress bar,
-then everything runs 100% offline forever. No terminal, no commands. Power cut? Just open
-again — it resumes. No internet lab? Grab the `tutor-offline.tar.gz` USB pack instead
-(campus Wi-Fi once, then copy). Linux needs `webkit2gtk-4.1` (`sudo apt install libwebkit2gtk-4.1-0`
-on Ubuntu 24.04; 22.04 uses the 4.0 build).
+Desktop (Wails): download one of these from Releases.
+
+- `tutor-desktop-linux-amd64.deb`
+- `tutor-desktop-linux-amd64.AppImage`
+- `tutor-desktop-darwin-universal.dmg`
+- `tutor-desktop-windows-amd64-installer.exe`
+
+**Double-click to install. Then just chat.** On first launch it downloads the ~1.2 GB model
+and corpus (about 10 min on 10 Mbps, longer on slow data) and shows a progress bar. After
+that it runs 100% offline forever. No terminal. No commands. Lost power? Open it again — it
+resumes. No internet lab? Use the `tutor-offline.tar.gz` USB pack instead (campus Wi-Fi once,
+then copy). Linux needs `webkit2gtk-4.1` (`sudo apt install libwebkit2gtk-4.1-0` on Ubuntu
+24.04; 22.04 uses the 4.0 build).
 
 ### Developer flow (repo checkout)
 
-The Makefile targets below drive the three llama-server processes explicitly — same
-components, manual orchestration, useful when tuning or running evals.
+The Makefile targets below run the three llama-server processes by hand. Same components,
+manual orchestration. Useful when you tune or run evals.
 
-### 1. Get the models
+#### 1. Get the models
 
 ```bash
 ./download_model.sh                                   # Qwen2.5-Math into model/
 # + place your nomic-embed-text and qwen2.5-3b judge GGUFs at the Makefile paths
 ```
 
-### 2. Start the three local llama-server processes (one terminal each)
+#### 2. Start the three local llama-server processes (one terminal each)
 
 ```bash
 make serve-gen       # generation server  -> :8080
@@ -135,27 +143,27 @@ make serve-embed     # embedding server   -> :8081  (runs --embeddings)
 make serve-judge     # judge model        -> :8083  (only needed for evals)
 ```
 
-Three separate model processes for three distinct uses — keep the ports straight.
+Three separate model processes for three purposes. Keep the ports straight.
 
-### 3. Index the corpus
+#### 3. Index the corpus
 
 ```bash
 make index
 ```
 
-Embeds and indexes every chunk from Hendrycks / GSM8K / Rosen into the persistent
-`data/chromem` store, then runs the test query. Indexing is sequential (one embedding
-request per chunk) and can be re-run at any time.
+This embeds and indexes every chunk from Hendrycks / GSM8K / Rosen into the persistent
+`data/chromem` store. Then it runs the test query. Indexing is sequential (one embedding
+request per chunk). You can re-run it at any time.
 
-### 4. Run the tutor server
+#### 4. Run the tutor server
 
 ```bash
 make serve-tutor
 ```
 
-Start the Go RAG server on `:8082`. It exposes the `/v1/complete` endpoint.
+Starts the Go RAG server on `:8082`. It exposes the `/v1/complete` endpoint.
 
-### 5. Ask it something
+#### 5. Ask it something
 
 ```bash
 make run Q="find the derivative of x^2"        # CLI: prints retrieval + final prompt (no server)
@@ -164,24 +172,24 @@ curl -s localhost:8082/v1/complete \
   -d '{"problem":"find the derivative of x^2"}'
 ```
 
-`make run` uses the already-indexed DB (skips ingestion when no corpus sources are passed) and
-is handy for inspecting exactly which chunks were retrieved and what prompt is sent, without a
+`make run` uses the already-indexed DB. It skips ingestion when you pass no corpus sources.
+It is handy for inspecting which chunks were retrieved and what prompt was sent, without a
 running server.
 
-### 6. Ask it from the terminal (interactive TUI)
+#### 6. Ask it from the terminal (interactive TUI)
 
 ```bash
 make tui            # Bubble Tea shell, Unicode math (>≡ π … ≤, tall brackets, boxed answers)
 make tui-ascii      # same shell with ASCII-only fallbacks (x^2, sqrt()-style, +/- borders)
 ```
 
-Both open a Bubble Tea alternate screen on `:8082`. Type a question, press Enter and the
-model's output streams into the transcript with LaTeX spans (`\(...\)`, `\[...\]`, `$...$`)
-rendered as terminal art — stacked fractions, square/cube roots, sum/integral limits,
-binom, `\boxed` borders and `\alpha` → α. The parser degrades gracefully: anything it
-doesn't model (rare `\begin{matrix}` synthetic-division tables) falls back to a linear
-passthrough, never blank. Unicode mode is the prettier default; ASCII mode trades the
-glyphs for wider terminal safety (useful for screenshots on exotic fonts).
+Both open a Bubble Tea alternate screen on `:8082`. Type a question and press Enter. The
+model's output streams into the transcript. LaTeX spans (`\(...\)`, `\[...\]`, `$...$`) become
+terminal art: stacked fractions, square/cube roots, sum/integral limits, binom, `\boxed`
+borders and `\alpha` → α. The parser degrades gracefully. Anything it does not model (rare
+`\begin{matrix}` synthetic-division tables) falls back to a linear passthrough, never blank.
+Unicode mode is the prettier default. ASCII mode trades the glyphs for wider terminal safety
+(useful for screenshots on exotic fonts).
 
 ## API
 
@@ -201,19 +209,19 @@ glyphs for wider terminal safety (useful for screenshots on exotic fonts).
 { "content": "<model-generated solution>", "answer": "<parsed final answer>" }
 ```
 
-`answer` is a lightweight runtime parse of the model's final answer (`internal/parse`,
-mirroring the eval matcher's extractor: `\boxed{...}` → `final answer:` → `####` → whole
-output). It is omitted when nothing can be parsed. The eval configs keep using only
-`json.content`, so adding `answer` does not affect scoring.
+`answer` is a lightweight runtime parse of the model's final answer (`internal/parse`). It
+mirrors the eval matcher's extractor: `\boxed{...}` → `final answer:` → `####` → whole output.
+It is omitted when nothing can be parsed. The eval configs use only `json.content`, so adding
+`answer` does not affect scoring.
 
-The server retrieves the top-K (default 3) chunks for the problem, classifies its subdomain,
-builds the RAG prompt and blocks on generation before returning. The eval configs run it
-single-concurrency (`maxConcurrency: 1`).
+The server retrieves the top-K (default 3) chunks for the problem. It classifies the
+subdomain, builds the RAG prompt and waits for generation before returning. The eval configs
+run it single-concurrency (`maxConcurrency: 1`).
 
 ## Per-subdomain smoke matrix
 
-Quick sanity checks — one query per coarse prompt category (`make run` shows the selected
-system instruction; `curl /v1/complete` shows the parsed `answer`). Expect the geometry case
+Quick sanity checks. Run one query per coarse prompt category. `make run` shows the selected
+system instruction. `curl /v1/complete` shows the parsed `answer`. Expect the geometry case
 to fall back to unfiltered retrieval when the geometry corpus slice is thin:
 
 | Category | Query | Expected instruction key |
@@ -225,7 +233,7 @@ to fall back to unfiltered retrieval when the geometry corpus slice is thin:
 | geometry | Lagos water tank, circumference 66, `π = 22/7` | geometry |
 | other | `Why does 0.999... equal 1? Explain clearly.` | other (default) |
 
-Each answer parsed correctly on the ADTC dev environment; subdomain text comes from
+Each answer parsed correctly on the ADTC dev environment. The subdomain text comes from
 `internal/prompt/subdomainInstructions`.
 
 ## Architecture
@@ -245,47 +253,48 @@ problem ──▶ tutor serve ──▶ Retriever ──▶ chromem-go "tutor-co
 
 Components, in the order a request flows through them:
 
-1. `internal/cli/serve.go` — HTTP layer (`tutor serve` subcommand). Decodes the request, calls
-   retrieval, builds the prompt, calls generation, encodes the JSON response. With no URL flags
-   it also supervises the llama-server processes via `internal/runtime`.
-2. `internal/rag/retriever.go` — `Retriever.Retrieve`: classifies the subdomain, embeds the
-   query (**with the `search_query` prefix**), queries the vector store via `QueryEmbedding`,
-   filters / picks top-K and falls back to the unfiltered pool if a subdomain filter leaves
-   too few results.
-3. `internal/llm/client.go` — posts the built prompt to llama.cpp `/completion`, returns text.
-4. `internal/rag/embedder.go` — llama.cpp `/embedding` client. Splits the two nomic prefixes:
-   `search_document` for corpus indexing vs `search_query` for queries. chromem-go's
-   collection-level `Query(text)` always reuses the document prefix for embedding, so it is
-   bypassed on purpose: queries embed via `EmbedQuery` and hit `QueryEmbedding` directly.
+1. `internal/cli/serve.go` — HTTP layer (`tutor serve` subcommand). It decodes the request,
+   calls retrieval, builds the prompt, calls generation and encodes the JSON response. With no
+   URL flags it also supervises the llama-server processes through `internal/runtime`.
+2. `internal/rag/retriever.go` — `Retriever.Retrieve`. It classifies the subdomain, embeds the
+   query (**with the `search_query` prefix**) and queries the vector store through
+   `QueryEmbedding`. It picks top-K and falls back to the unfiltered pool if a subdomain filter
+   leaves too few results.
+3. `internal/llm/client.go` — posts the built prompt to llama.cpp `/completion` and returns text.
+4. `internal/rag/embedder.go` — llama.cpp `/embedding` client. It splits the two nomic
+   prefixes: `search_document` for corpus indexing and `search_query` for queries. chromem-go's
+   collection-level `Query(text)` always reuses the document prefix. So it is bypassed on
+   purpose: queries embed through `EmbedQuery` and hit `QueryEmbedding` directly.
 5. `internal/rag/chunker.go` — loaders that map each corpus format to a homogeneous `Chunk`
-   (problem + solution text, plus subdomain/source/level metadata for the store).
+   (problem + solution text plus subdomain/source/level metadata for the store).
 
 ### Subdomain classifier
 
-A cheap keyword heuristic (`minHits = 1`) in `retriever.go` maps a question to
-algebra / arithmetic / precalculus / geometry / probability / number_theory, then two uses:
+A cheap keyword heuristic (`minHits = 1`) in `retriever.go` maps a question to algebra /
+arithmetic / precalculus / geometry / probability / number_theory. It then does two jobs:
 
-- narrow retrieval so the prompt's context is on-topic, occasionally falling back to the full
-  pool if the filter would starve the prompt (topK=3);
-- selects the domain-specific instruction text (e.g. "reason step by step, citing the relevant
-  geometric theorem or property") prepended to the user turn.
+- It narrows retrieval so the prompt's context stays on-topic. It falls back to the full pool
+  when the filter would starve the prompt (topK=3).
+- It selects the domain-specific instruction text (for example "reason step by step, citing
+  the relevant geometric theorem or property") that is prepended to the user turn.
 
 ### Prompt builder (`internal/prompt`)
 
 `prompt.Builder` is the canonical prompt builder (ChatML framing, coarse-category CoT
-instructions, RAG context block, answer anchor). `rag.BuildPrompt` is a thin adapter over it,
-and `internal/prompt` also owns the subdomain → instruction mapping. Unit tests live in
+instructions, RAG context block, answer anchor). `rag.BuildPrompt` is a thin adapter over it.
+`internal/prompt` also owns the subdomain → instruction mapping. Unit tests live in
 `internal/prompt/builder_test.go` (structure, instruction selection and a golden prompt).
 
 ## Evaluation
 
 The eval harness (promptfoo) runs against the local tutor server and grades answers twice:
 
-1. **Deterministic match** (`evals/answer_assert.js`): extracts the model's `\boxed{...}` /
-   final answer, normalizes LaTeX/whitespace (fractions, sqrt, lists) and falls back to
-   numeric comparison for algebraically-equivalent forms. No network needed.
-2. **LLM rubric** (`llm-rubric`, local `qwen2.5-3b-instruct` judge on `:8083`): JSON-schema
-   `{pass, reason, score}` judgments on the expected answer / tutoring-quality criteria.
+1. **Deterministic match** (`evals/answer_assert.js`). It extracts the model's `\boxed{...}` /
+   final answer, normalizes LaTeX/whitespace (fractions, sqrt, lists) and falls back to numeric
+   comparison for algebraically-equivalent forms. No network needed.
+2. **LLM rubric** (`llm-rubric`, local `qwen2.5-3b-instruct` judge on `:8083`). It returns
+   JSON-schema `{pass, reason, score}` judgments on the expected answer and tutoring-quality
+   criteria.
 
 Workflow:
 
@@ -302,14 +311,14 @@ make eval-view       # open the interactive promptfoo results
   induction, integration) graded by rubric.
 - Result artifacts land in `evals/results_*.json`.
 
-Current status (self-reported, 18/30 accuracy and 6/10 quality — failure details in
-**REPORT.md**).
+Current status is self-reported: 18/30 accuracy and 6/10 quality. Failure details are in
+**REPORT.md**.
 
 ## Performance snapshot
 
-Measured with the official ADTC profiler in **audit-profile mode** — the profiler's
-own Docker image running under `--memory=7.5g --cpus=4` with its baseline (no-AVX2)
-llama.cpp build, i.e. the closest local proxy for the Standard Laptop / audit VM:
+Measured with the official ADTC profiler in **audit-profile mode**. That means the profiler's
+own Docker image under `--memory=7.5g --cpus=4` with its baseline (no-AVX2) llama.cpp build.
+It is the closest local proxy for the Standard Laptop / audit VM:
 
 | Metric | Value |
 |---|---|
@@ -321,13 +330,13 @@ llama.cpp build, i.e. the closest local proxy for the Standard Laptop / audit VM
 | Core temp / throttling | 20 °C / `throttled: false` |
 
 > Earlier dev-machine numbers (45.78 t/s, 1.71 GB, native build, 16 cores) were
-> non-representative; everything below reflects the Docker audit profile. Full
-> methodology and tuning log in **docs/tuning.md**.
+> non-representative. This snapshot reflects the Docker audit profile. Full methodology and
+> tuning log in **docs/tuning.md**.
 
 ### Scoring context
 
-ADTC 2026 scoring is `S_total = 0.5·S_acc + 0.3·S_perf + 0.2·S_eff − P_thermal`.
-Applying the official formulas to the numbers above:
+ADTC 2026 scoring is `S_total = 0.5·S_acc + 0.3·S_perf + 0.2·S_eff − P_thermal`. Applying the
+official formulas to the numbers above:
 
 | Component | Formula | This submission |
 |---|---|---|
@@ -335,8 +344,8 @@ Applying the official formulas to the numbers above:
 | Efficiency | `max(0, (7.0 − peak_rss_gb) / 7.0) · 100` | 1.10 GB → **≈ 84.3** |
 | Thermal penalty | `−10` if throttled or core temp > 85 °C | none observed (`throttled: false`) |
 
-These are self-reported audit-profile values; the official audit runs on the
-Standard Laptop. Reproduce locally with:
+These are self-reported audit-profile values. The official audit runs on the Standard Laptop.
+Reproduce locally with:
 
 ```bash
 make profile        # adtc-profiler run --mode participant (on this machine)
@@ -353,15 +362,15 @@ docker run --rm --memory=7.5g --cpus=4 -v "$PWD":/submission:ro \
 ## ADTC 2026 compliance
 
 This project is entered in the **Africa Deep Tech Challenge 2026 — The Laptop LLM**
-(`math_scientific_reasoning` domain). The full requirements matrix, `metadata.json`
-field map and scoring worksheet live in **[COMPLIANCE.md](COMPLIANCE.md)**. Summary:
+(`math_scientific_reasoning` domain). The full requirements matrix, `metadata.json` field map
+and scoring worksheet live in **[COMPLIANCE.md](COMPLIANCE.md)**. Summary:
 
-- **Rules met:** llama.cpp + GGUF only; fully offline; fits the 7 GB RAM budget
-  (1.10 GB peak); no discrete GPU; exactly 2 test prompts in `metadata.json`;
-  `download_model.sh` idempotent and writing to `_runtime.model_path`; no weights committed.
-- **Bonus claims:** `african_alpha_claim: true` (JAMB/WASSCE-style Nigerian context,
-  naira word problems), `budget_laptop_claim: true`.
-- **Gate-1 package status:** repo + REPORT.md + screenshots + demo video done
+- **Rules met.** llama.cpp + GGUF only. Fully offline. Fits the 7 GB RAM budget (1.10 GB
+  peak). No discrete GPU. Exactly 2 test prompts in `metadata.json`. `download_model.sh` is
+  idempotent and writes to `_runtime.model_path`. No weights committed.
+- **Bonus claims.** `african_alpha_claim: true` (JAMB/WASSCE-style Nigerian context, naira
+  word problems). `budget_laptop_claim: true`.
+- **Gate-1 package status.** Repo, REPORT.md, screenshots and demo video are done
   (`docs/tutor-gguf-demo.mp4`, 104 s silent v1 — narrated re-cut optional).
 
 > Official references: [challenge page](https://africadeeptech.org/challenge-2026/) ·
@@ -397,16 +406,16 @@ metadata.json            # submission metadata
 
 ## Troubleshooting
 
-- **Port conflicts** — Makefile pins 8080 / 8081 / 8083 / 8082 for the four servers; change
+- **Port conflicts.** The Makefile pins 8080 / 8081 / 8083 / 8082 for the four servers. Change
   the `*_PORT` vars.
-- **No chunks indexed** — confirm the corpus exists under `data/raw/` (git-ignored, NOT
-  downloaded by `download_model.sh`).
-- **Stale store** — `data/chromem/*.db` is generated on index; delete it and re-index if the
-  store looks stale (it is git-ignored).
-- **`make run` prints nothing about indexing** — expected when corpus sources are absent;
-  it assumes an existing store.
-- **Judge / gen / embed mixups** — `serve-embed` must run `--embeddings`; never point
-  `serve-tutor` at the judge port, etc.
+- **No chunks indexed.** Confirm the corpus exists under `data/raw/`. It is git-ignored and NOT
+  downloaded by `download_model.sh`.
+- **Stale store.** `data/chromem/*.db` is generated on index. Delete it and re-index if the
+  store looks stale. It is git-ignored.
+- **`make run` prints nothing about indexing.** Expected when corpus sources are absent. It
+  assumes an existing store.
+- **Judge / gen / embed mixups.** `serve-embed` must run `--embeddings`. Never point
+  `serve-tutor` at the judge port.
 
 ## Further reading
 

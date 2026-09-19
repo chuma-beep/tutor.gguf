@@ -16,7 +16,7 @@ var (
 	gsm8kRE  = regexp.MustCompile(`####\s*(\S+.*)`)
 )
 
-// Extract returns the model's final answer from output, or "" when nothing
+// Extract returns the model's final answer from output or "" when nothing
 // can be parsed.
 func Extract(output string) string {
 	if m := boxedRE.FindStringSubmatch(output); m != nil {

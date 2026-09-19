@@ -19,7 +19,7 @@ import (
 //
 // Built specifically around nomic-embed-text, which is asymmetric:
 // it was trained with different prefixes for the text being indexed
-// vs. the text being searched for, and skipping them measurably hurts
+// vs. the text being searched for and skipping them measurably hurts
 // retrieval quality. See EmbedDocument / EmbedQuery below.
 type Embedder struct {
 	baseURL    string
@@ -71,7 +71,7 @@ type llamaEmbeddingRequest struct {
 
 // llamaEmbeddingResult matches one element of llama.cpp server's
 // /embedding response. The response is a top-level JSON array (one
-// element per input, though we only ever send one), and Embedding is
+// element per input, though we only ever send one) and Embedding is
 // itself doubly-nested — an array of rows rather than a flat vector.
 // In practice with pooling enabled server-side there's exactly one row,
 // so we take Embedding[0] as the actual vector.

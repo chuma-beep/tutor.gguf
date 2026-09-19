@@ -104,7 +104,7 @@ func filterBySubdomain(chunks []ScoredChunk, subdomain string) []ScoredChunk {
 }
 
 // topN dedupes by ID (in case filter+fallback overlapped), sorts by
-// similarity descending, and truncates to n.
+// similarity descending and truncates to n.
 func topN(chunks []ScoredChunk, n int) []ScoredChunk {
 	seen := make(map[string]bool, len(chunks))
 	deduped := make([]ScoredChunk, 0, len(chunks))

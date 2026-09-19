@@ -33,7 +33,7 @@ type GSM8KItem struct {
 }
 
 // LoadHendrycksFile processes a single Hendrycks JSON file. It returns one
-// chunk, or several when the problem+solution text exceeds
+// chunk or several when the problem+solution text exceeds
 // hendrycksMaxChunkChars — dense LaTeX solutions (e.g. Asymptote geometry)
 // can run > 2000 tokens, so splitting keeps every chunk safely inside the
 // embedding server's physical batch.

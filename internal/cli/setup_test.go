@@ -59,7 +59,7 @@ func TestFetchHendrycksRetries429(t *testing.T) {
 }
 
 // TestFetchHendrycksRetries500 proves 500 HTML (tail-shard cache miss) is
-// retried, and the HTTP status surfaces in the error if it never succeeds.
+// retried and the HTTP status surfaces in the error if it never succeeds.
 func TestFetchHendrycksRetries500(t *testing.T) {
 	defer shrinkRetries()()
 	calls := 0
@@ -118,7 +118,7 @@ func TestFetchHendrycksHardError(t *testing.T) {
 }
 
 // TestEnsureHendrycksPerConfigIdempotent proves a partial config on disk is
-// skipped without network, and a full failure warns and continues.
+// skipped without network and a full failure warns and continues.
 func TestEnsureHendrycksPerConfigIdempotent(t *testing.T) {
 	defer shrinkRetries()()
 	dest := t.TempDir()

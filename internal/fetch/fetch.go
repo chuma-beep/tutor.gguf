@@ -206,7 +206,7 @@ func CopyDir(src, dst string) error {
 }
 
 // FindFileBelow returns the first regular file named name below root,
-// excluding any path containing skip, or "" when absent.
+// excluding any path containing skip or "" when absent.
 func FindFileBelow(root, name, skip string) string {
 	var found string
 	filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {

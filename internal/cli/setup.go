@@ -359,7 +359,7 @@ var (
 // fetchHendrycksConfig downloads one subdomain's problems page by page.
 // It guards HTTP status (datasets-server can answer 429/500 with an HTML
 // error page), sets a real User-Agent, retries transient failures up to 5
-// times with exponential backoff (honoring Retry-After), and paces pages so
+// times with exponential backoff (honoring Retry-After) and paces pages so
 // anonymous rate limits are not tripped.
 func fetchHendrycksConfig(ctx context.Context, config, destDir string) (int, error) {
 	return fetchHendrycksConfigURL(ctx, "https://datasets-server.huggingface.co/rows", config, destDir, hendrycksDataset)
@@ -368,7 +368,7 @@ func fetchHendrycksConfig(ctx context.Context, config, destDir string) (int, err
 // fetchHendrycksConfigURL downloads one subdomain's problems page by page.
 // It guards HTTP status (datasets-server can answer 429/500 with an HTML
 // error page), sets a real User-Agent, retries transient failures up to 5
-// times with exponential backoff (honoring Retry-After), and paces pages so
+// times with exponential backoff (honoring Retry-After) and paces pages so
 // anonymous rate limits are not tripped. baseURL and dataset are injectable
 // for tests.
 func fetchHendrycksConfigURL(ctx context.Context, baseURL, config, destDir, dataset string) (int, error) {

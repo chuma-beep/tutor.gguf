@@ -179,7 +179,7 @@ func (m *Manager) spawn(server, name string, args []string) (*exec.Cmd, error) {
 }
 
 // waitHealthy polls {url}/health until it returns 200, the child exits early,
-// ctx is cancelled, or ~5 minutes elapse (cold model loads can be slow).
+// ctx is cancelled or ~5 minutes elapse (cold model loads can be slow).
 func waitHealthy(ctx context.Context, name, url string, cmd *exec.Cmd, logPath string) error {
 	exited := make(chan struct{})
 	go func() {

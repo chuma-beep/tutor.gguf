@@ -162,7 +162,7 @@ func Serve(args []string) error {
 		return err
 	}
 	if (*embedderURL == "") != (*genURL == "") {
-		return errors.New("pass -embedder-url AND -gen-url together for external servers, or neither to start them automatically")
+		return errors.New("pass -embedder-url AND -gen-url together for external servers or neither to start them automatically")
 	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
