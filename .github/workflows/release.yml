@@ -136,34 +136,34 @@ jobs:
           npm --prefix frontend ci --legacy-peer-deps
           npm --prefix frontend run build
 
-      - name: Build desktop app
+      - name: Build universal app
         env:
           TMPDIR: ${{ github.workspace }}/.tmp
         run: |
           mkdir -p .tmp dist
           export PATH="$PATH:$(go env GOPATH)/bin"
-          # Build each arch separately; Wails' darwin/universal lipo step fails
-          # ("archive with no architecture specification") on recent Xcode.
-          wails build -clean -skipbindings -s -tags desktop -ldflags "-s -w" -platform darwin/amd64
-          mkdir -p build/staging/amd64
-          find build/bin -maxdepth 1 -name '*.app' -exec mv {} build/staging/amd64/ \;
-          ls -la build/staging/amd64
-
+          # Native arm64 .app bundle from Wails provides Info.plist + Resources.
           wails build -clean -skipbindings -s -tags desktop -ldflags "-s -w" -platform darwin/arm64
-          find build/bin -maxdepth 1 -name '*.app' -exec mv {} build/staging/ \;
-          ls -la build/staging
+          APP="$(find build/bin -maxdepth 1 -name '*.app' | head -1)"
+          test -n "$APP" || { echo "no .app"; ls -la build/bin; exit 1; }
+          echo "app=$APP"
+          find "$APP" -type f -exec file {} \;
 
-      - name: Create universal .dmg
+          # Wails' cross-compiled amd64 slice is not a valid Mach-O on Xcode 26
+          # ("archive with no architecture specification"). Build both arches
+          # directly and lipo them instead.
+          CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build -tags desktop -trimpath \
+            -ldflags "-s -w" -o /tmp/tutor-arm64 ./cmd/desktop
+          CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -tags desktop -trimpath \
+            -ldflags "-s -w" -o /tmp/tutor-amd64 ./cmd/desktop
+          file /tmp/tutor-arm64 /tmp/tutor-amd64
+          lipo -create /tmp/tutor-amd64 /tmp/tutor-arm64 -output "$APP/Contents/MacOS/tutor-desktop"
+          lipo -info "$APP/Contents/MacOS/tutor-desktop"
+
+      - name: Package .dmg
         run: |
-          ARM_APP="$(find build/staging -maxdepth 1 -name '*.app' | head -1)"
-          X86_APP="$(find build/staging/amd64 -maxdepth 1 -name '*.app' | head -1)"
-          ARM_BIN="$(find "$ARM_APP/Contents/MacOS" -type f | head -1)"
-          X86_BIN="$(find "$X86_APP/Contents/MacOS" -type f | head -1)"
-          echo "arm=$ARM_BIN amd64=$X86_BIN"
-          lipo -create "$X86_BIN" "$ARM_BIN" -output "$ARM_BIN.universal"
-          mv "$ARM_BIN.universal" "$ARM_BIN"
-          lipo -info "$ARM_BIN"
-          hdiutil create -volname "Tutor.gguf" -srcfolder "$ARM_APP" -ov -format UDZO \
+          APP="$(find build/bin -maxdepth 1 -name '*.app' | head -1)"
+          hdiutil create -volname "Tutor.gguf" -srcfolder "$APP" -ov -format UDZO \
             dist/tutor-desktop-darwin-universal.dmg
           ls -lh dist/
 
