@@ -142,16 +142,28 @@ jobs:
         run: |
           mkdir -p .tmp dist
           export PATH="$PATH:$(go env GOPATH)/bin"
-          wails build -clean -skipbindings -s \
-            -tags desktop -ldflags "-s -w" -platform darwin/universal
-          ls -lh build/bin/
+          # Build each arch separately; Wails' darwin/universal lipo step fails
+          # ("archive with no architecture specification") on recent Xcode.
+          wails build -clean -skipbindings -s -tags desktop -ldflags "-s -w" -platform darwin/amd64
+          mkdir -p build/staging/amd64
+          find build/bin -maxdepth 1 -name '*.app' -exec mv {} build/staging/amd64/ \;
+          ls -la build/staging/amd64
 
-      - name: Package .dmg
+          wails build -clean -skipbindings -s -tags desktop -ldflags "-s -w" -platform darwin/arm64
+          find build/bin -maxdepth 1 -name '*.app' -exec mv {} build/staging/ \;
+          ls -la build/staging
+
+      - name: Create universal .dmg
         run: |
-          APP="$(find build/bin -maxdepth 1 -name '*.app' | head -1)"
-          test -n "$APP" || { echo "no .app produced"; ls -la build/bin/; exit 1; }
-          echo "packaging $APP"
-          hdiutil create -volname "Tutor.gguf" -srcfolder "$APP" -ov -format UDZO \
+          ARM_APP="$(find build/staging -maxdepth 1 -name '*.app' | head -1)"
+          X86_APP="$(find build/staging/amd64 -maxdepth 1 -name '*.app' | head -1)"
+          ARM_BIN="$(find "$ARM_APP/Contents/MacOS" -type f | head -1)"
+          X86_BIN="$(find "$X86_APP/Contents/MacOS" -type f | head -1)"
+          echo "arm=$ARM_BIN amd64=$X86_BIN"
+          lipo -create "$X86_BIN" "$ARM_BIN" -output "$ARM_BIN.universal"
+          mv "$ARM_BIN.universal" "$ARM_BIN"
+          lipo -info "$ARM_BIN"
+          hdiutil create -volname "Tutor.gguf" -srcfolder "$ARM_APP" -ov -format UDZO \
             dist/tutor-desktop-darwin-universal.dmg
           ls -lh dist/
 

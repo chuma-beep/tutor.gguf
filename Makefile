@@ -133,7 +133,7 @@ release-desktop:
 # index), ~1.4 GB. Campus Wi-Fi once, then USB.
 bundle-offline:
 	go run ./cmd/tutor setup
-	tar -C $$(go env HOME)/.tutor -czf build/bin/tutor-offline.tar.gz .
+	tar -C $(HOME)/.tutor -czf build/bin/tutor-offline.tar.gz .
 
 # Dev shell with hot reload (Svelte + Go)
 dev-desktop:
