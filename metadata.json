@@ -12,7 +12,7 @@
   "cross_disciplinary_pairing": {
     "discipline": "education",
     "load_bearing": true,
-    "description": "On-device math tutor for Nigerian CS undergraduates — covers Discrete Mathematics, Calculus I/II, and Linear Algebra via RAG over GSM8K/Hendrycks MATH/OpenStax corpus. Serves students at distance-learning institutions with no reliable internet access or budget for cloud AI subscriptions."
+    "description": "On-device math tutor for Nigerian CS undergraduates — covers Discrete Mathematics, Calculus I/II and Linear Algebra via RAG over GSM8K/Hendrycks MATH/OpenStax corpus. Serves students at distance-learning institutions with no reliable internet access or budget for cloud AI subscriptions."
   },
   "test_prompts": [
     {
