@@ -88,6 +88,7 @@ jobs:
           export PATH="$PATH:$(go env GOPATH)/bin"
           wails build -clean -skipbindings -s \
             -tags "desktop webkit2_41" -ldflags "-s -w" -platform linux/amd64
+          chmod +x build/bin/tutor-desktop
           ls -lh build/bin/
 
       - name: Package .deb
@@ -113,7 +114,6 @@ jobs:
       # Wails appends -framework UniformTypeIdentifiers itself; pin the deployment
       # target to 11.0 so UTType is strongly linked instead of weak-linked (10.13).
       CGO_LDFLAGS: "-mmacosx-version-min=11.0"
-      TMPDIR: ${{ github.workspace }}/.tmp
     steps:
       - uses: actions/checkout@v4
 
@@ -137,6 +137,8 @@ jobs:
           npm --prefix frontend run build
 
       - name: Build desktop app
+        env:
+          TMPDIR: ${{ github.workspace }}/.tmp
         run: |
           mkdir -p .tmp dist
           export PATH="$PATH:$(go env GOPATH)/bin"
@@ -146,8 +148,9 @@ jobs:
 
       - name: Package .dmg
         run: |
-          APP="build/bin/Tutor.gguf.app"
-          test -d "$APP" || { echo "missing $APP"; ls -la build/bin/; exit 1; }
+          APP="$(find build/bin -maxdepth 1 -name '*.app' | head -1)"
+          test -n "$APP" || { echo "no .app produced"; ls -la build/bin/; exit 1; }
+          echo "packaging $APP"
           hdiutil create -volname "Tutor.gguf" -srcfolder "$APP" -ov -format UDZO \
             dist/tutor-desktop-darwin-universal.dmg
           ls -lh dist/

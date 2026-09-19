@@ -6,7 +6,8 @@ set -euo pipefail
 out="${1:-dist/tutor-desktop-linux-amd64.AppImage}"
 bin="build/bin/tutor-desktop"
 
-[ -x "$bin" ] || { echo "missing desktop binary: $bin" >&2; exit 1; }
+[ -f "$bin" ] || { echo "missing desktop binary: $bin" >&2; exit 1; }
+chmod +x "$bin"
 mkdir -p "$(dirname "$out")"
 
 workdir="$(mktemp -d)"

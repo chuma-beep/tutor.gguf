@@ -16,6 +16,8 @@ description: |
 contents:
   - src: build/bin/tutor-desktop
     dst: /usr/bin/tutor-desktop
+    file_info:
+      mode: 0755
   - src: packaging/tutor-gguf.desktop
     dst: /usr/share/applications/tutor-gguf.desktop
   - src: build/linux/icon.png
