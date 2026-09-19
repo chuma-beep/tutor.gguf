@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Tutor.gguf
+Comment=Offline, on-device math tutor
+Exec=tutor-desktop
+Icon=tutor-gguf
+Terminal=false
+Categories=Education;Science;Math;
+StartupWMClass=tutor-desktop

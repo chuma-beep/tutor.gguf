@@ -7,6 +7,10 @@ institutions. Given a math problem, it retrieves relevant worked examples from a
 > **Team:** chuma-beep · **Domain:** math_scientific_reasoning · **Language:** en
 > **Claims:** African Alpha use case, budget-laptop compatible
 
+**[Project homepage](https://chuma-beep.github.io/tutor.gguf/)** ·
+[releases](https://github.com/chuma-beep/tutor.gguf/releases) ·
+[technical report](REPORT.md) · [compliance record](COMPLIANCE.md)
+
 ## What it does
 
 - **Model:** Qwen2.5-Math-1.5B-Instruct (GGUF Q4_K_M) generates step-by-step solutions with
@@ -353,7 +357,7 @@ This project is entered in the **Africa Deep Tech Challenge 2026 — The Laptop 
 field map, and scoring worksheet live in **[COMPLIANCE.md](COMPLIANCE.md)**. Summary:
 
 - **Rules met:** llama.cpp + GGUF only; fully offline; fits the 7 GB RAM budget
-  (~1.7 GB peak); no discrete GPU; exactly 2 test prompts in `metadata.json`;
+  (1.10 GB peak); no discrete GPU; exactly 2 test prompts in `metadata.json`;
   `download_model.sh` idempotent and writing to `_runtime.model_path`; no weights committed.
 - **Bonus claims:** `african_alpha_claim: true` (JAMB/WASSCE-style Nigerian context,
   naira word problems), `budget_laptop_claim: true`.
@@ -381,6 +385,8 @@ internal/
 evals/                   # promptfoo configs, sampler, matcher, results
 data/raw/                # corpus (git-ignored)
 data/chromem/            # persistent vector store (git-ignored)
+site/                    # GitHub Pages homepage (Vite + React + TanStack Router)
+packaging/               # .deb / .AppImage packaging for the desktop build
 Makefile                 # everything below
 download_model.sh        # model fetch
 REPORT.md                # technical report (problem, design, benchmarks)

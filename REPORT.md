@@ -14,7 +14,7 @@ Nigerian CS undergraduates at distance-learning institutions need step-by-step m
 ## Design Decisions
 
 - **Base model:** Qwen2.5-Math-1.5B-Instruct, chosen for its math specialization (trained to reason step-by-step and emit `\boxed{}` final answers) at a size that fits comfortably in the 7 GB RAM budget with RAG + embeddings resident.
-- **Quantization:** GGUF Q4_K_M. Measured peak RSS is 1.71 GB — about 24% of the 7 GB budget, leaving room for the OS, browser, and RAG index. Q8_0 was rejected: it doubles model memory (~2 GB) for negligible accuracy gain on this task; Q2_K was rejected after sample evals showed degraded multi-step reasoning.
+- **Quantization:** GGUF Q4_K_M. Measured peak RSS is 1.10 GB — about 16% of the 7 GB budget, leaving room for the OS, browser, and RAG index. Q8_0 was rejected: it doubles model memory (~2 GB) for negligible accuracy gain on this task; Q2_K was rejected after sample evals showed degraded multi-step reasoning.
 - **Retrieval:** chromem-go vector store (in-memory + persistent), nomic-embed-text-v1.5 Q4_K_M embeddings, subdomain keyword classifier (algebra/calculus/discrete_math/geometry/probability/number_theory) that filters retrieval and selects domain-specific prompt instructions.
 - **Runtime:** llama.cpp (llama-server) — CPU-only, AVX2, no GPU required, matching the ADTC Standard Laptop's integrated-graphics constraint.
 - **Alternatives considered and rejected:** 7B-class models (Mistral-7B, Qwen2.5-7B) exceeded the latency/memory envelope on 8 GB integrated graphics; cloud API fallbacks were rejected by the no-cloud-dependency requirement.

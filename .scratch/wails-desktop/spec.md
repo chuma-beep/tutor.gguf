@@ -1,6 +1,6 @@
 # Spec: Wails Desktop + Keep TUI
 
-Status: ready-for-agent
+Status: verified (2026-09-09 full pass — see issues/01-05)
 
 ## Problem Statement
 
