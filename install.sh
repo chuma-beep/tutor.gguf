@@ -3,7 +3,7 @@
 #
 # Installs the single-binary tutor into ~/.local/bin (override with
 # TUTOR_PREFIX) and runs `tutor setup`, which provisions the prebuilt
-# llama.cpp server, both GGUF models, the corpus, and the vector index.
+# llama.cpp server, both GGUF models, the corpus and the vector index.
 #
 #   curl -fsSL https://raw.githubusercontent.com/chuma-beep/tutor.gguf/main/install.sh | bash
 #

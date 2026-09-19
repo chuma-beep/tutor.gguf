@@ -125,7 +125,7 @@ func TestBuildGoldenPrompt(t *testing.T) {
 	}, "algebra")
 
 	want := `<|im_start|>system
-Please reason step by step, stating the rule applied at each differentiation, integration, or algebraic step, and put your final answer within \boxed{}.<|im_end|>
+Please reason step by step, stating the rule applied at each differentiation, integration or algebraic step, and put your final answer within \boxed{}.<|im_end|>
 <|im_start|>user
 Relevant reference material:
 

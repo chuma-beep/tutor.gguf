@@ -1,5 +1,5 @@
 // Package prompt builds the ChatML prompt fed to Qwen2.5-Math: a coarse
-// subdomain-based instruction, retrieved reference chunks, and the student
+// subdomain-based instruction, retrieved reference chunks and the student
 // question with an answer anchor. It is the sole place prompt formatting and
 // instruction text live; rag.BuildPrompt is a thin adapter over it.
 package prompt
@@ -92,7 +92,7 @@ func PromptCategory(subdomain string) string {
 // update the golden fixture in builder_test.go too.
 var subdomainInstructions = map[string]string{
 	"discrete_math":  "Please reason step by step, stating each inference rule or proof technique used, and put your final answer within \\boxed{}.",
-	"calculus":       "Please reason step by step, stating the rule applied at each differentiation, integration, or algebraic step, and put your final answer within \\boxed{}.",
+	"calculus":       "Please reason step by step, stating the rule applied at each differentiation, integration or algebraic step, and put your final answer within \\boxed{}.",
 	"linear_algebra": "Please reason step by step, showing matrix operations row by row, and put your final answer within \\boxed{}.",
 	"geometry":       "Please reason step by step, citing the relevant geometric theorem or property (Pythagorean theorem, triangle inequality, circle properties, etc.), and put your final answer within \\boxed{}.",
 }

@@ -65,7 +65,7 @@ func TestAskError(t *testing.T) {
 	}
 }
 
-// TestModelFlow drives the model through typing, submit, and a blocking
+// TestModelFlow drives the model through typing, submit and a blocking
 // answer message, asserting the transcript renders the reply.
 func TestModelFlow(t *testing.T) {
 	m := newModel(Options{

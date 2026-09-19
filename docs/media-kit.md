@@ -50,7 +50,7 @@ Pacing: ~300 words total. Record the terminal segments first, narrate over them.
 > In Nigeria, most university students can't afford cloud AI — API fees in naira,
 > unstable fibre, unreliable power. Yet the laptop they already own can run a
 > language model. This is Tutor.gguf: a fully offline math tutor for discrete math,
-> calculus, and linear algebra, built for the Africa Deep Tech Challenge Standard
+> calculus and linear algebra, built for the Africa Deep Tech Challenge Standard
 > Laptop — 8 GB RAM, integrated graphics, zero internet.
 
 ### [0:20–0:55] Live demo *(screen recording)*
@@ -63,19 +63,19 @@ Pacing: ~300 words total. Record the terminal segments first, narrate over them.
 ### [0:55–1:25] How it works *(architecture diagram or README scroll)*
 > Under the hood: Qwen2.5-Math 1.5B quantized to GGUF Q4_K_M on llama.cpp — the
 > required runtime. Around it, a retrieval-augmented pipeline: a local embedding
-> model indexes worked examples from GSM8K, Hendrycks MATH, and Rosen's Discrete
+> model indexes worked examples from GSM8K, Hendrycks MATH and Rosen's Discrete
 > Mathematics; a keyword classifier picks domain-specific instructions per question.
 > No cloud, no API keys — the whole stack is localhost.
 
 ### [1:25–1:45] The numbers *(benchmark table on screen)*
 > Measured with the official ADTC profiler under the audit profile: peak RAM of
 > 1.1 gigabytes — about 16 percent of the 7-gigabyte budget — roughly 14 tokens
-> per second, and no thermal throttling.
+> per second and no thermal throttling.
 
 ### [1:45–2:00] Journey & close
 > Building this meant tuning threads and context for a 4-core budget, building a
-> LaTeX-to-terminal renderer so math reads properly, and running 30-case evals
-> on-device. It's open source, it runs offline, and it runs on the hardware
+> LaTeX-to-terminal renderer so math reads properly and running 30-case evals
+> on-device. It's open source, it runs offline and it runs on the hardware
 > Africa already has. Thank you.
 
 Recording notes:

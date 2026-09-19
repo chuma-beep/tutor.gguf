@@ -65,7 +65,7 @@ func DiscoverLlamaServer() (string, error) {
 	if lp, err := exec.LookPath("llama-server"); err == nil {
 		return lp, nil
 	}
-	return "", fmt.Errorf("llama-server not found (checked $TUTOR_LLAMA_SERVER, %s, and $PATH) — run `tutor setup`", BinDir())
+	return "", fmt.Errorf("llama-server not found (checked $TUTOR_LLAMA_SERVER, %s and $PATH) — run `tutor setup`", BinDir())
 }
 
 // Start launches the configured servers and blocks until each reports healthy

@@ -47,7 +47,7 @@ tests:
                     score:
                       type: number
                   required: [pass, reason, score]
-        value: "Judge the output as a tutoring response to a first-year university student. It must (1) show the derivative of x^3 is 3x^2 and of 2x is 2, (2) state the final derivative 3x^2 + 2, and (3) explain each step so a beginner can follow. Respond with exactly PASS or FAIL."
+        value: "Judge the output as a tutoring response to a first-year university student. It must (1) show the derivative of x^3 is 3x^2 and of 2x is 2, (2) state the final derivative 3x^2 + 2 and (3) explain each step so a beginner can follow. Respond with exactly PASS or FAIL."
 
   - description: "correct final answer emphasized"
     vars:
@@ -99,7 +99,7 @@ tests:
                     score:
                       type: number
                   required: [pass, reason, score]
-        value: "The output must include a base case (n=1), a correct inductive hypothesis, and a correct inductive step showing the sum formula for n+1 follows. Respond with exactly PASS or FAIL."
+        value: "The output must include a base case (n=1), a correct inductive hypothesis and a correct inductive step showing the sum formula for n+1 follows. Respond with exactly PASS or FAIL."
 
   - description: "integral explanation"
     vars:
@@ -125,7 +125,7 @@ tests:
                     score:
                       type: number
                   required: [pass, reason, score]
-        value: "The output must identify u = x^2, du = 2x dx, rewrite the integral, and state the antiderivative e^(x^2) + C with the constant of integration. Respond with exactly PASS or FAIL."
+        value: "The output must identify u = x^2, du = 2x dx, rewrite the integral and state the antiderivative e^(x^2) + C with the constant of integration. Respond with exactly PASS or FAIL."
 
   - description: "african use case — JAMB arithmetic progression"
     vars:

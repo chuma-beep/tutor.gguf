@@ -6,7 +6,7 @@ llama.cpp as baseline x86-64 (no AVX2/FMA) and presents a 4-vCPU/7.5 GB profile,
 the closest local proxy for the ADTC Standard Laptop / official audit VM.
 
 Run protocol: after every major change (threads, context, prompts, LoRA) re-run the
-Docker audit + `compare`, append a date-stamped section here, and copy JSON snapshots
+Docker audit + `compare`, append a date-stamped section here and copy JSON snapshots
 into `results/`.
 
 Key reference on this subject (from the tuning reading list):
@@ -119,7 +119,7 @@ Judge model (Qwen2.5-3B) is eval-only — not resident in the live path.
   model file. Contributors: KV cache, growable compute/work buffers, 16 thread stacks,
   hybrid-memory arena. This is build/thread/context dependent — the baseline 4-thread
   container server (row above) uses ~1.1 GB total. Not a budget risk.
-- RAM scales with threads (`-t`), context (`-c`), and batch size; the tuned profile
+- RAM scales with threads (`-t`), context (`-c`) and batch size; the tuned profile
   (2048 ctx, and `-t 4` on 4-core hardware) is the memory-minimal configuration.
 
 ---

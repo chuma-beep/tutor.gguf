@@ -18,10 +18,10 @@ institutions. Given a math problem, it retrieves relevant worked examples from a
 - **Retrieval:** nomic-embed-text-v1.5 embeddings + chromem-go vector store + a lightweight
   keyword subdomain classifier (algebra / calculus / discrete math / geometry / probability /
   number theory) that filters retrieved context and selects domain-specific prompt instructions.
-- **Corpus:** GSM8K, Hendrycks MATH, Rosen Discrete Math solutions, and OpenStax textbooks.
+- **Corpus:** GSM8K, Hendrycks MATH, Rosen Discrete Math solutions and OpenStax textbooks.
 - **Runtime:** 100% local llama.cpp (`llama-server`) — CPU-only, no GPU required.
 
-Covers Discrete Mathematics, Calculus I/II, Linear Algebra, and Geometry-style problems in the
+Covers Discrete Mathematics, Calculus I/II, Linear Algebra and Geometry-style problems in the
 style Nigerian students meet in JAMB/WASSCE and first-year CS courses.
 
 ## Requirements
@@ -80,7 +80,7 @@ Model and server paths are defined at the top of the `Makefile` — adjust to yo
 | `rosen/` | discrete math solutions (.md/.txt) | open |
 | `openstax/` | college algebra / calculus PDFs | CC BY |
 
-Ingestion for Hendrycks MATH, GSM8K, and Rosen is implemented in `internal/rag/chunker.go`;
+Ingestion for Hendrycks MATH, GSM8K and Rosen is implemented in `internal/rag/chunker.go`;
 OpenStax PDFs are scaffolded in `ROADMAP.md` but not yet loaded.
 
 ## Quick start
@@ -98,7 +98,7 @@ tutor chat    # interactive shell — starts the whole stack and tears it down o
 `setup` is idempotent: re-run it any time, it skips what already exists. Artifacts live in
 `~/.tutor/` (`models/`, `corpus/`, `bin/llama-server`, `chromem/`, `logs/`). Everything after
 setup runs 100% offline. `TUTOR_HOME` relocates the directory; `TUTOR_LLAMA_SERVER`,
-`TUTOR_THREADS`, `TUTOR_CTX`, and `TUTOR_DB_PATH` override runtime pieces.
+`TUTOR_THREADS`, `TUTOR_CTX` and `TUTOR_DB_PATH` override runtime pieces.
 
 `tutor serve` (HTTP API on :8082) and `tutor index` work the same way — with no URL flags they
 spawn their own llama-servers on free ports; pass `-gen-url`/`-embedder-url` to use external
@@ -175,10 +175,10 @@ make tui            # Bubble Tea shell, Unicode math (>≡ π … ≤, tall brac
 make tui-ascii      # same shell with ASCII-only fallbacks (x^2, sqrt()-style, +/- borders)
 ```
 
-Both open a Bubble Tea alternate screen on `:8082`. Type a question, press Enter, and the
+Both open a Bubble Tea alternate screen on `:8082`. Type a question, press Enter and the
 model's output streams into the transcript with LaTeX spans (`\(...\)`, `\[...\]`, `$...$`)
 rendered as terminal art — stacked fractions, square/cube roots, sum/integral limits,
-binom, `\boxed` borders, and `\alpha` → α. The parser degrades gracefully: anything it
+binom, `\boxed` borders and `\alpha` → α. The parser degrades gracefully: anything it
 doesn't model (rare `\begin{matrix}` synthetic-division tables) falls back to a linear
 passthrough, never blank. Unicode mode is the prettier default; ASCII mode trades the
 glyphs for wider terminal safety (useful for screenshots on exotic fonts).
@@ -207,7 +207,7 @@ output). It is omitted when nothing can be parsed. The eval configs keep using o
 `json.content`, so adding `answer` does not affect scoring.
 
 The server retrieves the top-K (default 3) chunks for the problem, classifies its subdomain,
-builds the RAG prompt, and blocks on generation before returning. The eval configs run it
+builds the RAG prompt and blocks on generation before returning. The eval configs run it
 single-concurrency (`maxConcurrency: 1`).
 
 ## Per-subdomain smoke matrix
@@ -250,7 +250,7 @@ Components, in the order a request flows through them:
    it also supervises the llama-server processes via `internal/runtime`.
 2. `internal/rag/retriever.go` — `Retriever.Retrieve`: classifies the subdomain, embeds the
    query (**with the `search_query` prefix**), queries the vector store via `QueryEmbedding`,
-   filters / picks top-K, and falls back to the unfiltered pool if a subdomain filter leaves
+   filters / picks top-K and falls back to the unfiltered pool if a subdomain filter leaves
    too few results.
 3. `internal/llm/client.go` — posts the built prompt to llama.cpp `/completion`, returns text.
 4. `internal/rag/embedder.go` — llama.cpp `/embedding` client. Splits the two nomic prefixes:
@@ -275,14 +275,14 @@ algebra / arithmetic / precalculus / geometry / probability / number_theory, the
 `prompt.Builder` is the canonical prompt builder (ChatML framing, coarse-category CoT
 instructions, RAG context block, answer anchor). `rag.BuildPrompt` is a thin adapter over it,
 and `internal/prompt` also owns the subdomain → instruction mapping. Unit tests live in
-`internal/prompt/builder_test.go` (structure, instruction selection, and a golden prompt).
+`internal/prompt/builder_test.go` (structure, instruction selection and a golden prompt).
 
 ## Evaluation
 
 The eval harness (promptfoo) runs against the local tutor server and grades answers twice:
 
 1. **Deterministic match** (`evals/answer_assert.js`): extracts the model's `\boxed{...}` /
-   final answer, normalizes LaTeX/whitespace (fractions, sqrt, lists), and falls back to
+   final answer, normalizes LaTeX/whitespace (fractions, sqrt, lists) and falls back to
    numeric comparison for algebraically-equivalent forms. No network needed.
 2. **LLM rubric** (`llm-rubric`, local `qwen2.5-3b-instruct` judge on `:8083`): JSON-schema
    `{pass, reason, score}` judgments on the expected answer / tutoring-quality criteria.
@@ -354,7 +354,7 @@ docker run --rm --memory=7.5g --cpus=4 -v "$PWD":/submission:ro \
 
 This project is entered in the **Africa Deep Tech Challenge 2026 — The Laptop LLM**
 (`math_scientific_reasoning` domain). The full requirements matrix, `metadata.json`
-field map, and scoring worksheet live in **[COMPLIANCE.md](COMPLIANCE.md)**. Summary:
+field map and scoring worksheet live in **[COMPLIANCE.md](COMPLIANCE.md)**. Summary:
 
 - **Rules met:** llama.cpp + GGUF only; fully offline; fits the 7 GB RAM budget
   (1.10 GB peak); no discrete GPU; exactly 2 test prompts in `metadata.json`;

@@ -69,7 +69,7 @@ func (r *Retriever) Retrieve(query string, topK int) ([]Chunk, error)
 Create `internal/prompt/builder.go`:
 
 - Takes the user's query and a list of retrieved `Chunk` structs
-- Formats them into a structured prompt with system instructions, retrieved context, and the user's question
+- Formats them into a structured prompt with system instructions, retrieved context and the user's question
 - The system instruction should tell the model to act as a step-by-step math tutor
 - Retrieved chunks are inserted as context (with subdomain/source tags for provenance)
 
@@ -103,7 +103,7 @@ Provide a clear, step-by-step solution.
 Create `internal/parser/parser.go`:
 
 - Takes the raw LLM response string
-- Extracts the step-by-step reasoning (split on numbered steps, bullet points, or "Step N:" patterns)
+- Extracts the step-by-step reasoning (split on numbered steps, bullet points or "Step N:" patterns)
 - Returns a structured `Response` with individual steps
 
 ```go

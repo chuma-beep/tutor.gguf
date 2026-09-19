@@ -77,7 +77,7 @@ func reportBytes(p ProgressFn, phase string, downloaded, total int64) {
 
 // Setup provisions everything needed to run offline: the llama.cpp server
 // binary, both GGUF models, the corpus snapshot (Rosen ships embedded in this
-// binary), and the vector-store index. Every step is idempotent.
+// binary) and the vector-store index. Every step is idempotent.
 func Setup(args []string) error {
 	fs := flag.NewFlagSet("setup", flag.ContinueOnError)
 	home := fs.String("home", "", "tutor home directory (default $TUTOR_HOME or ~/.tutor)")

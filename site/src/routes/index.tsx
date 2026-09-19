@@ -68,7 +68,7 @@ function Index() {
               <div>
                 <p className="archive-label">Project abstract</p>
                 <p className="mt-5 text-xl leading-snug">A fully offline mathematics tutor designed for Nigerian computer science undergraduates at distance-learning institutions.</p>
-                <p className="mt-5 text-sm leading-7 text-muted-foreground">The system combines local retrieval with a compact quantized language model. It runs on an 8 GB laptop without a GPU, internet connection, cloud account, or per-token fee.</p>
+                <p className="mt-5 text-sm leading-7 text-muted-foreground">The system combines local retrieval with a compact quantized language model. It runs on an 8 GB laptop without a GPU, internet connection, cloud account or per-token fee.</p>
               </div>
               <div className="border-t border-border pt-7">
                 <p className="archive-label">System composition</p>

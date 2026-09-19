@@ -8,11 +8,11 @@ Nigerian CS undergraduates at distance-learning institutions need step-by-step m
 
 ## Solution
 
-Add a Svelte + Vite + Tailwind + KaTeX WebView desktop `tutor-desktop` (Wails v2) as a **second frontend** over the same Managed RAG (`internal/runtime.Manager` + `retriever.Retrieve` + `prompt.Builder.Build` + `llm.Client.Complete` + `parse.Extract`). Keep `tutor chat` TUI intact (`cmd/tutor/main.go:34`) for SSH/headless/dev loop; both frontends share `Tutor Home` (`~/.tutor`, `runtime/paths.go:22`) models, `chromem` DB (`DBPath`), and `~/.tutor/logs`. Direct Go bindings (`desktop.App.Ask()` → `retriever.Retrieve` → `BuildPrompt` → `Complete` → `Extract`) eliminate the HTTP hop for desktop, while `POST /v1/complete` (`internal/cli/serve.go:50`) stays for `evals/promptfooconfig.yaml` + `adtc-profiler`. Desktop SetupView runs background non-blocking with `EventsEmit("setup:progress")`; v1 ships blocking generation with spinner, streaming SSE is Phase 2. Distribution: Linux `deb/AppImage`, `darwin/universal`, `windows/amd64` WebView2 via `wails build -tags desktop`.
+Add a Svelte + Vite + Tailwind + KaTeX WebView desktop `tutor-desktop` (Wails v2) as a **second frontend** over the same Managed RAG (`internal/runtime.Manager` + `retriever.Retrieve` + `prompt.Builder.Build` + `llm.Client.Complete` + `parse.Extract`). Keep `tutor chat` TUI intact (`cmd/tutor/main.go:34`) for SSH/headless/dev loop; both frontends share `Tutor Home` (`~/.tutor`, `runtime/paths.go:22`) models, `chromem` DB (`DBPath`) and `~/.tutor/logs`. Direct Go bindings (`desktop.App.Ask()` → `retriever.Retrieve` → `BuildPrompt` → `Complete` → `Extract`) eliminate the HTTP hop for desktop, while `POST /v1/complete` (`internal/cli/serve.go:50`) stays for `evals/promptfooconfig.yaml` + `adtc-profiler`. Desktop SetupView runs background non-blocking with `EventsEmit("setup:progress")`; v1 ships blocking generation with spinner, streaming SSE is Phase 2. Distribution: Linux `deb/AppImage`, `darwin/universal`, `windows/amd64` WebView2 via `wails build -tags desktop`.
 
 ## User Stories
 
-1. As a Nigerian undergrad, I want to ask "Find the derivative of x^2" in a native window and see KaTeX fractions, square roots, and `\boxed{}` so math is readable on first try.
+1. As a Nigerian undergrad, I want to ask "Find the derivative of x^2" in a native window and see KaTeX fractions, square roots and `\boxed{}` so math is readable on first try.
 
 2. As a distance-learning student on unstable power, I want first launch to download llama.cpp b10612 + Qwen2.5-Math-1.5B-Q4_K_M + nomic-embed-text-v1.5-Q4_K_M + GSM8K + Hendrycks MATH 7 configs + Rosen + index in background while I can chat immediately if `DBPath` already has chunks and models exist, so I am not blocked.
 
@@ -20,7 +20,7 @@ Add a Svelte + Vite + Tailwind + KaTeX WebView desktop `tutor-desktop` (Wails v2
 
 4. As a TUI user on a lab with no desktop env, I want `tutor chat` (`make tui` / `make tui-ascii`, `internal/tui/tui_test.go`) to still work unchanged over SSH so low-end labs are not forced into WebView.
 
-5. As a student, I want citations: `Prompt Category` pill + `subdomainInstructions` text, collapsible Sources `[1..3]` (`ScoredChunk{Text,Subdomain,Similarity}`), and a "View prompt sent to Qwen" debug panel (`cli/index.go:143`) so retrieval is transparent.
+5. As a student, I want citations: `Prompt Category` pill + `subdomainInstructions` text, collapsible Sources `[1..3]` (`ScoredChunk{Text,Subdomain,Similarity}`) and a "View prompt sent to Qwen" debug panel (`cli/index.go:143`) so retrieval is transparent.
 
 6. As a student, I want history desktop-only in `localStorage` with Clear (`Ctrl+L` parity `tui.go:103`), `Esc`/`Ctrl+C` quit, `PgUp/PgDn` scroll with pinned `-1` overscan (`tui.go:300 transcriptOverscan`), spinner "thinking" and cursor `▍` while loading (`tui.go:281`) so UX is familiar.
 
@@ -36,7 +36,7 @@ Add a Svelte + Vite + Tailwind + KaTeX WebView desktop `tutor-desktop` (Wails v2
 
 - Modules built/modified: new `frontend/` (SvelteKit or Vite Svelte + TS, `base:'./'`), `wails.json` (`name:tutor-gguf, frontend:dir=frontend, main:cmd/desktop/main.go, outputfilename:tutor-desktop`), `cmd/desktop/main.go` (`wails.Run` with `OnStartup/OnShutdown`), `internal/desktop/app.go` (deep module: `App{ctx,mgr,db,collection,retriever,genClient}`); minimal edit `internal/cli/serve.go` add `GET /health` (and CORS if `wails dev` proxy); `internal/cli/managed.go` export `ResolveDBPath` for sharing or duplicate; `Makefile` `build-desktop`/`dev-desktop` targets; `.gitignore` add `frontend/dist/`, `frontend/node_modules/`, `build/bin/`; `README.md` desktop install section; `docs/agents` unchanged. Keep `cmd/tutor/main.go`, `internal/tui/*`, `internal/renderer/*`, `go.mod` module `github.com/chuma-beep/tutor.gguf` unchanged.
 
-- Interfaces: external `App.Ask(ctx, problem string) → {content, answer, subdomain, category, chunks []ScoredChunk, prompt string}` + HTTP `requestBody{Problem,MaxTokens,Temperature}` / `responseBody{Content,Answer}` (`serve.go:21`). `App.Ask` is small, deep, hides Manager lifecycle, embedding prefixes (`search_query` vs `search_document`), `topK*4→topN 3` dedup, prompt `ChatML` framing, and `parse.Extract` regex `boxedRE→markerRE→gsm8kRE`. Internal `retriever.Retrieve(ctx, query)` + `prompt.Builder.Build(query, []Source, subdomain)` stay behind `Ask`, not exposed to JS.
+- Interfaces: external `App.Ask(ctx, problem string) → {content, answer, subdomain, category, chunks []ScoredChunk, prompt string}` + HTTP `requestBody{Problem,MaxTokens,Temperature}` / `responseBody{Content,Answer}` (`serve.go:21`). `App.Ask` is small, deep, hides Manager lifecycle, embedding prefixes (`search_query` vs `search_document`), `topK*4→topN 3` dedup, prompt `ChatML` framing and `parse.Extract` regex `boxedRE→markerRE→gsm8kRE`. Internal `retriever.Retrieve(ctx, query)` + `prompt.Builder.Build(query, []Source, subdomain)` stay behind `Ask`, not exposed to JS.
 
 - Seams: highest seam `App.Ask` (primary) and HTTP `POST /v1/complete` (secondary for eval parity). Not `chromem.Collection` adapter, not `embedder.EmbedDocument` directly. One deep seam, not per-file shallow interfaces.
 

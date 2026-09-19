@@ -1,7 +1,7 @@
 // Package runtime locates and supervises the local llama.cpp processes and
 // owns the on-disk layout of tutor's downloaded artifacts (~/.tutor by
 // default): GGUF models, the llama-server binary, the corpus snapshot, the
-// persistent vector store, and server logs.
+// persistent vector store and server logs.
 package runtime
 
 import (

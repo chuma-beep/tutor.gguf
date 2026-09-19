@@ -1,5 +1,5 @@
 // Command tutor is the single entrypoint for all tutor.gguf user-facing
-// components: the RAG HTTP server, the corpus indexer, and the interactive
+// components: the RAG HTTP server, the corpus indexer and the interactive
 // terminal shell.
 package main
 
@@ -16,7 +16,7 @@ Usage:
   tutor <command> [flags]
 
 Commands:
-  setup   download models, llama.cpp, and corpus; build the index (idempotent)
+  setup   download models, llama.cpp and corpus; build the index (idempotent)
   chat    interactive terminal shell — starts the whole stack automatically
   serve   run the RAG HTTP server (retrieval + generation on /v1/complete)
   index   ingest corpus sources into the vector store, then run a test query

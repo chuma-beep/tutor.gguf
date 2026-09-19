@@ -11,7 +11,7 @@ import (
 var embedded embed.FS
 
 // Rosen returns the embedded Rosen discrete-math solutions (book exercises,
-// README, and license texts).
+// README and license texts).
 func Rosen() fs.FS {
 	sub, err := fs.Sub(embedded, "rosen")
 	if err != nil {

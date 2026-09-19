@@ -96,7 +96,7 @@ func LoadGSM8KFile(filePath string) ([]Chunk, error) {
 }
 
 // LoadRosenDir walks a directory of Rosen solution files (recursively) and
-// returns one chunk per file. Accepted formats: .md, .txt, and .tex (raw LaTeX
+// returns one chunk per file. Accepted formats: .md, .txt and .tex (raw LaTeX
 // exercise solutions — retrieval handles the markup fine). Files longer than
 // rosenMaxChunkChars are split on line boundaries so no chunk overflows the
 // embedding model's context window.

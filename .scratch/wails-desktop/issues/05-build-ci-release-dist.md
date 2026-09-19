@@ -1,4 +1,4 @@
-# 05: Build, CI, and release distribution for desktop
+# 05: Build, CI and release distribution for desktop
 
 **What to build:** Production distribution that keeps headless evaluatable: `Makefile` `build-desktop: wails build -clean -tags desktop -ldflags "-s -w" -platform linux/amd64,windows/amd64,darwin/universal` (Linux `CGO_ENABLED=1` + `webkit2gtk-4.0` prereq), `dev-desktop: wails dev -tags desktop -frontendDevUrl http://localhost:34115`, `frontend/dist` via `//go:embed all:frontend/dist` (`base:'./'`, `getAsset`); `.gitignore` `frontend/dist`/`frontend/node_modules`/`build/bin` preserved; `README.md` desktop install section (`.deb/.AppImage`/`.dmg`/`nsis` vs `install.sh:9 curl|bash` for headless); `release.yml` parallel `desktop` job (`setup-node`, `wails` install, `CGO_ENABLED=1`, `wails build`), merge artifacts into `SHA256SUMS` with `tutor-*` headless; `adtc-profiler run --mode participant` still PASS with desktop closed (WebView not measured); docs `docs/screenshots/` gets desktop ChatView + SetupView captures in addition to TUI shots.
 

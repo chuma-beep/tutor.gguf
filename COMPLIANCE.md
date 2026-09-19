@@ -3,7 +3,7 @@
 Companion to **REPORT.md** for the **Africa Deep Tech Challenge 2026 — The Laptop LLM**
 (`math_scientific_reasoning` domain). This file maps the submission to the published
 requirements from the [challenge page](https://africadeeptech.org/challenge-2026/),
-the [official submission template](https://github.com/Africa-Deep-Tech-Foundation/adtc-2026-submission-template),
+the [official submission template](https://github.com/Africa-Deep-Tech-Foundation/adtc-2026-submission-template)
 and the [adtc-profiler](https://github.com/Africa-Deep-Tech-Foundation/adtc-profiler).
 
 Status legend: ✅ verified in repo · ⚠️ needs action · ⭕ not yet done
@@ -121,7 +121,7 @@ adtc-profiler compare submission.json audit.json --output verdict.json   # PASS
   locally in Docker audit mode (`compare` → **PASS**); official run still pending
 
 **Quality-of-documentation note:** ADTC qualitative scoring explicitly includes “quality of
-documentation”. README.md, REPORT.md, and this file are written to that standard.
+documentation”. README.md, REPORT.md and this file are written to that standard.
 
 ---
 

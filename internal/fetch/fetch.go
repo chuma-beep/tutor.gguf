@@ -1,6 +1,6 @@
 // Package fetch provides stdlib-only downloads with progress reporting and
 // tar.gz/zip extraction, used by `tutor setup` to provision models,
-// llama-server binaries, and corpus data.
+// llama-server binaries and corpus data.
 package fetch
 
 import (
