@@ -1,0 +1,22 @@
+name: tutor-desktop
+arch: amd64
+platform: linux
+version: ${VERSION}
+release: "1"
+section: education
+priority: optional
+maintainer: chuma-beep <wisboynelson123@gmail.com>
+vendor: chuma-beep
+homepage: https://github.com/chuma-beep/tutor.gguf
+license: GPL-3.0
+description: |
+  Tutor.gguf — offline, on-device math tutor.
+  RAG over GSM8K / Hendrycks MATH / Rosen on Qwen2.5-Math via llama.cpp.
+  First launch downloads the model once, then runs 100% offline.
+contents:
+  - src: build/bin/tutor-desktop
+    dst: /usr/bin/tutor-desktop
+  - src: packaging/tutor-gguf.desktop
+    dst: /usr/share/applications/tutor-gguf.desktop
+  - src: build/linux/icon.png
+    dst: /usr/share/icons/hicolor/512x512/apps/tutor-gguf.png

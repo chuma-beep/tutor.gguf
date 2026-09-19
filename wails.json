@@ -14,7 +14,7 @@
   "info": {
     "companyName": "tutor.gguf",
     "productName": "Tutor.gguf",
-    "productVersion": "0.1.0",
+    "productVersion": "0.2.0",
     "copyright": "© 2026 chuma-beep",
     "comments": "On-device math tutor. Download once, runs 100% offline."
   },
