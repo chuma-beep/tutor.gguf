@@ -4,7 +4,7 @@
 
 **Blocked by:** 01 (needs `wails.json` + `cmd/desktop` + Svelte build)
 
-**Status:** ready-for-agent
+**Status:** verified (2026-09-09: App{Ask,AskStream,Setup,GetStatus,Health} + GET /health + resolveDBPath precedence confirmed)
 
 - [ ] `App.Startup` starts gen+embed `llama-server` and opens DB/collection without editing `cmd/tutor`
 - [ ] `App.Ask` returns `{content,answer (`\boxed` → fallback), subdomain, category, chunks[3], prompt}` verified against `tp_001` `tp_002` in `metadata.json`

@@ -4,7 +4,7 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** verified (2026-09-09: wails.json + cmd/desktop/main.go + frontend build + headless build all green)
 
 - [ ] `wails.json` exists with `Svelte` frontend config and `cmd/desktop/main.go` as main
 - [ ] `frontend/` builds (`npm run build` → `frontend/dist` via `base:'./'`, embedded placeholder)

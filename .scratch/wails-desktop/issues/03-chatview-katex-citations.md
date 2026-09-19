@@ -4,7 +4,7 @@
 
 **Blocked by:** 02 (needs `App.Ask` deep seam)
 
-**Status:** ready-for-agent
+**Status:** verified (2026-09-09: extractSpans + throwOnError:false + stream meta/chunks/done + CSP default-src 'self' confirmed)
 
 - [ ] Asking "Find the derivative of x^2" shows spinner, then KaTeX `2x` with `\frac{1}{2}` etc and `Prompt Category: calculus` pill
 - [ ] Sources `[1..3]` display citations sorted by Similarity, not `Collection.Query` prefix leak

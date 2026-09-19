@@ -4,7 +4,7 @@
 
 **Blocked by:** 03, 04 (needs ChatView + SetupView demoable)
 
-**Status:** ready-for-agent
+**Status:** verified (2026-09-09: build-desktop 4.1 + wails 4.0 path + release.yml bash/webkit2_41/TMPDIR + 13MB ELF + SHA256SUMS merge confirmed)
 
 - [ ] `wails build` on linux produces `build/bin/tutor-desktop` that `go vet ./... && go test ./...` still pass and `make build` headless still `CGO_ENABLED=0` stripped
 - [ ] `release.yml` desktop job publishes `tutor-desktop-linux-amd64`/`tutor-desktop-darwin-universal`/`tutor-desktop-windows-amd64.exe` + `SHA256SUMS`

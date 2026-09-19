@@ -4,7 +4,7 @@
 
 **Blocked by:** 02 (needs `App` lifecycle + `TutorHome`/`DBPath`)
 
-**Status:** ready-for-agent
+**Status:** verified (2026-09-09: 8-phase SetupWithProgress + tutor:setup:progress + .part resume + sentinel + Stat>0 skip confirmed)
 
 - [ ] Fresh `~/.tutor` shows SetupView progress per phase; existing `~/.tutor` with chunks skips to ChatView instantly
 - [ ] Progress emits per GGUF/config/index chunk; Cancel stops downloads and kills `embed` child without corrupting `.part`
