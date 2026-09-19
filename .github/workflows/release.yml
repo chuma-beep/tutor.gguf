@@ -196,7 +196,9 @@ jobs:
         run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.15.0
 
       - name: Install NSIS
-        run: choco install nsis -y --no-progress
+        run: |
+          choco install nsis -y --no-progress
+          ls "/c/Program Files (x86)/NSIS" | head || true
 
       - name: Build frontend
         run: |
@@ -206,12 +208,19 @@ jobs:
       - name: Build installer
         run: |
           mkdir -p dist
-          export PATH="$PATH:$(go env GOPATH)/bin"
+          export PATH="$PATH:$(go env GOPATH)/bin:/c/Program Files (x86)/NSIS"
+          command -v makensis || echo "WARNING: makensis not on PATH"
           wails build -clean -skipbindings -s -nsis \
             -tags desktop -ldflags "-s -w" -platform windows/amd64
           ls -lh build/bin/ || true
-          find build/bin -maxdepth 1 -iname '*installer*.exe' \
-            -exec cp -v {} dist/tutor-desktop-windows-amd64-installer.exe \;
+          found=0
+          while IFS= read -r f; do
+            cp -v "$f" dist/tutor-desktop-windows-amd64-installer.exe
+            found=1
+          done < <(find build/bin -maxdepth 1 -iname '*installer*.exe')
+          if [ "$found" -eq 0 ]; then
+            echo "no NSIS installer produced by wails"; exit 1
+          fi
           ls -lh dist/
 
       - uses: actions/upload-artifact@v4
