@@ -1,4 +1,4 @@
-# Tutor.gguf Offline On-device Math Tutor
+# # Tutor.gguf — On-device Math Tutor
 
 Tutor.gguf is a fully offline math tutor. It runs on the laptop you already own. It is built
 for Nigerian CS undergraduates at distance-learning institutions. Give it a math problem. It
