@@ -38,6 +38,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: SPA fallback
+        # GitHub Pages has no rewrite rules: direct visits to /docs/ or any
+        # chapter URL would 404 before the router boots. Serving the app shell
+        # as 404.html lets the router take over client-side instead.
+        run: cp dist/index.html dist/404.html
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
