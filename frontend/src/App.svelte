@@ -25,6 +25,7 @@
   let setupLog = []
   let setupRunning = false
   let railCollapsed = false
+  let sourcesOpen = true
   let activeIndex = -1
   let numberWordsEnabled = false
   let theme = getTheme()
@@ -137,10 +138,17 @@
   onMount(async () => {
     loadHistory()
     // Ctrl+L clears the transcript (matches the Clear button tooltip).
+    // Esc closes overlay rails on narrow screens (ignored while typing).
     const onKey = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'l') {
         e.preventDefault()
         clearHistory()
+      }
+      if (e.key === 'Escape') {
+        const tag = (document.activeElement && document.activeElement.tagName) || ''
+        if (tag === 'TEXTAREA' || tag === 'INPUT') return
+        railCollapsed = true
+        sourcesOpen = false
       }
     }
     window.addEventListener('keydown', onKey)
@@ -394,6 +402,12 @@
 
   function selectTurn(i) {
     activeIndex = i
+    // On narrow screens the rails are overlays: selecting a turn returns to
+    // the transcript instead of covering it.
+    if (window.matchMedia('(max-width: 1120px)').matches) {
+      railCollapsed = true
+      sourcesOpen = false
+    }
   }
 
   function renameTurn(i, title) {
@@ -408,7 +422,7 @@
   }
 </script>
 
-<main class:rail-collapsed={railCollapsed} class:has-sources={activeIndex >= 0}>
+<main class:rail-collapsed={railCollapsed} class:has-sources={activeIndex >= 0 && sourcesOpen}>
   <Header
     ready={!!status && !!status.ready}
     {checking}
@@ -416,6 +430,8 @@
     onClear={clearHistory}
     onToggleRail={() => (railCollapsed = !railCollapsed)}
     {railCollapsed}
+    onToggleSources={() => (sourcesOpen = !sourcesOpen)}
+    {sourcesOpen}
     {numberWordsEnabled}
     onToggleNumberWords={toggleNumberWords}
     {theme}
@@ -484,8 +500,13 @@
       {/if}
     </section>
 
-    {#if activeIndex >= 0 && turns[activeIndex]}
-      <SourcesRail turn={turns[activeIndex]} onCopy={(text) => copyText(text)} />
+    {#if activeIndex >= 0 && turns[activeIndex] && sourcesOpen}
+      <div class="sources-wrap" class:open={sourcesOpen}>
+        <SourcesRail turn={turns[activeIndex]} onCopy={(text) => copyText(text)} />
+      </div>
+    {/if}
+    {#if (!railCollapsed || (sourcesOpen && activeIndex >= 0 && turns[activeIndex])) && status && status.ready}
+      <button class="scrim" aria-label="Close side panels" on:click={() => { railCollapsed = true; sourcesOpen = false; }}></button>
     {/if}
   {/if}
 
@@ -501,13 +522,13 @@
 <style>
   main {
     display: grid;
-    grid-template-rows: 56px 1fr auto;
-    grid-template-columns: 220px 1fr 320px;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-columns: 220px minmax(0, 1fr) 320px;
     grid-template-areas:
       "header header header"
       "left center right"
       "input input input";
-    min-height: 100vh;
+    height: 100vh;
     background: var(--slate);
     color: var(--chalk);
   }
@@ -537,7 +558,6 @@
       "input input";
   }
 
-  header { grid-area: header; }
   .transcript { grid-area: center; }
 
   .transcript {
@@ -545,38 +565,62 @@
     border: 1px solid var(--slate-line);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    margin: 16px 20px;
+    margin: clamp(8px, 2.5vw, 20px);
     overflow-y: auto;
-    padding: 20px 24px;
+    padding: clamp(12px, 3vw, 24px);
   }
 
+  /* Overlay rails + scrim: hidden on desktop, slide-overs on narrow. */
+  .sources-wrap { display: contents; }
+  .scrim { display: none; }
+
   @media (max-width: 1120px) {
-    /* Spec: right rail off by default on narrow windows. */
-    main {
-      grid-template-columns: 200px 1fr;
-      grid-template-areas:
-        "header header"
-        "left center"
-        "input input";
-    }
-    main.rail-collapsed {
-      grid-template-columns: 1fr;
+    /* Single column: transcript owns the scroll region, rails overlay it. */
+    main,
+    main.rail-collapsed,
+    main:not(.rail-collapsed):not(.has-sources) {
+      grid-template-columns: minmax(0, 1fr);
       grid-template-areas:
         "header"
         "center"
         "input";
     }
-    .transcript { margin: 12px 14px; }
+    .transcript { margin: clamp(8px, 2vw, 14px); }
+    .sources-wrap { display: none; }
+    .sources-wrap.open {
+      display: block;
+      position: fixed;
+      top: 56px;
+      bottom: 0;
+      right: 0;
+      width: min(340px, 90vw);
+      z-index: 20;
+      background: var(--slate-elev);
+      border-left: 1px solid var(--slate-line2);
+      box-shadow: var(--shadow);
+      overflow-y: auto;
+    }
+    .sources-wrap.open > :global(aside) {
+      border: none;
+      height: 100%;
+    }
+    .scrim {
+      display: block;
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 15;
+      background: rgba(0, 0, 0, 0.35);
+      border: none;
+      padding: 0;
+      cursor: default;
+    }
   }
   @media (max-width: 760px) {
-    main {
-      grid-template-columns: 1fr;
-      grid-template-areas:
-        "header"
-        "center"
-        "input";
-    }
-    .transcript { margin: 10px 8px; }
+    .transcript { margin: 8px; padding: 12px; }
+    .record-foot { margin: 24px -12px -12px; padding: 14px 12px; }
   }
 
   .center-wrap {
@@ -623,7 +667,7 @@
     border: 1px solid var(--slate-line2);
     color: var(--chalk-muted);
     border-radius: var(--radius-sm);
-    padding: 8px 12px;
+    padding: 10px 14px;
     font: 400 12px/1.4 'JetBrains Mono', monospace;
     cursor: pointer;
     max-width: 320px;
@@ -652,7 +696,7 @@
     .record-head { grid-template-columns: 1fr 320px; align-items: start; }
   }
   .record-title {
-    font: 500 40px/0.95 'Inter', sans-serif;
+    font: 500 clamp(28px, 5vw, 40px)/0.95 'Inter', sans-serif;
     letter-spacing: -0.01em;
     text-transform: uppercase;
     color: var(--chalk-bright);
@@ -716,12 +760,4 @@
     z-index: 10;
   }
 
-  @media (max-width: 1120px) {
-    main { grid-template-columns: 200px 1fr; }
-    .transcript { margin: 12px 14px; }
-  }
-  @media (max-width: 760px) {
-    main { grid-template-columns: 1fr; }
-    .transcript { margin: 10px 8px; }
-  }
 </style>

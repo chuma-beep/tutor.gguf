@@ -106,6 +106,20 @@
     overflow-y: auto;
     padding: 12px 10px;
   }
+  @media (max-width: 1120px) {
+    /* Overlay panel on narrow screens: out of grid flow, above transcript. */
+    .rail {
+      position: fixed;
+      top: 56px;
+      bottom: 0;
+      left: 0;
+      width: min(300px, 85vw);
+      z-index: 20;
+      background: var(--slate-elev);
+      border-right: 1px solid var(--slate-line2);
+      box-shadow: var(--shadow);
+    }
+  }
   h2 {
     font: 500 13px/1 'Inter', sans-serif;
     margin: 0;

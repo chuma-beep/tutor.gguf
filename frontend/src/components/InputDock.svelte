@@ -124,8 +124,9 @@
 
   .hint {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    gap: 8px;
+    gap: 4px 8px;
     font: 400 10px/1 'JetBrains Mono', monospace;
     letter-spacing: 0.08em;
     text-transform: uppercase;
