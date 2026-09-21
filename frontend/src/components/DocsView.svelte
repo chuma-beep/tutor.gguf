@@ -16,22 +16,22 @@
     if (root) root.scrollTop = 0
   }
 
-  function handleActivate(e) {
-    const a = e.target && e.target.closest ? e.target.closest('a[data-docs]') : null
-    if (!a) return
-    e.preventDefault()
-    go(a.getAttribute('data-docs'))
-  }
-
-  function handleKey(e) {
-    // Keyboard activation of in-app links (click covers pointer + Enter on
-    // native anchors; this covers Space and other key-driven travellers).
-    if (e.key !== 'Enter' && e.key !== ' ') return
-    handleActivate(e)
+  // In-app chapter links arrive as rendered markdown, so there is no component
+  // to bind to. One delegated listener on the scroll region covers pointer and
+  // keyboard alike: anchors are natively focusable and Enter/Space fire click.
+  function delegateLinks(node) {
+    const onClick = (e) => {
+      const a = e.target && e.target.closest ? e.target.closest('a[data-docs]') : null
+      if (!a) return
+      e.preventDefault()
+      go(a.getAttribute('data-docs'))
+    }
+    node.addEventListener('click', onClick)
+    return { destroy() { node.removeEventListener('click', onClick) } }
   }
 </script>
 
-<section class="transcript docs" aria-label="Offline manual" bind:this={root} on:click={handleActivate} on:keydown={handleKey}>
+<section class="transcript docs" aria-label="Offline manual" bind:this={root} use:delegateLinks>
   <div class="record-head">
     <div>
       <p class="archive-label">Manual / TG-001 · Offline copy</p>

@@ -108,7 +108,6 @@
     white-space: nowrap;
     transition: border-color 160ms ease, color 160ms ease;
   }
-  a.ghost { display: inline-block; text-decoration: none; }
   .ghost:hover { border-color: var(--slate-line2); color: var(--chalk-bright); }
 
   .toggle {
