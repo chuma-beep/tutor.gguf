@@ -79,12 +79,6 @@
     padding: 10px 14px;
     margin-bottom: 14px;
   }
-  .archive-label {
-    font: 400 10px/1 'JetBrains Mono', monospace;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--chalk-faint);
-  }
 
   .q { display: flex; align-items: baseline; gap: 8px; margin: 0 14px 10px; }
   .turn .answer, .turn .error { margin-left: 14px; margin-right: 14px; }

@@ -91,6 +91,85 @@ body {
 }
 .manual pre code { background: none; border: none; padding: 0; font-size: 12.5px; line-height: 1.7; }
 
+/* Archive record language (mirrors site/src/routes/index.tsx). Global so every
+   component — transcript, turns, docs view — shares one definition. */
+.archive-label {
+  font: 400 10px/1 'JetBrains Mono', monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chalk-faint);
+  margin: 0;
+}
+.record-head {
+  display: grid;
+  gap: 20px;
+  border-bottom: 1px solid var(--slate-line2);
+  padding: 8px 4px 20px;
+  margin-bottom: 8px;
+}
+@media (min-width: 900px) {
+  .record-head { grid-template-columns: 1fr 320px; align-items: start; }
+}
+.record-title {
+  font: 500 clamp(28px, 5vw, 40px)/0.95 'Inter', sans-serif;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--chalk-bright);
+  margin: 12px 0 0;
+}
+.record-title span { color: var(--chalk-faint); }
+.facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 0;
+  border-top: 1px solid var(--slate-line2);
+  border-left: 1px solid var(--slate-line2);
+  font: 400 10px/1.5 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+}
+.facts > div {
+  border-bottom: 1px solid var(--slate-line2);
+  border-right: 1px solid var(--slate-line2);
+  padding: 10px 12px;
+}
+.facts dt { color: var(--chalk-faint); margin: 0; }
+.facts dd { color: var(--chalk-bright); margin: 4px 0 0; }
+.record-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  justify-content: space-between;
+  border-top: 1px solid var(--slate-line2);
+  background: var(--slate);
+  margin: 24px -24px -20px;
+  padding: 14px 24px;
+  font: 400 10px/1 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  color: var(--chalk-faint);
+}
+
+/* Transcript card — shared by the chat view (App) and the docs view
+   (DocsView). Global so scoped styles can't strand a consumer in the
+   wrong grid track. */
+.transcript {
+  grid-area: center;
+  position: relative;
+  background: var(--slate-elev);
+  border: 1px solid var(--slate-line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin: clamp(8px, 2.5vw, 20px);
+  overflow-y: auto;
+  padding: clamp(12px, 3vw, 24px);
+}
+@media (max-width: 1120px) {
+  .transcript { margin: clamp(8px, 2vw, 14px); }
+}
+@media (max-width: 760px) {
+  .transcript { margin: 8px; padding: 12px; }
+  .record-foot { margin: 24px -12px -12px; padding: 14px 12px; }
+}
+
 /* Budget motion — everything static unless one of the two beats. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
