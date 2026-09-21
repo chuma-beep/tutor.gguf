@@ -1,37 +1,88 @@
-/* Chalkboard design tokens — single source of truth. */
+/* Archive design tokens — single source of truth.
+   Base is the light paper archive (matches site/src/styles.css); the dark
+   archive lives under [data-theme='dark'] or system + prefers-dark. */
 :root {
-  /* Surface — chalkboard, not black */
-  --slate: #1C222E;
-  --slate-elev: #262E3D;
-  --slate-line: rgba(237, 232, 218, 0.08);
-  --slate-line2: rgba(237, 232, 218, 0.14);
+  color-scheme: light;
 
-  /* Ink — warm chalk, never pure white */
-  --chalk: #EDE8DA;
-  --chalk-bright: #F5F1E8;
-  --chalk-muted: rgba(237, 232, 218, 0.72);
-  --chalk-faint: rgba(237, 232, 218, 0.48);
+  /* Surface — paper, not white */
+  --slate: #f1eee6;
+  --slate-elev: #fcfbf8;
+  --slate-line: rgba(28, 25, 23, 0.16);
+  --slate-line2: rgba(28, 25, 23, 0.28);
+
+  /* Ink — warm black, never pure */
+  --chalk: #292524;
+  --chalk-bright: #1c1917;
+  --chalk-muted: rgba(28, 25, 23, 0.72);
+  --chalk-faint: rgba(28, 25, 23, 0.48);
 
   /* Secondary labels */
-  --muted: #8891A3;
-
-  /* Accent — muted school green, sparingly */
-  --green: #3F8F5F;
-  --green-12: rgba(63, 143, 95, 0.12);
-  --green-30: rgba(63, 143, 95, 0.3);
+  --muted: #78716c;
 
   /* Signal — the boxed answer, the one allowed special color */
-  --amber: #D9A441;
-  --amber-12: rgba(217, 164, 65, 0.11);
-  --amber-tick: #E7B55A;
+  --amber: #b45309;
+  --amber-12: rgba(180, 83, 9, 0.1);
+  --amber-tick: #92400e;
 
-  /* Error — desaturated to sit in chalk harmony */
-  --error: #E76F51;
+  /* Error — desaturated to sit in paper harmony */
+  --error: #c2410c;
 
-  /* Shape */
-  --radius: 14px;
-  --radius-sm: 10px;
+  /* Shape — archival, near-sharp */
+  --radius: 4px;
+  --radius-sm: 2px;
 
   /* Shadow — one, quiet */
+  --shadow: 0 12px 32px rgba(28, 25, 23, 0.1), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+}
+
+/* Dark archive — same plates, ink-on-slate. Opt-in via toggle or OS. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --slate: #1c222e;
+  --slate-elev: #262e3d;
+  --slate-line: rgba(237, 232, 218, 0.16);
+  --slate-line2: rgba(237, 232, 218, 0.28);
+
+  --chalk: #ede8da;
+  --chalk-bright: #f5f1e8;
+  --chalk-muted: rgba(237, 232, 218, 0.72);
+  --chalk-faint: rgba(237, 232, 218, 0.56);
+
+  --muted: #8891a3;
+
+  /* Signal — the boxed answer, the one allowed special color */
+  --amber: #d9a441;
+  --amber-12: rgba(217, 164, 65, 0.11);
+  --amber-tick: #e7b55a;
+
+  --error: #e76f51;
+
   --shadow: 0 12px 32px rgba(0, 0, 0, 0.28), 0 1px 0 rgba(255, 255, 255, 0.03) inset;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='system'] {
+    color-scheme: dark;
+
+    --slate: #1c222e;
+    --slate-elev: #262e3d;
+    --slate-line: rgba(237, 232, 218, 0.16);
+    --slate-line2: rgba(237, 232, 218, 0.28);
+
+    --chalk: #ede8da;
+    --chalk-bright: #f5f1e8;
+    --chalk-muted: rgba(237, 232, 218, 0.72);
+    --chalk-faint: rgba(237, 232, 218, 0.56);
+
+    --muted: #8891a3;
+
+    --amber: #d9a441;
+    --amber-12: rgba(217, 164, 65, 0.11);
+    --amber-tick: #e7b55a;
+
+    --error: #e76f51;
+
+    --shadow: 0 12px 32px rgba(0, 0, 0, 0.28), 0 1px 0 rgba(255, 255, 255, 0.03) inset;
+  }
 }

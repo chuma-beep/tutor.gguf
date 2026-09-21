@@ -26,3 +26,26 @@ func TestExtract(t *testing.T) {
 		}
 	}
 }
+
+func TestExtractRule(t *testing.T) {
+	cases := []struct {
+		name string
+		in   string
+		rule string
+	}{
+		{"boxed", "The answer is \\boxed{49}.", RuleBoxed},
+		{"final marker", "reasoning... final answer is 17", RuleFinal},
+		{"gsm8k marker", "some work\n#### 4", RuleGSM8K},
+		{"fallback is none", "just text with no answer", RuleNone},
+		{"empty is none", "", RuleNone},
+	}
+	for _, c := range cases {
+		answer, rule := ExtractRule(c.in)
+		if rule != c.rule {
+			t.Errorf("%s: rule = %q, want %q", c.name, rule, c.rule)
+		}
+		if answer != Extract(c.in) {
+			t.Errorf("%s: ExtractRule answer %q != Extract %q", c.name, answer, Extract(c.in))
+		}
+	}
+}
