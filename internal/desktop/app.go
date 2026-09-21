@@ -113,12 +113,13 @@ func (a *App) Shutdown(ctx context.Context) {
 
 // AskResult is the JSON shape returned to the Svelte frontend.
 type AskResult struct {
-	Content   string            `json:"content"`
-	Answer    string            `json:"answer"`
-	Subdomain string            `json:"subdomain"`
-	Category  string            `json:"category"`
-	Prompt    string            `json:"prompt"`
-	Chunks    []rag.ScoredChunk `json:"chunks"`
+	Content    string            `json:"content"`
+	Answer     string            `json:"answer"`
+	AnswerRule string            `json:"answerRule"`
+	Subdomain  string            `json:"subdomain"`
+	Category   string            `json:"category"`
+	Prompt     string            `json:"prompt"`
+	Chunks     []rag.ScoredChunk `json:"chunks"`
 }
 
 // Ask performs retrieval + prompt build + generation via direct Go bindings.
@@ -146,14 +147,15 @@ func (a *App) Ask(problem string) (*AskResult, error) {
 		return nil, fmt.Errorf("generation failed: %w", err)
 	}
 	category := prompt.PromptCategory(subdomain)
-	answer := parse.Extract(content)
+	answer, rule := parse.ExtractRule(content)
 	return &AskResult{
-		Content:   content,
-		Answer:    answer,
-		Subdomain: subdomain,
-		Category:  category,
-		Prompt:    promptStr,
-		Chunks:    chunks,
+		Content:    content,
+		Answer:     answer,
+		AnswerRule: rule,
+		Subdomain:  subdomain,
+		Category:   category,
+		Prompt:     promptStr,
+		Chunks:     chunks,
 	}, nil
 }
 
@@ -198,9 +200,11 @@ func (a *App) AskStream(problem string) error {
 		runtime.EventsEmit(ctx, "tutor:stream:error", map[string]string{"error": err.Error()})
 		return err
 	}
+	finalAnswer, finalRule := parse.ExtractRule(accum.String())
 	runtime.EventsEmit(ctx, "tutor:stream:done", map[string]string{
-		"content": accum.String(),
-		"answer":  parse.Extract(accum.String()),
+		"content":     accum.String(),
+		"answer":      finalAnswer,
+		"answer_rule": finalRule,
 	})
 	return nil
 }

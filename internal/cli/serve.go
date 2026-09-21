@@ -26,8 +26,9 @@ type requestBody struct {
 }
 
 type responseBody struct {
-	Content string `json:"content"`
-	Answer  string `json:"answer,omitempty"`
+	Content    string `json:"content"`
+	Answer     string `json:"answer,omitempty"`
+	AnswerRule string `json:"answer_rule,omitempty"`
 }
 
 // NewRAGHandler builds the /v1/complete handler: retrieval + subdomain
@@ -62,6 +63,18 @@ func NewRAGHandler(ctx context.Context, embedderURL, genURL, dbPath string) (htt
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(`{"status":"ok"}`))
 	})
+	mux.HandleFunc("/v1/status", func(w http.ResponseWriter, r *http.Request) {
+		if handleCORS(w, r) {
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"ready":    true,
+			"dbChunks": collection.Count(),
+			"genURL":   genURL,
+			"embedURL": embedderURL,
+		})
+	})
 	mux.HandleFunc("/v1/complete", func(w http.ResponseWriter, r *http.Request) {
 		if handleCORS(w, r) {
 			return
@@ -90,7 +103,8 @@ func NewRAGHandler(ctx context.Context, embedderURL, genURL, dbPath string) (htt
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(responseBody{Content: content, Answer: parse.Extract(content)})
+		answer, rule := parse.ExtractRule(content)
+		json.NewEncoder(w).Encode(responseBody{Content: content, Answer: answer, AnswerRule: rule})
 	})
 	mux.HandleFunc("/v1/complete/stream", func(w http.ResponseWriter, r *http.Request) {
 		if handleCORS(w, r) {
@@ -141,11 +155,15 @@ func NewRAGHandler(ctx context.Context, embedderURL, genURL, dbPath string) (htt
 			flusher.Flush()
 			return
 		}
-		final, _ := json.Marshal(map[string]string{"content": "", "answer": parse.Extract(accum), "done": "true"})
+		finalAnswer, finalRule := parse.ExtractRule(accum)
+		final, _ := json.Marshal(map[string]string{"content": "", "answer": finalAnswer, "answer_rule": finalRule, "done": "true"})
 		fmt.Fprintf(w, "data: %s\n\n", string(final))
 		fmt.Fprintf(w, "data: [DONE]\n\n")
 		flusher.Flush()
 	})
+	if err := registerWebUI(mux); err != nil {
+		return nil, err
+	}
 	return mux, nil
 }
 
@@ -192,7 +210,7 @@ func Serve(args []string) error {
 	errCh := make(chan error, 1)
 	go func() { errCh <- srv.ListenAndServe() }()
 
-	log.Printf("tutor RAG server listening on %s", addr)
+	log.Printf("tutor RAG server listening on %s (UI at http://localhost:%s/)", addr, *port)
 	select {
 	case err := <-errCh:
 		if mgr != nil {
