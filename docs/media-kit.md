@@ -20,6 +20,8 @@ Capture at a clean terminal font size. Keep the theme consistent across shots. S
 | 06 | Retrieval transparency (chunks + prompt) | ✅ captured | `docs/screenshots/06-retrieval-transparency.png` |
 | 07 | Desktop Wails window (Svelte + KaTeX) | ✅ captured | `docs/screenshots/07-desktop-wails-chat.png` |
 | 08 | Desktop chalkboard redesign (three-zone desk) | ✅ captured | `docs/screenshots/08-desktop-chalkboard.png` |
+| 09 | Browser UI chat (archive plates, Final badge, sources) | ✅ captured | `docs/screenshots/09-webui-chat.png` |
+| 10 | Browser UI offline manual (chapter rail, prose) | ✅ captured | `docs/screenshots/10-webui-manual.png` |
 
 > 03–06 were recaptured on 2026-09-08 from the live local stack (gen :8080, embed :8081,
 > tutor :8082). Shots 03 and 04 came from `bin/tutor chat` in a headless tmux pty. The question
