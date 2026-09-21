@@ -26,4 +26,7 @@ The TUI (`internal/tui`, Bubble Tea) and the Wails desktop / browser UI (Svelte,
 
 ## Evaluation
 
-promptfoo runs accuracy (30 sampled Hendrycks cases, deterministic matcher plus local LLM rubric judge) and quality (10 bespoke cases) suites against a local server. Current self-reported status: 18/30 accuracy, 6/10 quality — see `REPORT.md` for failure analysis. Measured audit-profile performance: ~1.1 GB peak RSS, ~13–14 tok/s CPU-only.
+promptfoo runs accuracy and quality suites against a local server
+(deterministic matcher plus local LLM rubric judge). Measured throughput,
+memory and eval results live in the [Benchmark](benchmark) chapter — see
+`REPORT.md` for failure analysis.
