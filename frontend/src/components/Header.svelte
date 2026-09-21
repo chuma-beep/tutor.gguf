@@ -27,6 +27,7 @@
     <button class="ghost" on:click={onToggleSources} title="Toggle retrieved sources">
       {sourcesOpen ? 'Hide Sources' : '☰ Sources'}
     </button>
+    <a class="ghost docs-link" href="https://chuma-beep.github.io/tutor.gguf/docs/" target="_blank" rel="noreferrer" title="Open the online manual in a new tab">Docs ↗</a>
     <label class="toggle" title="Convert word numbers to digits before sending to model (e.g. one plus one → 1 + 1)">
       <input type="checkbox" checked={numberWordsEnabled} on:change={onToggleNumberWords} />
       <span>1+1</span>
@@ -103,6 +104,7 @@
     white-space: nowrap;
     transition: border-color 160ms ease, color 160ms ease;
   }
+  a.ghost { display: inline-block; text-decoration: none; }
   .ghost:hover { border-color: var(--slate-line2); color: var(--chalk-bright); }
 
   .toggle {
