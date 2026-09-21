@@ -20,6 +20,7 @@ type IndexOptions struct {
 	HendrycksDir string // optional
 	GSM8KFile    string // optional
 	RosenDir     string // optional
+	OpenStaxDir  string // optional directory of OpenStax .pdf files
 	Query        string
 	RunQuery     bool
 }
@@ -35,6 +36,7 @@ func Index(args []string) error {
 		hendrycksDir = fs.String("hendrycks-dir", "", "directory of Hendrycks MATH JSON files (optional)")
 		gsm8kFile    = fs.String("gsm8k-file", "", "path to GSM8K JSONL file (optional)")
 		rosenDir     = fs.String("rosen-dir", "", "directory of Rosen .md/.txt files (optional)")
+		openstaxDir  = fs.String("openstax-dir", "", "directory of OpenStax .pdf files (optional)")
 		query        = fs.String("query", "", "test query to run after indexing")
 	)
 	if err := fs.Parse(args); err != nil {
@@ -50,6 +52,7 @@ func Index(args []string) error {
 		HendrycksDir: *hendrycksDir,
 		GSM8KFile:    *gsm8kFile,
 		RosenDir:     *rosenDir,
+		OpenStaxDir:  *openstaxDir,
 		Query:        *query,
 		RunQuery:     true,
 	})
@@ -97,6 +100,15 @@ func RunIndex(ctx context.Context, o IndexOptions) error {
 		}
 		chunks = append(chunks, loaded...)
 		fmt.Printf("loaded %d Rosen chunks\n", len(loaded))
+	}
+
+	if o.OpenStaxDir != "" {
+		loaded, err := rag.LoadOpenStaxDir(o.OpenStaxDir, "general_math")
+		if err != nil {
+			return fmt.Errorf("load openstax dir: %w", err)
+		}
+		chunks = append(chunks, loaded...)
+		fmt.Printf("loaded %d OpenStax chunks\n", len(loaded))
 	}
 
 	if len(chunks) == 0 {

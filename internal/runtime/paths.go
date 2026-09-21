@@ -45,6 +45,7 @@ func EmbedModelPath() string { return filepath.Join(ModelsDir(), EmbedModelFile)
 func GSM8KTrainFile() string    { return filepath.Join(CorpusDir(), "gsm8k", "train.jsonl") }
 func HendrycksTrainDir() string { return filepath.Join(CorpusDir(), "hendrycks_math", "train") }
 func RosenDir() string          { return filepath.Join(CorpusDir(), "rosen") }
+func OpenStaxDir() string       { return filepath.Join(CorpusDir(), "openstax") }
 
 // LlamaServerPath is where setup installs the prebuilt llama-server binary.
 func LlamaServerPath() string {

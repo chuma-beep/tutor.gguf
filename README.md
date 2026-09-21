@@ -82,8 +82,9 @@ Model and server paths live at the top of the `Makefile`. Adjust them to your en
 | `rosen/` | discrete math solutions (.md/.txt) | open |
 | `openstax/` | college algebra / calculus PDFs | CC BY |
 
-`internal/rag/chunker.go` ingests Hendrycks MATH, GSM8K and Rosen. OpenStax PDFs are
-scaffolded in `ROADMAP.md` but not loaded yet.
+`internal/rag/chunker.go` ingests Hendrycks MATH, GSM8K and Rosen.
+`internal/rag/openstax.go` ingests OpenStax PDFs (`Source: "openstax"`, placed
+manually under `~/.tutor/corpus/openstax/`).
 
 ## Quick start
 

@@ -561,8 +561,20 @@ func runSetupIndex(ctx context.Context, force bool) error {
 		HendrycksDir: runtime.HendrycksTrainDir(),
 		GSM8KFile:    runtime.GSM8KTrainFile(),
 		RosenDir:     runtime.RosenDir(),
+		OpenStaxDir:  openStaxDirIfPresent(),
 		RunQuery:     false,
 	})
+}
+
+// openStaxDirIfPresent returns the OpenStax corpus dir only when it exists.
+// Unlike GSM8K/Hendrycks/Rosen there is no downloader yet (CC BY PDFs are
+// placed manually), so a missing directory must skip rather than fail setup.
+func openStaxDirIfPresent() string {
+	dir := runtime.OpenStaxDir()
+	if info, err := os.Stat(dir); err != nil || !info.IsDir() {
+		return ""
+	}
+	return dir
 }
 
 // indexedChunkCount opens the persistent store read-only-ish to see whether a

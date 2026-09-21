@@ -21,7 +21,8 @@ Do not confuse it with `Chunk` itself, which is pre-embedding and holds
 `Text/Subdomain/Source/Level` from `chunker.go`.
 
 **Chunk**
-The corpus unit from `LoadHendrycksFile` / `LoadGSM8KFile` / `LoadRosenDir`. It holds
+The corpus unit from `LoadHendrycksFile` / `LoadGSM8KFile` / `LoadRosenDir` /
+`LoadOpenStaxPDF`. It holds
 `Text/Subdomain/Source/Level`. Chunks are homogeneous and embedded with the `search_document`
 prefix.
 

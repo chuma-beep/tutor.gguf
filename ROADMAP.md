@@ -12,29 +12,21 @@ Most of the original build plan is done. This file tracks what is left.
 | LaTeX → AST parser (`internal/renderer/`) | Done. Spans, fractions, scripts, sqrt, big-ops, `\left\right`, binom, decorations, degrade-to-passthrough |
 | Terminal renderer (`internal/renderer/layout.go`) | Done. Stacked frac/root/limits boxes, Unicode glyphs and ASCII fallback (`make tui-ascii`) |
 | Bubble Tea TUI (`internal/tui/`, `cmd/tui`) | Done. Input, streaming transcript, spinner, scroll, error turns |
-| OpenStax PDF chunker (`internal/rag/openstax.go`) | Not started |
+| OpenStax PDF chunker (`internal/rag/openstax.go`) | Working. `LoadOpenStaxPDF` + `LoadOpenStaxDir`, wired into `RunIndex` |
 
 ---
 
 ## Remaining work
 
-### 1. OpenStax PDF chunker
+### 1. OpenStax PDF chunker — done
 
-Create `internal/rag/openstax.go`:
-
-- Extract text from the OpenStax PDFs with a Go PDF library (for example
-  `github.com/ledongthuc/pdf`).
-- Split the text into sections by chapter and section headings.
-- Return `[]Chunk` with `Source: "openstax"` and a matching `Subdomain` (for example
-  `"calculus"` or `"algebra"`).
-
-```go
-package rag
-
-func LoadOpenStaxPDF(filePath string, subdomain string) ([]Chunk, error)
-```
-
-Wire it into `RunIndex` next to the Hendrycks, GSM8K and Rosen loaders.
+`internal/rag/openstax.go` extracts text with `github.com/ledongthuc/pdf`
+(positioned `Content()` glyphs, so `Td`/`Tm` layouts keep line breaks), splits
+on chapter/section headings and returns `[]Chunk` with `Source: "openstax"`.
+`LoadOpenStaxDir` infers `Subdomain` from the file name (`calculus`, `algebra`,
+etc). Wired into `RunIndex` via `-openstax-dir` and into `tutor setup` through
+`runtime.OpenStaxDir()` (skipped when the directory is absent — PDFs are CC BY
+and placed manually, there is no downloader yet).
 
 ### 2. Narrated demo video (optional polish)
 
