@@ -7,13 +7,16 @@
   export let railCollapsed = false
   export let numberWordsEnabled = false
   export let onToggleNumberWords = () => {}
+  export let theme = 'system'
+  export let onCycleTheme = () => {}
+
+  $: themeLabel = theme === 'dark' ? '● Dark' : theme === 'system' ? '◐ System' : '○ Light'
 </script>
 
 <header>
   <div class="brand">
-    <span class="mark" aria-hidden="true">∑</span>
-    <h1>tutor<span class="ext">.gguf</span></h1>
-    <span class="tagline">on-device math tutor</span>
+    <a href="#top" class="wordmark">tutor.gguf</a>
+    <span class="index">Index / TG-001 · Local</span>
   </div>
   <div class="chrome">
     <button class="ghost" on:click={onToggleRail} title="Toggle history">
@@ -23,6 +26,9 @@
       <input type="checkbox" checked={numberWordsEnabled} on:change={onToggleNumberWords} />
       <span>1+1</span>
     </label>
+    <button class="ghost" on:click={onCycleTheme} title="Color theme: light archive, dark chalkboard, or system">
+      {themeLabel}
+    </button>
     <span class="offline" title="No internet needed — everything runs on this laptop">● Offline</span>
     {#if checking}
       <span class="status checking">● Checking…</span>
@@ -44,20 +50,27 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
-    height: 56px;
-    background: var(--slate);
-    border-bottom: 1px solid var(--green-30);
+    min-height: 56px;
+    background: var(--slate-elev);
+    border-bottom: 1px solid var(--slate-line2);
     gap: 16px;
   }
 
-  .brand { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
-  .mark {
-    font: 700 22px/1 'JetBrains Mono', monospace;
-    color: var(--green);
+  .brand { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
+  .wordmark {
+    font: 600 14px/1 'Inter', sans-serif;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--chalk-bright);
+    text-decoration: none;
   }
-  h1 { font: 600 16px/1 'Inter', sans-serif; color: var(--chalk-bright); margin: 0; letter-spacing: -0.011em; }
-  .ext { color: var(--green); }
-  .tagline { font: 400 12px/1 'Inter', sans-serif; color: var(--chalk-faint); white-space: nowrap; }
+  .index {
+    font: 400 10px/1 'JetBrains Mono', monospace;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    white-space: nowrap;
+  }
 
   .chrome { display: flex; align-items: center; gap: 14px; }
   .offline {
@@ -69,7 +82,7 @@
     border-radius: 99px;
   }
   .status { font: 500 12px/1 'Inter', sans-serif; }
-  .status.ok { color: var(--green); }
+  .status.ok { color: var(--chalk-bright); }
   .status.amber { color: var(--amber); }
   .status.err { color: var(--error); }
   .status.checking { color: var(--chalk-muted); }
@@ -84,7 +97,7 @@
     cursor: pointer;
     transition: border-color 160ms ease, color 160ms ease;
   }
-  .ghost:hover { border-color: var(--green-30); color: var(--chalk-bright); }
+  .ghost:hover { border-color: var(--slate-line2); color: var(--chalk-bright); }
 
   .toggle {
     display: flex;
@@ -99,6 +112,6 @@
     cursor: pointer;
     user-select: none;
   }
-  .toggle:has(input:checked) { border-color: var(--green-30); color: var(--green); background: var(--green-12); }
-  .toggle input { accent-color: var(--green); }
+  .toggle:has(input:checked) { border-color: var(--slate-line2); color: var(--chalk-bright); background: transparent; }
+  .toggle input { accent-color: var(--chalk-muted); }
 </style>

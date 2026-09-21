@@ -1,7 +1,26 @@
 <script>
+  import { onDestroy } from 'svelte'
   import { renderMath } from '../lib/renderMath.js'
 
   export let streaming = null // { question, answer, category, subdomain }
+
+  // Throttle KaTeX re-renders while tokens stream in: the prop updates on
+  // every delta, but the expensive renderMath() runs at most ~7x/sec.
+  let shown = ''
+  const timer = setInterval(() => {
+    if (streaming && streaming.answer !== shown) shown = streaming.answer
+  }, 150)
+  onDestroy(() => clearInterval(timer))
+
+  $: if (streaming) {
+    // Short answers render immediately (no perceptible throttle lag).
+    if (streaming.answer.length < 400) shown = streaming.answer
+    // Always catch up fully the moment streaming ends (component unmounts,
+    // but a final sync avoids showing a stale tail).
+    if (!streaming.answer.startsWith(shown)) shown = streaming.answer
+  } else {
+    shown = ''
+  }
 </script>
 
 {#if streaming}
@@ -13,17 +32,22 @@
         <span class="pill loading">Reading {streaming.subdomain || streaming.category} sources…</span>
       {/if}
     </div>
-    <div class="answer">{@html renderMath(streaming.answer)} <span class="cursor" aria-hidden="true">▍</span></div>
+    <div class="answer">{@html renderMath(shown)} <span class="cursor" aria-hidden="true">▍</span></div>
   </div>
 {/if}
 
 <style>
-  .turn { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--slate-line); }
-  .q { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+  .turn {
+    margin: 16px 0 0;
+    padding: 0 14px 20px;
+    border: 1px solid var(--slate-line2);
+    background: var(--slate-elev);
+  }
+  .q { display: flex; align-items: baseline; gap: 8px; margin: 14px 0 10px; }
   .q-mark {
     font: 700 12px/1 'JetBrains Mono', monospace;
-    color: var(--green);
-    border: 1px solid var(--green-30);
+    color: var(--chalk-muted);
+    border: 1px solid var(--slate-line2);
     border-radius: 6px;
     padding: 2px 6px;
     flex-shrink: 0;
@@ -33,9 +57,9 @@
     font: 700 10px/1 'Inter', sans-serif;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--green);
-    background: var(--green-12);
-    border: 1px solid var(--green-30);
+    color: var(--chalk-muted);
+    background: transparent;
+    border: 1px solid var(--slate-line2);
     border-radius: 99px;
     padding: 3px 8px;
     flex-shrink: 0;
@@ -48,6 +72,6 @@
   .answer :global(.math-display) { margin: 10px 0; overflow-x: auto; }
   .answer :global(.katex) { font-size: 1.05em; color: var(--chalk-bright); }
 
-  .cursor { animation: blink 1s steps(1) infinite; color: var(--green); }
+  .cursor { animation: blink 1s steps(1) infinite; color: var(--chalk-muted); }
   @keyframes blink { 50% { opacity: 0; } }
 </style>

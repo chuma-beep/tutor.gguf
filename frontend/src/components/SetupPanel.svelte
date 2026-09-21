@@ -109,7 +109,7 @@
 <style>
   .panel {
     background: var(--slate-elev);
-    border: 1px solid var(--green-30);
+    border: 1px solid var(--slate-line2);
     border-radius: var(--radius);
     padding: 18px 20px;
     margin: 20px;
@@ -128,7 +128,7 @@
   }
   .bar {
     height: 100%;
-    background: var(--green);
+    background: var(--chalk-bright);
     border-radius: 99px;
     transition: width 160ms ease;
   }
@@ -136,12 +136,13 @@
   .step { color: var(--amber); }
 
   .status { font: 400 11.5px/1.8 'JetBrains Mono', monospace; color: var(--chalk-faint); margin: 10px 0 14px; padding-left: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 4px 14px; }
-  .status .done { color: var(--green); }
+  .status .done { color: var(--chalk-muted); }
   .status .active { color: var(--amber); }
 
   .row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
   button { padding: 10px 16px; border-radius: var(--radius-sm); font: 600 13px/1 'Inter', sans-serif; cursor: pointer; }
-  .send { background: var(--green); border: 1px solid var(--green); color: var(--chalk-bright); }
+  .send { background: var(--chalk-bright); border: 1px solid var(--chalk-bright); color: var(--slate-elev); }
+  .send:hover { filter: brightness(1.12); }
   .ghost { background: transparent; border: 1px solid var(--slate-line2); color: var(--chalk-muted); }
   button:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -151,7 +152,7 @@
     border: 1px solid var(--slate-line);
     border-radius: var(--radius-sm);
     padding: 10px;
-    color: var(--green);
+    color: var(--chalk-muted);
     max-height: 140px;
     overflow-y: auto;
   }

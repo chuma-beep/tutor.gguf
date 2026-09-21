@@ -4,6 +4,9 @@
   export let onSelectTurn
   export let activeIndex = -1
   export let onRename
+  export let onDelete
+
+  let query = ''
 
   const GROUPS = [
     ['algebra', 'Algebra'],
@@ -28,7 +31,9 @@
   function groupTurns() {
     const map = new Map()
     for (const [key, label] of GROUPS) map.set(key, { label, items: [] })
+    const q = query.trim().toLowerCase()
     turns.forEach((t, i) => {
+      if (q && !(t.question || '').toLowerCase().includes(q) && !(t.title || '').toLowerCase().includes(q)) return
       const g = groupOf(t)
       const entry = map.get(g)
       if (entry) entry.items.push({ turn: t, index: i })
@@ -46,7 +51,16 @@
 </script>
 
 <aside class="rail">
-  <h2>History</h2>
+  <div class="section-head"><span>01</span><h2>History</h2></div>
+  {#if turns.length > 0}
+    <input
+      class="search"
+      type="search"
+      placeholder="Filter…"
+      aria-label="Filter history"
+      bind:value={query}
+    />
+  {/if}
   {#each groupTurns() as group (group.label)}
     <div class="group">
       <div class="group-label">{group.label}</div>
@@ -69,6 +83,9 @@
               >{titleOf(item.turn)}</span>
               <span class="cat">{item.turn.category || item.turn.subdomain || 'other'}</span>
             </button>
+            {#if onDelete}
+              <button class="del" on:click={() => onDelete(item.index)} title="Delete this question" aria-label="Delete question">×</button>
+            {/if}
           </li>
         {/each}
       </ul>
@@ -76,6 +93,8 @@
   {/each}
   {#if turns.length === 0}
     <p class="empty">No questions yet. Ask something in the box.</p>
+  {:else if groupTurns().length === 0}
+    <p class="empty">No matches for “{query}”.</p>
   {/if}
 </aside>
 
@@ -88,21 +107,61 @@
     padding: 12px 10px;
   }
   h2 {
-    font: 700 11px/1 'JetBrains Mono', monospace;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font: 500 13px/1 'Inter', sans-serif;
+    margin: 0;
+    color: var(--chalk-bright);
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    border-bottom: 1px solid var(--slate-line2);
+    padding: 4px 6px 10px;
+    margin-bottom: 12px;
+  }
+  .section-head > span {
+    font: 400 10px/1 'JetBrains Mono', monospace;
+    letter-spacing: 0.14em;
     color: var(--chalk-faint);
-    margin: 0 0 12px 6px;
   }
   .group { margin-bottom: 14px; }
   .group-label {
     font: 700 10px/1 'Inter', sans-serif;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--green);
+    color: var(--chalk-muted);
     margin: 0 0 6px 6px;
   }
   ul { list-style: none; margin: 0; padding: 0; }
+  li { position: relative; }
+  .search {
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--slate-elev);
+    border: 1px solid var(--slate-line2);
+    border-radius: var(--radius-sm);
+    color: var(--chalk-bright);
+    font: 400 12px/1.4 'Inter', sans-serif;
+    padding: 7px 10px;
+    margin: 0 0 12px;
+  }
+  .search::placeholder { color: var(--chalk-faint); }
+  .search:focus { border-color: var(--slate-line2); outline: none; }
+  .del {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    background: none;
+    border: none;
+    color: var(--chalk-faint);
+    font-size: 14px;
+    line-height: 1;
+    padding: 4px;
+    cursor: pointer;
+    opacity: 0;
+  }
+  li:hover .del, .del:focus-visible { opacity: 1; }
+  .del:hover { color: var(--error); }
   .item {
     width: 100%;
     display: flex;
@@ -119,7 +178,7 @@
     transition: border-color 160ms ease, background 160ms ease;
   }
   .item:hover { background: var(--slate-elev); }
-  .item.active { border-color: var(--green-30); background: var(--green-12); }
+  .item.active { border-color: var(--slate-line2); background: var(--slate-elev); }
   .editable {
     font: 400 12px/1.4 'JetBrains Mono', monospace;
     color: var(--chalk);
@@ -128,7 +187,7 @@
     text-overflow: ellipsis;
     max-width: 100%;
   }
-  .editable:focus { outline: 1px solid var(--green); border-radius: 4px; }
+  .editable:focus { outline: 1px solid var(--slate-line2); border-radius: 4px; }
   .cat {
     font: 500 10px/1 'Inter', sans-serif;
     color: var(--chalk-faint);

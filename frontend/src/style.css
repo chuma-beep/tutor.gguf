@@ -25,16 +25,23 @@ body {
 }
 
 * {
-  scrollbar-color: var(--green-30) transparent;
+  scrollbar-color: var(--chalk-faint) transparent;
   scrollbar-width: thin;
 }
 
 ::selection {
-  background: rgba(63, 143, 95, 0.32);
+  background: var(--slate-line2);
+}
+
+/* KaTeX renders every formula twice in the DOM: positioned HTML plus a
+   visually-hidden MathML annotation carrying the raw TeX source. Keep the
+   annotation out of text selections so copy-paste yields one clean copy. */
+.katex-mathml {
+  user-select: none;
 }
 
 :focus-visible {
-  outline: 2px solid var(--green);
+  outline: 2px solid var(--chalk-muted);
   outline-offset: 2px;
 }
 
