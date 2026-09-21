@@ -94,6 +94,51 @@ body {
   margin: 0;
 }
 
+/* Rendered manual chapters (docs/manual/*.md via marked). Archive voice:
+   bordered tables, square code, ruled headings, mono micro-labels. */
+.manual { color: hsl(var(--foreground)); }
+.manual > *:first-child { margin-top: 0; }
+.manual h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 0 0 1.5rem;
+}
+.manual h2 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 2.5rem 0 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid hsl(var(--border));
+}
+.manual h3 { font-size: 1.05rem; font-weight: 500; margin: 2rem 0 0.75rem; }
+.manual p { font-size: 0.9rem; line-height: 1.75; color: hsl(var(--muted-foreground)); margin: 0 0 1rem; }
+.manual p strong, .manual li strong { color: hsl(var(--foreground)); font-weight: 500; }
+.manual ul, .manual ol { font-size: 0.9rem; line-height: 1.75; color: hsl(var(--muted-foreground)); margin: 0 0 1rem; padding-left: 1.25rem; }
+.manual li { margin-bottom: 0.25rem; }
+.manual a { color: hsl(var(--foreground)); text-decoration: underline; text-underline-offset: 3px; }
+.manual a:hover { opacity: 0.6; }
+.manual code {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  background: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  padding: 0.1em 0.35em;
+}
+.manual pre {
+  background: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 0 0 1.5rem;
+}
+.manual pre code { background: none; border: none; padding: 0; font-size: 0.78rem; line-height: 1.7; }
+.manual table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0 0 1.5rem; }
+.manual th, .manual td { border: 1px solid hsl(var(--border)); padding: 0.6rem 0.8rem; text-align: left; }
+.manual th { font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.14em; text-transform: uppercase; background: hsl(var(--muted)); }
+.manual td { color: hsl(var(--muted-foreground)); }
+.manual td code { white-space: nowrap; }
+
 @media (max-width: 640px) {
   .archive-section-head {
     grid-template-columns: auto 1fr;

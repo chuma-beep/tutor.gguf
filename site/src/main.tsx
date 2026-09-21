@@ -3,9 +3,10 @@ import { createRoot } from "react-dom/client";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { rootRoute } from "@/routes/root";
 import { indexRoute } from "@/routes/index";
+import { docsRoute, docsSlugRoute } from "@/routes/docs";
 import "@/styles.css";
 
-const routeTree = rootRoute.addChildren([indexRoute]);
+const routeTree = rootRoute.addChildren([indexRoute, docsRoute, docsSlugRoute]);
 
 const basepath = import.meta.env.BASE_URL.replace(/\/$/, "");
 

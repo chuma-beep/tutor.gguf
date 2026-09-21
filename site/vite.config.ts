@@ -11,4 +11,8 @@ export default defineConfig({
       "@": path.resolve(import.meta.dirname, "src"),
     },
   },
+  server: {
+    // The manual source (docs/manual) lives outside the site root.
+    fs: { allow: [".."] },
+  },
 });
