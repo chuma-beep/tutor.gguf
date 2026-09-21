@@ -1,4 +1,5 @@
 import { createRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { rootRoute } from "./root";
 import shotBench from "@/assets/shot-bench.jpg";
 import shotDesktop from "@/assets/shot-desktop.jpg";
@@ -40,6 +41,7 @@ function Index() {
           <nav aria-label="Primary navigation" className="flex gap-5 font-mono text-[10px] uppercase text-muted-foreground">
             <a className="archive-link hidden sm:inline" href="#archive">Archive</a>
             <a className="archive-link hidden sm:inline" href="#specification">Specification</a>
+            <Link className="archive-link" to="/docs">Docs</Link>
             <a className="archive-link" href={REPO} target="_blank" rel="noreferrer">Repository ↗</a>
           </nav>
         </div>
