@@ -67,7 +67,7 @@ function Index() {
               </h1>
             </div>
             <dl className="grid min-w-0 grid-cols-2 border-t border-border font-mono text-[10px] uppercase lg:col-span-4 lg:border-l lg:border-t-0">
-              {[["Year", "2026"], ["Location", "Anambra, NG"], ["Team", "chuma-beep"], ["Status", "Public / v0.2.0"]].map(([term, value]) => (
+              {[["Year", "2026"], ["Location", "Nigeria"], ["Team", "chuma-beep"], ["Status", "Public / v0.2.0"]].map(([term, value]) => (
                 <div key={term} className="min-w-0 border-b border-r border-border p-4 sm:p-5 lg:last:border-b-0">
                   <dt className="text-muted-foreground">{term}</dt><dd className="mt-2 wrap-anywhere text-foreground">{value}</dd>
                 </div>
