@@ -9,6 +9,7 @@
   import StreamingTurn from './components/StreamingTurn.svelte'
   import InputDock from './components/InputDock.svelte'
   import SetupPanel from './components/SetupPanel.svelte'
+  import DocsView from './components/DocsView.svelte'
   import { hasWails, hasRuntime, askStream, getStatus, getPaths, retryInit, runSetup as wailsSetup, onEvent } from './lib/wails.js'
   import { getTheme, cycleTheme } from './lib/theme.js'
 
@@ -26,6 +27,8 @@
   let setupRunning = false
   let railCollapsed = false
   let sourcesOpen = true
+  let view = 'chat'
+  let docsSlug = null
   let activeIndex = -1
   let numberWordsEnabled = false
   let theme = getTheme()
@@ -436,9 +439,13 @@
     onToggleNumberWords={toggleNumberWords}
     {theme}
     onCycleTheme={onCycleTheme}
+    {view}
+    onToggleView={() => (view = view === 'docs' ? 'chat' : 'docs')}
   />
 
-  {#if checking}
+  {#if view === 'docs'}
+    <DocsView slug={docsSlug} onNavigate={(s) => (docsSlug = s)} />
+  {:else if checking}
     <div class="center-wrap">
       <div class="checking-panel"><span class="spin" aria-hidden="true"></span> Checking setup…</div>
     </div>

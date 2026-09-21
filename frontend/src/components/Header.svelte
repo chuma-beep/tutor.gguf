@@ -11,6 +11,8 @@
   export let onToggleNumberWords = () => {}
   export let theme = 'system'
   export let onCycleTheme = () => {}
+  export let view = 'chat'
+  export let onToggleView = () => {}
 
   $: themeLabel = theme === 'dark' ? '● Dark' : theme === 'system' ? '◐ System' : '○ Light'
 </script>
@@ -27,7 +29,9 @@
     <button class="ghost" on:click={onToggleSources} title="Toggle retrieved sources">
       {sourcesOpen ? 'Hide Sources' : '☰ Sources'}
     </button>
-    <a class="ghost docs-link" href="https://chuma-beep.github.io/tutor.gguf/docs/" target="_blank" rel="noreferrer" title="Open the online manual in a new tab">Docs ↗</a>
+    <button class="ghost" on:click={onToggleView} title="Toggle the offline manual">
+      {view === 'docs' ? '☰ Chat' : '☰ Docs'}
+    </button>
     <label class="toggle" title="Convert word numbers to digits before sending to model (e.g. one plus one → 1 + 1)">
       <input type="checkbox" checked={numberWordsEnabled} on:change={onToggleNumberWords} />
       <span>1+1</span>
