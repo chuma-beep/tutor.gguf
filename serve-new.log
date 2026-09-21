@@ -1,0 +1,3 @@
+llama-servers ready — gen: http://127.0.0.1:32817 | embed: http://127.0.0.1:33479
+2026/09/21 14:49:18 tutor RAG server listening on :8082 (UI at http://localhost:8082/)
+2026/09/21 15:13:26 shutting down
