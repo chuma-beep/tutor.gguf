@@ -47,31 +47,31 @@ function Shell({ slug }: { slug?: string }) {
       <main className="mx-auto max-w-[1440px] px-4 py-4 sm:px-8 sm:py-8 lg:px-12 lg:py-12">
         <article className="border border-border bg-background">
           <header className="grid border-b border-border lg:grid-cols-12">
-            <div className="p-7 sm:p-10 lg:col-span-8 lg:p-14">
+            <div className="p-4 sm:p-10 lg:col-span-8 lg:p-14">
               <p className="archive-label">Manual / TG-001</p>
-              <h1 className="mt-5 text-5xl font-medium uppercase leading-[0.9] sm:text-7xl">
+              <h1 className="mt-5 wrap-anywhere text-3xl font-medium uppercase leading-[0.9] sm:text-5xl lg:text-7xl">
                 {chapter.title}
               </h1>
             </div>
-            <dl className="grid grid-cols-2 border-t border-border font-mono text-[10px] uppercase lg:col-span-4 lg:border-l lg:border-t-0">
+            <dl className="grid min-w-0 grid-cols-2 border-t border-border font-mono text-[10px] uppercase lg:col-span-4 lg:border-l lg:border-t-0">
               {[["Chapter", `${String(index + 1).padStart(2, "0")} / ${String(chapters.length).padStart(2, "0")}`], ["Source", "docs/manual"], ["Format", "Markdown"], ["Status", "Main"]].map(([term, value]) => (
-                <div key={term} className="border-b border-r border-border p-5">
-                  <dt className="text-muted-foreground">{term}</dt><dd className="mt-2 text-foreground">{value}</dd>
+                <div key={term} className="min-w-0 border-b border-r border-border p-4 sm:p-5">
+                  <dt className="text-muted-foreground">{term}</dt><dd className="mt-2 wrap-anywhere text-foreground">{value}</dd>
                 </div>
               ))}
             </dl>
           </header>
 
           <div className="grid lg:grid-cols-12">
-            <nav aria-label="Chapters" className="border-b border-border p-7 sm:p-10 lg:col-span-4 lg:border-b-0 lg:border-r lg:p-12">
+            <nav aria-label="Chapters" className="min-w-0 border-b border-border p-4 sm:p-10 lg:col-span-4 lg:border-b-0 lg:border-r lg:p-12">
               <p className="archive-label">Chapters</p>
-              <ol className="mt-5 space-y-1">
+              <ol className="mt-5 flex gap-2 overflow-x-auto pb-2 lg:block lg:space-y-1 lg:overflow-visible lg:pb-0">
                 {chapters.map((c, i) => (
-                  <li key={c.slug}>
+                  <li key={c.slug} className="shrink-0">
                     <Link
                       to="/docs/$slug"
                       params={{ slug: c.slug }}
-                      className={`flex items-baseline gap-3 border-b border-border px-1 py-2 text-sm transition-colors ${c.slug === chapter.slug ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                      className={`flex items-center gap-2 whitespace-nowrap rounded-sm border border-border px-3 py-2.5 text-sm transition-colors lg:items-baseline lg:rounded-none lg:border-0 lg:border-b lg:px-1 lg:py-2 ${c.slug === chapter.slug ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground"}`}
                     >
                       <span className="font-mono text-[10px]">{String(i + 1).padStart(2, "0")}</span>
                       <span>{c.title}</span>
@@ -81,19 +81,31 @@ function Shell({ slug }: { slug?: string }) {
               </ol>
               {chapter.headings.length > 0 && (
                 <>
-                  <p className="archive-label mt-10">On this page</p>
-                  <ol className="mt-5 space-y-2">
-                    {chapter.headings.map((h) => (
-                      <li key={h.id}>
-                        <a href={`#${h.id}`} className="archive-link font-mono text-[10px] uppercase text-muted-foreground">{h.text}</a>
-                      </li>
-                    ))}
-                  </ol>
+                  <details className="mt-6 lg:hidden">
+                    <summary className="archive-label cursor-pointer">On this page</summary>
+                    <ol className="mt-4 space-y-2">
+                      {chapter.headings.map((h) => (
+                        <li key={h.id}>
+                          <a href={`#${h.id}`} className="archive-link font-mono text-[10px] uppercase text-muted-foreground">{h.text}</a>
+                        </li>
+                      ))}
+                    </ol>
+                  </details>
+                  <div className="hidden lg:block">
+                    <p className="archive-label mt-10">On this page</p>
+                    <ol className="mt-5 space-y-2">
+                      {chapter.headings.map((h) => (
+                        <li key={h.id}>
+                          <a href={`#${h.id}`} className="archive-link font-mono text-[10px] uppercase text-muted-foreground">{h.text}</a>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
                 </>
               )}
             </nav>
 
-            <div className="p-7 sm:p-10 lg:col-span-8 lg:p-12">
+            <div className="min-w-0 p-4 sm:p-10 lg:col-span-8 lg:p-12">
               <div className="manual" dangerouslySetInnerHTML={{ __html: chapter.html }} />
               <div className="mt-12 grid gap-px border border-border bg-border sm:grid-cols-2">
                 <div className="bg-background p-5">
@@ -101,7 +113,7 @@ function Shell({ slug }: { slug?: string }) {
                     <Link to="/docs/$slug" params={{ slug: prev.slug }} className="archive-action">← {prev.title}</Link>
                   ) : <span className="archive-label text-muted-foreground">Start</span>}
                 </div>
-                <div className="bg-background p-5 text-right">
+                <div className="bg-background p-5 text-left sm:text-right">
                   {next ? (
                     <Link to="/docs/$slug" params={{ slug: next.slug }} className="archive-action">{next.title} →</Link>
                   ) : <span className="archive-label text-muted-foreground">End</span>}
@@ -110,7 +122,7 @@ function Shell({ slug }: { slug?: string }) {
             </div>
           </div>
 
-          <footer className="flex flex-col justify-between gap-5 border-t border-border bg-muted px-7 py-6 font-mono text-[10px] uppercase text-muted-foreground sm:flex-row sm:items-center">
+          <footer className="flex flex-col justify-between gap-5 border-t border-border bg-muted px-4 py-6 font-mono text-[10px] uppercase text-muted-foreground sm:flex-row sm:items-center sm:px-7">
             <span>Manual / TG-001</span>
             <span>Single source: docs/manual</span>
             <span>GPL-3.0 / Public release</span>

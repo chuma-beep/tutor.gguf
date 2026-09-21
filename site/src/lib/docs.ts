@@ -48,6 +48,16 @@ function rewriteLinks(html: string): string {
   return html.replace(/href="([a-z0-9-]+)"/g, 'href="#/docs/$1"');
 }
 
+// Wrap rendered tables in a scroll container so wide tables (config,
+// benchmark) scroll inside their own box instead of blowing out the page
+// grid on narrow screens. Applied here so the public site and the offline
+// serve UI stay identical.
+function wrapTables(html: string): string {
+  return html
+    .replace(/<table>/g, '<div class="table-scroll"><table>')
+    .replace(/<\/table>/g, "</table></div>");
+}
+
 function addHeadingIds(html: string): { html: string; headings: { id: string; text: string }[] } {
   const headings: { id: string; text: string }[] = [];
   const seen = new Map<string, number>();
@@ -71,7 +81,7 @@ function loadChapters(): Chapter[] {
     const file = path.split("/").pop() ?? path;
     const slug = file.replace(/^\d+-/, "").replace(/\.md$/, "");
     const { title, order, body } = parseFrontmatter(raw);
-    const rendered = rewriteLinks(marked.parse(body) as string);
+    const rendered = wrapTables(rewriteLinks(marked.parse(body) as string));
     const { html, headings } = addHeadingIds(rendered);
     chapters.push({ slug, title, order, html, headings });
   }
