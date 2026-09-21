@@ -3,7 +3,6 @@ import { Link } from "@tanstack/react-router";
 import { rootRoute } from "./root";
 import shotBench from "@/assets/shot-bench.jpg";
 import shotDesktop from "@/assets/shot-desktop.jpg";
-import shotHero from "@/assets/shot-hero.jpg";
 import shotTui from "@/assets/shot-tui.jpg";
 import shotWebui from "@/assets/shot-webui.jpg";
 
@@ -28,11 +27,15 @@ const stages = [
 ];
 
 const plates = [
-  [shotTui, "Plate 01", "Terminal interface", "Bubble Tea interface running the tutor entirely on-device."],
-  [shotDesktop, "Plate 02", "Desktop application", "Wails desktop build: local retrieval and a worked derivative."],
-  [shotBench, "Plate 03", "Performance study", "Measured throughput and memory on commodity hardware."],
-  [shotWebui, "Plate 04", "Browser interface", "Serve UI on localhost:8082 — archive plates, offline manual and retrieved citations."],
+  [shotWebui, "Browser interface", "Serve UI on localhost:8082 — archive plates, offline manual and retrieved citations."],
+  [shotDesktop, "Desktop application", "Wails desktop build: local retrieval and a worked derivative."],
+  [shotTui, "Terminal interface", "Bubble Tea interface running the tutor entirely on-device."],
+  [shotBench, "Performance study", "Measured throughput and memory on commodity hardware."],
 ];
+
+function plateNumber(index: number): string {
+  return `Plate ${String(index + 1).padStart(2, "0")}`;
+}
 
 function Index() {
   return (
@@ -88,7 +91,7 @@ function Index() {
             <div className="bg-muted p-4 sm:p-8 lg:col-span-8 lg:p-12">
               <figure>
                 <div className="aspect-[16/10] overflow-hidden border border-border bg-secondary">
-                  <img src={shotHero} alt="The tutor.gguf terminal interface" className="h-full w-full object-cover grayscale transition duration-500 hover:grayscale-0" />
+                  <img src={shotWebui} alt="The tutor.gguf browser interface showing a worked derivative" className="h-full w-full object-cover grayscale transition duration-500 hover:grayscale-0" />
                 </div>
                 <figcaption className="mt-3 flex justify-between gap-4 font-mono text-[10px] uppercase text-muted-foreground">
                   <span>Fig. 01 / Primary interface</span><span>On-device operation</span>
@@ -125,13 +128,13 @@ function Index() {
           <section id="archive" className="archive-section">
             <div className="archive-section-head"><span>03</span><h2>Drawing archive</h2><span>Interface / output / measurement</span></div>
             <div className="grid gap-px bg-border md:grid-cols-2">
-              {plates.map(([src, number, title, caption], index) => (
-                <figure key={number} className="bg-background p-5 sm:p-8">
+              {plates.map(([src, title, caption], index) => (
+                <figure key={title} className="bg-background p-5 sm:p-8">
                   <div className="aspect-[4/3] overflow-hidden border border-border bg-secondary">
                     <img src={src} alt={caption} loading="lazy" className="h-full w-full object-cover grayscale transition duration-500 hover:grayscale-0" />
                   </div>
                   <figcaption className="mt-4 grid gap-2 border-t border-border pt-3 sm:grid-cols-[8rem_1fr]">
-                    <span className="archive-label text-muted-foreground">{number}</span>
+                    <span className="archive-label text-muted-foreground">{plateNumber(index)}</span>
                     <p className="text-sm"><strong className="font-medium">{title}.</strong> <span className="text-muted-foreground">{caption}</span></p>
                   </figcaption>
                 </figure>
