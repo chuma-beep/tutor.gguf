@@ -45,6 +45,15 @@ function rewriteLinks(html) {
   return html.replace(/href="([a-z0-9-]+)"/g, 'href="#" data-docs="$1"')
 }
 
+// Wrap rendered tables in a scroll container so wide tables (config,
+// benchmark) scroll inside their own box instead of blowing out the
+// transcript on narrow screens. Mirrors site/src/lib/docs.ts.
+function wrapTables(html) {
+  return html
+    .replace(/<table>/g, '<div class="table-scroll"><table>')
+    .replace(/<\/table>/g, '</table></div>')
+}
+
 function addHeadingIds(html) {
   const headings = []
   const seen = new Map()
@@ -68,7 +77,7 @@ function loadChapters() {
     const file = path.split('/').pop() ?? path
     const slug = file.replace(/^\d+-/, '').replace(/\.md$/, '')
     const { title, order, body } = parseFrontmatter(raw)
-    const rendered = rewriteLinks(marked.parse(body))
+    const rendered = wrapTables(rewriteLinks(marked.parse(body)))
     const { html, headings } = addHeadingIds(rendered)
     chapters.push({ slug, title, order, html, headings })
   }

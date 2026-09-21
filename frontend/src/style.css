@@ -58,12 +58,12 @@ body {
   border-top: 1px solid var(--slate-line2);
 }
 .manual h3 { font: 500 17px/1.4 'Inter', sans-serif; color: var(--chalk-bright); margin: 32px 0 12px; }
-.manual p { font: 400 14.5px/1.75 'Inter', sans-serif; color: var(--chalk-muted); margin: 0 0 16px; }
+.manual p { font: 400 14.5px/1.75 'Inter', sans-serif; color: var(--chalk-muted); margin: 0 0 16px; overflow-wrap: break-word; }
 .manual p strong, .manual li strong { color: var(--chalk-bright); font-weight: 600; }
-.manual ul, .manual ol { font: 400 14px/1.75 'Inter', sans-serif; color: var(--chalk-muted); margin: 0 0 16px; padding-left: 20px; }
+.manual ul, .manual ol { font: 400 14px/1.75 'Inter', sans-serif; color: var(--chalk-muted); margin: 0 0 16px; padding-left: 20px; overflow-wrap: break-word; }
 .manual li { margin-bottom: 4px; }
 .manual a { color: var(--chalk-bright); text-decoration: underline; text-underline-offset: 3px; }
-.manual table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 0 0 24px; }
+.manual table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 0; }
 .manual th, .manual td { border: 1px solid var(--slate-line2); padding: 10px 13px; text-align: left; }
 .manual th {
   font: 400 10px/1 'JetBrains Mono', monospace;
@@ -87,9 +87,15 @@ body {
   border-radius: var(--radius-sm);
   padding: 16px 20px;
   overflow-x: auto;
+  max-width: 100%;
   margin: 0 0 24px;
 }
 .manual pre code { background: none; border: none; padding: 0; font-size: 12.5px; line-height: 1.7; }
+
+/* Tables scroll inside their own box (see wrapTables in lib/docs.js) so
+   wide tables never force the transcript past the viewport. */
+.table-scroll { overflow-x: auto; max-width: 100%; margin: 0 0 24px; }
+.table-scroll table { margin: 0; }
 
 /* Archive record language (mirrors site/src/routes/index.tsx). Global so every
    component — transcript, turns, docs view — shares one definition. */
@@ -116,6 +122,7 @@ body {
   text-transform: uppercase;
   color: var(--chalk-bright);
   margin: 12px 0 0;
+  overflow-wrap: anywhere;
 }
 .record-title span { color: var(--chalk-faint); }
 .facts {
@@ -131,9 +138,10 @@ body {
   border-bottom: 1px solid var(--slate-line2);
   border-right: 1px solid var(--slate-line2);
   padding: 10px 12px;
+  min-width: 0;
 }
 .facts dt { color: var(--chalk-faint); margin: 0; }
-.facts dd { color: var(--chalk-bright); margin: 4px 0 0; }
+.facts dd { color: var(--chalk-bright); margin: 4px 0 0; overflow-wrap: anywhere; }
 .record-foot {
   display: flex;
   flex-wrap: wrap;
@@ -141,7 +149,7 @@ body {
   justify-content: space-between;
   border-top: 1px solid var(--slate-line2);
   background: var(--slate);
-  margin: 24px -24px -20px;
+  margin: 24px calc(var(--transcript-pad, 24px) * -1) -20px;
   padding: 14px 24px;
   font: 400 10px/1 'JetBrains Mono', monospace;
   text-transform: uppercase;
@@ -160,14 +168,19 @@ body {
   box-shadow: var(--shadow);
   margin: clamp(8px, 2.5vw, 20px);
   overflow-y: auto;
-  padding: clamp(12px, 3vw, 24px);
+  --transcript-pad: clamp(12px, 3vw, 24px);
+  padding: var(--transcript-pad);
 }
 @media (max-width: 1120px) {
-  .transcript { margin: clamp(8px, 2vw, 14px); }
+  .transcript { margin: clamp(8px, 2vw, 14px); --transcript-pad: clamp(8px, 2vw, 14px); }
 }
 @media (max-width: 760px) {
-  .transcript { margin: 8px; padding: 12px; }
-  .record-foot { margin: 24px -12px -12px; padding: 14px 12px; }
+  .transcript { margin: 8px; --transcript-pad: 12px; padding: var(--transcript-pad); }
+  .record-foot { padding: 14px 12px; }
+  .manual h1 { font-size: 24px; margin-bottom: 16px; }
+  .manual h2 { font-size: 18px; margin-top: 28px; }
+  .manual pre { padding: 12px; }
+  .manual th, .manual td { padding: 8px 10px; }
 }
 
 /* Budget motion — everything static unless one of the two beats. */

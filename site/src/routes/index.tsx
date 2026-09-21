@@ -60,16 +60,16 @@ function Index() {
       <main id="top" className="mx-auto max-w-[1440px] px-4 py-4 sm:px-8 sm:py-8 lg:px-12 lg:py-12">
         <article className="border border-border bg-background">
           <header className="grid border-b border-border lg:grid-cols-12">
-            <div className="p-7 sm:p-10 lg:col-span-8 lg:p-14">
+            <div className="p-4 sm:p-10 lg:col-span-8 lg:p-14">
               <p className="archive-label">Index / Project No. TG-001</p>
-              <h1 className="mt-5 text-5xl font-medium uppercase leading-[0.9] sm:text-7xl lg:text-8xl">
+              <h1 className="mt-5 wrap-anywhere text-4xl font-medium uppercase leading-[0.9] sm:text-7xl lg:text-8xl">
                 tutor.gguf<br /><span className="text-muted-foreground">Archive</span>
               </h1>
             </div>
-            <dl className="grid grid-cols-2 border-t border-border font-mono text-[10px] uppercase lg:col-span-4 lg:border-l lg:border-t-0">
+            <dl className="grid min-w-0 grid-cols-2 border-t border-border font-mono text-[10px] uppercase lg:col-span-4 lg:border-l lg:border-t-0">
               {[["Year", "2026"], ["Location", "Anambra, NG"], ["Team", "chuma-beep"], ["Status", "Public / v0.2.0"]].map(([term, value]) => (
-                <div key={term} className="border-b border-r border-border p-5 lg:last:border-b-0">
-                  <dt className="text-muted-foreground">{term}</dt><dd className="mt-2 text-foreground">{value}</dd>
+                <div key={term} className="min-w-0 border-b border-r border-border p-4 sm:p-5 lg:last:border-b-0">
+                  <dt className="text-muted-foreground">{term}</dt><dd className="mt-2 wrap-anywhere text-foreground">{value}</dd>
                 </div>
               ))}
             </dl>

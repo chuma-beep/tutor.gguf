@@ -97,9 +97,15 @@
   .chapters button:hover { border-color: var(--slate-line2); color: var(--chalk-bright); }
   .chapters button.active { border-color: var(--slate-line2); color: var(--chalk-bright); background: var(--slate); }
   .chapters .num { font: 400 10px/1 'JetBrains Mono', monospace; color: var(--chalk-faint); margin-right: 6px; }
+  @media (max-width: 760px) {
+    .chapters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+    .chapters button { flex-shrink: 0; white-space: nowrap; }
+  }
   .onpage { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; margin: 20px 0 0; }
   .onpage a { font: 400 11px/1.6 'JetBrains Mono', monospace; color: var(--chalk-muted); }
-  .pager { display: flex; justify-content: space-between; gap: 8px; margin-top: 24px; }
+  .pager { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; margin-top: 24px; }
+  .pager > div { min-width: 0; }
+  .pager .link { overflow-wrap: anywhere; text-align: left; }
   .link {
     background: none;
     border: none;
