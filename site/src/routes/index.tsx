@@ -1,6 +1,7 @@
 import { createRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { rootRoute } from "./root";
+import { StageInput, StageRetrieve, StageInfer, StageRender } from "@/components/stage-figures";
 import shotBench from "@/assets/shot-bench.jpg";
 import shotDesktop from "@/assets/shot-desktop.jpg";
 import shotTui from "@/assets/shot-tui.jpg";
@@ -20,10 +21,14 @@ const facts = [
 ];
 
 const stages = [
-  ["01", "Input", "A mathematics problem is entered through the Bubble Tea terminal interface."],
-  ["02", "Retrieve", "Chromem selects relevant worked examples from the local corpus."],
-  ["03", "Infer", "Qwen2.5-Math-1.5B runs locally through llama.cpp in GGUF Q4_K_M."],
-  ["04", "Render", "The response is formatted as readable, step-by-step mathematics."],
+  { n: "01", title: "Input", out: "problem", spec: "browser · desktop · tui", Figure: StageInput,
+    text: "A mathematics problem is entered through the browser UI, desktop app or terminal shell." },
+  { n: "02", title: "Retrieve", out: "top-K chunks", spec: "nomic-embed-text · K = 3", Figure: StageRetrieve,
+    text: "chromem-go selects relevant worked examples from the local corpus." },
+  { n: "03", title: "Infer", out: "solution", spec: "llama.cpp · CPU only", Figure: StageInfer,
+    text: "Qwen2.5-Math-1.5B runs locally through llama.cpp in GGUF Q4_K_M." },
+  { n: "04", title: "Render", out: "boxed answer", spec: "KaTeX · terminal art", Figure: StageRender,
+    text: "The response is formatted as readable, step-by-step mathematics." },
 ];
 
 const plates = [
@@ -112,13 +117,14 @@ function Index() {
           <section id="specification" className="archive-section">
             <div className="archive-section-head"><span>02</span><h2>System plan</h2><span>Local pipeline / four stages</span></div>
             <div className="grid md:grid-cols-4">
-              {stages.map(([number, title, text], index) => (
-                <article key={number} className="border-b border-border p-6 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
-                  <div className="flex items-center gap-3 font-mono text-[10px] text-muted-foreground"><span>{number}</span><span className="h-px flex-1 bg-border" /><span>1:0{index + 1}</span></div>
-                  <div className="my-8 flex h-24 items-center justify-center border border-border bg-muted" aria-hidden="true">
-                    <span className="block border border-foreground" style={{ width: `${32 + index * 12}%`, height: `${32 + index * 10}%` }} />
+              {stages.map(({ n, title, out, spec, text, Figure }) => (
+                <article key={n} className="group border-b border-border p-6 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
+                  <div className="flex items-center gap-3 font-mono text-[10px] uppercase text-muted-foreground"><span>{n}</span><span className="h-px flex-1 bg-border" /><span>{out}</span></div>
+                  <div className="my-6 flex h-28 items-center justify-center border border-border bg-muted p-4 text-muted-foreground transition-colors group-hover:text-foreground">
+                    <Figure />
                   </div>
-                  <h3 className="text-lg font-medium">{title}</h3>
+                  <p className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">{spec}</p>
+                  <h3 className="mt-2 text-lg font-medium">{title}</h3>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">{text}</p>
                 </article>
               ))}
