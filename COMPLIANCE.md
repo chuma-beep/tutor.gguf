@@ -71,7 +71,7 @@ Official formula: `S_total = 0.50·S_acc + 0.30·S_perf + 0.20·S_eff − P_ther
 
 | Component | Formula | Value (from `submission.json`, audit-profile) | Result |
 |---|---|---|---|
-| **S_acc** | qualitative + benchmark | self-reported 18/30 accuracy, 6/10 quality (see REPORT.md) | QA-track |
+| **S_acc** | qualitative + benchmark | self-reported 15/30 accuracy, 6/10 quality (see REPORT.md `## Failure analysis`) | QA-track |
 | **S_perf** | `min(TPS/15.0, 1.0)·100` | 13.5 t/s (16.6 at `-t 4`) | **≈ 90** (100 at `-t 4`) |
 | **S_eff** | `max(0,(7.0−peak_rss_gb)/7.0)·100` | peak 1.10 GB | **≈ 84.3** |
 | **P_thermal** | −10 if throttled / core > 85 °C | `throttled: false`, peak 20.0 °C | **0** |

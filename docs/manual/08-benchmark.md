@@ -46,19 +46,20 @@ audit VM.
 
 ### Accuracy
 
-**18 / 30.** Thirty problems sampled (seed 42) from the Hendrycks MATH
+**15 / 30** (`evals/results_new_2.json`; earlier reruns 14–16/30). Thirty problems sampled (seed 42) from the Hendrycks MATH
 training split, each scored two ways: deterministic answer matching
 (`\boxed{}` extraction, LaTeX/whitespace normalization, numeric fallback for
 equivalent forms) and a model-graded rubric from a local Qwen2.5-3B-Instruct
-judge. The matcher and judge agreed on all failures.
+judge. Dominant failure mode is truncation before the `\boxed{}` finale; see
+REPORT.md `## Failure analysis` for the per-case breakdown.
 
 ### Quality
 
-**6 / 10.** Ten bespoke cases — JAMB-style exam items, market-trader
+**6 / 10** (`evals/results_quality_new.json`). Ten bespoke cases — JAMB-style exam items, market-trader
 arithmetic, induction, integration — graded by the same local judge on step
-clarity and tutoring quality. The failures are actionable tutoring gaps
-(final answer not stated clearly, weak induction structure), not harness
-errors.
+clarity and tutoring quality. All four failures hold the correct `\boxed{}`
+answer and fail on judge-overstrictness (method phrasing, not math); see
+REPORT.md `## Failure analysis`.
 
 ## Methodology
 

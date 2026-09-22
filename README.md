@@ -312,8 +312,9 @@ make eval-view       # open the interactive promptfoo results
   induction, integration) graded by rubric.
 - Result artifacts land in `evals/results_*.json`.
 
-Current status is self-reported: 18/30 accuracy and 6/10 quality. Failure details are in
-**REPORT.md**.
+Current status is self-reported: 15/30 accuracy (`evals/results_new_2.json`) and 6/10
+quality (`evals/results_quality_new.json`). Failure details are in **REPORT.md**
+(`## Failure analysis`).
 
 ## Performance snapshot
 

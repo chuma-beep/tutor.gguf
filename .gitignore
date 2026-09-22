@@ -34,6 +34,9 @@ corpus/
 # Agent skills (Matt Pocock) — nested repo, editor-only, not published
 skills/
 
+# Agent working docs — local-only, not published
+docs/agents/
+
 # Wails desktop
 frontend/dist/
 frontend/node_modules/
