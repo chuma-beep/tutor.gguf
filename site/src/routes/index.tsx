@@ -14,8 +14,8 @@ const COMPLIANCE = `${REPO}/blob/main/COMPLIANCE.md`;
 const QUESTIONS = `${REPO}/issues/new`;
 
 const facts = [
-  ["Throughput", "13.5 tok/s", "Audit profile · 16.6 at 4 threads"],
-  ["Memory", "1.10 GB", "Peak RSS of a 7 GB budget"],
+  ["Throughput", "13.5 tok/s", "Default threads · audit-profile Docker"],
+  ["Memory", "1.10 GB", "Peak RSS · 7 GB ADTC limit"],
   ["Compute", "CPU only", "Integrated graphics"],
   ["Connectivity", "0 bytes", "Entirely offline"],
 ];
@@ -23,12 +23,12 @@ const facts = [
 const stages = [
   { n: "01", title: "Input", out: "problem", spec: "browser · desktop · tui", Figure: StageInput,
     text: "A mathematics problem is entered through the browser UI, desktop app or terminal shell." },
-  { n: "02", title: "Retrieve", out: "top-K chunks", spec: "nomic-embed-text · K = 3", Figure: StageRetrieve,
+  { n: "02", title: "Retrieve", out: "top-K chunks", spec: "nomic-embed-text embeddings · K = 3", Figure: StageRetrieve,
     text: "chromem-go selects relevant worked examples from the local corpus." },
   { n: "03", title: "Infer", out: "solution", spec: "llama.cpp · CPU only", Figure: StageInfer,
     text: "Qwen2.5-Math-1.5B runs locally through llama.cpp in GGUF Q4_K_M." },
   { n: "04", title: "Render", out: "boxed answer", spec: "KaTeX · terminal art", Figure: StageRender,
-    text: "The response is formatted as readable, step-by-step mathematics." },
+    text: "The response is a step-by-step solution ending in a \\boxed{} final answer." },
 ];
 
 const plates = [
@@ -85,7 +85,7 @@ function Index() {
               <div className="border-t border-border pt-7">
                 <p className="archive-label">System composition</p>
                 <dl className="mt-5 space-y-3 font-mono text-[10px] uppercase">
-                  {[["Model", "Qwen2.5-Math-1.5B"], ["Format", "GGUF Q4_K_M"], ["Runtime", "llama.cpp"], ["Retrieval", "chromem"], ["Interface", "Go / Bubble Tea"]].map(([term, value]) => (
+                  {[["Model", "Qwen2.5-Math-1.5B"], ["Format", "GGUF Q4_K_M"], ["Runtime", "llama.cpp"], ["Retrieval", "chromem-go"], ["Interface", "Go · Bubble Tea · Wails/Svelte"]].map(([term, value]) => (
                     <div key={term} className="flex justify-between gap-4 border-b border-border pb-2"><dt className="text-muted-foreground">{term}</dt><dd className="text-right">{value}</dd></div>
                   ))}
                 </dl>
@@ -151,7 +151,7 @@ function Index() {
           <section className="archive-section grid lg:grid-cols-12">
             <div className="border-b border-border p-7 sm:p-10 lg:col-span-5 lg:border-b-0 lg:border-r lg:p-12">
               <p className="archive-label">04 / Project record</p>
-              <h2 className="mt-6 text-3xl font-medium">Built for useful inference on the hardware students already own.</h2>
+              <h2 className="mt-6 text-3xl font-medium">Built for step-by-step math tutoring on the hardware students already own.</h2>
               <p className="mt-6 max-w-lg text-sm leading-7 text-muted-foreground">Created by Wisdom Anwaegbu under the team name chuma-beep for the Math &amp; Scientific Reasoning track of the Africa Deep Tech Challenge 2026.</p>
             </div>
             <div className="grid sm:grid-cols-2 lg:col-span-7">
