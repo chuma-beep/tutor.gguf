@@ -32,10 +32,10 @@ const stages = [
 ];
 
 const plates = [
-  [shotWebui, "Browser interface", "Serve UI on localhost:8082 — archive plates, offline manual and retrieved citations."],
+  [shotWebui, "Browser interface", "Solved derivative with a FINAL 2x badge, top-3 retrieved chunks and similarity scores alongside."],
   [shotDesktop, "Desktop application", "Wails desktop build: local retrieval and a worked derivative."],
-  [shotTui, "Terminal interface", "Bubble Tea interface running the tutor entirely on-device."],
-  [shotBench, "Performance study", "Measured throughput and memory on commodity hardware."],
+  [shotTui, "Terminal interface", "Bubble Tea TUI working a JAMB arithmetic progression to a boxed 6, no GUI dependency."],
+  [shotBench, "Performance study", "Performance-study figure: audit-profile throughput, peak memory and thermal bars."],
 ];
 
 function plateNumber(index: number): string {
@@ -80,12 +80,12 @@ function Index() {
               <div>
                 <p className="archive-label">Project abstract</p>
                 <p className="mt-5 text-xl leading-snug">A fully offline mathematics tutor designed for Nigerian computer science undergraduates at distance-learning institutions.</p>
-                <p className="mt-5 text-sm leading-7 text-muted-foreground">The system combines local retrieval with a compact quantized language model. It runs on an 8 GB laptop without a GPU, internet connection, cloud account or per-token fee.</p>
+                <p className="mt-5 text-sm leading-7 text-muted-foreground">The system combines local retrieval with a compact quantized language model. It runs entirely on an 8 GB laptop with integrated graphics — no GPU, no internet connection, and no cloud account or per-token API fee.</p>
               </div>
               <div className="border-t border-border pt-7">
                 <p className="archive-label">System composition</p>
                 <dl className="mt-5 space-y-3 font-mono text-[10px] uppercase">
-                  {[["Model", "Qwen2.5-Math-1.5B"], ["Format", "GGUF Q4_K_M"], ["Runtime", "llama.cpp"], ["Retrieval", "chromem-go"], ["Interface", "Go · Bubble Tea · Wails/Svelte"]].map(([term, value]) => (
+                  {[["Model", "Qwen2.5-Math-1.5B"], ["Format", "GGUF Q4_K_M"], ["Runtime", "llama.cpp"], ["Retrieval", "chromem-go"], ["Interface", "Go (HTTP) · Bubble Tea · Wails/Svelte"]].map(([term, value]) => (
                     <div key={term} className="flex justify-between gap-4 border-b border-border pb-2"><dt className="text-muted-foreground">{term}</dt><dd className="text-right">{value}</dd></div>
                   ))}
                 </dl>
