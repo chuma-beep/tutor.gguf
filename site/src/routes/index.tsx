@@ -1,5 +1,5 @@
 import { createRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { ArchiveHeader } from "@/components/archive-header";
 import { rootRoute } from "./root";
 import { StageInput, StageRetrieve, StageInfer, StageRender } from "@/components/stage-figures";
 import shotBench from "@/assets/shot-bench.jpg";
@@ -45,17 +45,7 @@ function plateNumber(index: number): string {
 function Index() {
   return (
     <div className="min-h-screen bg-muted text-foreground selection:bg-foreground selection:text-background">
-      <header className="border-b border-border bg-background">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-4 sm:px-8 lg:px-12">
-          <a href="#top" className="text-sm font-semibold uppercase">tutor.gguf</a>
-          <nav aria-label="Primary navigation" className="flex gap-5 font-mono text-[10px] uppercase text-muted-foreground">
-            <a className="archive-link hidden sm:inline" href="#archive">Archive</a>
-            <a className="archive-link hidden sm:inline" href="#specification">Specification</a>
-            <Link className="archive-link" to="/docs">Docs</Link>
-            <a className="archive-link" href={REPO} target="_blank" rel="noreferrer">Repository ↗</a>
-          </nav>
-        </div>
-      </header>
+      <ArchiveHeader variant="landing" />
 
       <main id="top" className="mx-auto max-w-[1440px] px-4 py-4 sm:px-8 sm:py-8 lg:px-12 lg:py-12">
         <article className="border border-border bg-background">

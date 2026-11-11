@@ -1,9 +1,8 @@
 import { createRoute, Link, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { ArchiveHeader } from "@/components/archive-header";
 import { rootRoute } from "./root";
 import { chapters, getChapter } from "@/lib/docs";
-
-const REPO = "https://github.com/chuma-beep/tutor.gguf";
 
 function useInterceptDocsLinks() {
   const navigate = useNavigate();
@@ -34,15 +33,7 @@ function Shell({ slug }: { slug?: string }) {
 
   return (
     <div className="min-h-screen bg-muted text-foreground selection:bg-foreground selection:text-background">
-      <header className="border-b border-border bg-background">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-4 sm:px-8 lg:px-12">
-          <Link to="/" className="text-sm font-semibold uppercase">tutor.gguf</Link>
-          <nav aria-label="Primary navigation" className="flex gap-5 font-mono text-[10px] uppercase text-muted-foreground">
-            <Link className="archive-link" to="/docs">Docs</Link>
-            <a className="archive-link" href={REPO} target="_blank" rel="noreferrer">Repository ↗</a>
-          </nav>
-        </div>
-      </header>
+      <ArchiveHeader variant="docs" />
 
       <main className="mx-auto max-w-[1440px] px-4 py-4 sm:px-8 sm:py-8 lg:px-12 lg:py-12">
         <article className="border border-border bg-background">

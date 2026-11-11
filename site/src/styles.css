@@ -1,12 +1,42 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: light;
+
+  /* Archive paper: the plate is lighter than the canvas it sits on. */
   --background: 40 20% 99%;
   --foreground: 30 8% 10%;
   --muted: 40 12% 95%;
   --muted-foreground: 35 8% 42%;
   --border: 35 12% 86%;
   --secondary: 40 10% 91%;
+}
+
+/* Dark archive — the same paper, unlit. Warm charcoal rather than blue slate,
+   so the cream type stays in one colour family with the light theme. Opt-in
+   via the header toggle or the OS when the preference is "system". */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --background: 30 9% 13%;
+  --foreground: 40 27% 88%;
+  --muted: 30 10% 9%;
+  --muted-foreground: 38 10% 66%;
+  --border: 32 9% 29%;
+  --secondary: 30 8% 17%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] {
+    color-scheme: dark;
+
+    --background: 30 9% 13%;
+    --foreground: 40 27% 88%;
+    --muted: 30 10% 9%;
+    --muted-foreground: 38 10% 66%;
+    --border: 32 9% 29%;
+    --secondary: 30 8% 17%;
+  }
 }
 
 @theme inline {
@@ -30,6 +60,11 @@ html {
 
 body {
   margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid hsl(var(--foreground));
+  outline-offset: 2px;
 }
 
 .archive-label {

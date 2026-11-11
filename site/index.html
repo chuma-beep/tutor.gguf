@@ -1,9 +1,22 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="system">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fdfcf9" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#24211e" />
+    <script>
+      // Apply a stored choice before first paint so the page never flashes
+      // light for a dark-mode reader. "system" is the no-choice default.
+      (function () {
+        try {
+          var t = localStorage.getItem("tutor-theme");
+          document.documentElement.dataset.theme =
+            t === "light" || t === "dark" ? t : "system";
+        } catch (e) {}
+      })();
+    </script>
     <title>tutor.gguf | On-device Math Tutor Project Archive</title>
     <meta
       name="description"
